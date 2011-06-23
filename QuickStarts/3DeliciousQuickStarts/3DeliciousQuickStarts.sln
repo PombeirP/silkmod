@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{962C4A79-85CE-403D-856C-3D7277DB0052}"
+	ProjectSection(SolutionItems) = preProject
+		default.htm = default.htm
+		jquery-1.6.1.js = jquery-1.6.1.js
+		style.css = style.css
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "objects", "objects", "{7383AEF8-D306-4D05-9468-C60C3F4E4628}"
+	ProjectSection(SolutionItems) = preProject
+		objects\infobox.js = objects\infobox.js
+		objects\startup.js = objects\startup.js
+		objects\tagger.js = objects\tagger.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins", "plugins", "{6D89FC37-040D-44DA-9F98-F09AB2CDB11C}"
+	ProjectSection(SolutionItems) = preProject
+		plugins\jquery.infobox.js = plugins\jquery.infobox.js
+		plugins\jquery.tagger.js = plugins\jquery.tagger.js
+		plugins\startup.plugin.js = plugins\startup.plugin.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "widgets", "widgets", "{A2017A54-9CFB-4850-99F6-0B5290101162}"
+	ProjectSection(SolutionItems) = preProject
+		widgets\jquery.qs.infobox.js = widgets\jquery.qs.infobox.js
+		widgets\jquery.qs.tagger.js = widgets\jquery.qs.tagger.js
+		widgets\jquery.ui.core.js = widgets\jquery.ui.core.js
+		widgets\jquery.ui.widget.js = widgets\jquery.ui.widget.js
+		widgets\startup.widget.js = widgets\startup.widget.js
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7383AEF8-D306-4D05-9468-C60C3F4E4628} = {962C4A79-85CE-403D-856C-3D7277DB0052}
+		{6D89FC37-040D-44DA-9F98-F09AB2CDB11C} = {962C4A79-85CE-403D-856C-3D7277DB0052}
+		{A2017A54-9CFB-4850-99F6-0B5290101162} = {962C4A79-85CE-403D-856C-3D7277DB0052}
+	EndGlobalSection
+EndGlobal
