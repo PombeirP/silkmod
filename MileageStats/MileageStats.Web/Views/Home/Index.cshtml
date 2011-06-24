@@ -10,12 +10,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
         <title>Mileage Stats | Know where your gas takes you</title>
         <link href="@Url.Content("~/Content/static.css")" rel="stylesheet" />
-        <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/favicon.ico")" />
         <link rel="icon" type="image/ico" href="@Url.Content("~/favicon.ico")" />
         <meta name="application-name" content="Mileage Stats"/>
         <meta name="msapplication-tooltip" content="Mileage Stats Reference Implementation"/>
         <meta name="msapplication-window" content="width=1100;height=800"/>
         <meta name="msapplication-navbutton-color" content="#6DE3E3"/>
+        <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.min.js"></script>
+        <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/Debug/mstats.pinnedsite.js")"></script>
     </head>
     <body>
     	<div id="center">
@@ -87,11 +90,6 @@
                 </div>
             </div>
         </div>
-
-        
-        <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.min.js"></script>
-        <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="@Url.Content("~/Scripts/Debug/mstats.pinnedsite.js")"></script>
 
         <script>
         $(function () {

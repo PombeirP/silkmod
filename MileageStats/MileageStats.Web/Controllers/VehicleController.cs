@@ -60,8 +60,11 @@ namespace MileageStats.Web.Controllers
             var selected = vehicles
                 .Single(x => x.VehicleId == id);
 
+            // we are limiting this to 3 reminders 
+            // after we retrieve the full set from the server
             var overdue = Using<GetOverdueRemindersForVehicle>()
-                .Execute(id, DateTime.UtcNow, selected.Odometer ?? 0);
+                .Execute(id, DateTime.UtcNow, selected.Odometer ?? 0)
+                .Take(3);
 
             var vm = new VehicleDetailsViewModel
                          {
@@ -194,7 +197,7 @@ namespace MileageStats.Web.Controllers
                          {
                              User = CurrentUser,
                              Vehicle = vehicleForm,
-                             VehiclesList = new VehicleListViewModel(vehicles)
+                             VehiclesList = new VehicleListViewModel(vehicles, id)
                          };
             vm.VehiclesList.IsCollapsed = true;
 
@@ -421,13 +424,16 @@ namespace MileageStats.Web.Controllers
         [Authorize]
         public JsonResult JsonDetails(int id)
         {
-            VehicleModel vehicle = Using<GetVehicleById>()
+            var vehicle = Using<GetVehicleById>()
                 .Execute(CurrentUserId, vehicleId: id);
 
-            IEnumerable<ReminderSummaryModel> overdue = Using<GetOverdueRemindersForVehicle>()
-                .Execute(id, DateTime.UtcNow, vehicle.Odometer ?? 0);
+            // we are limiting this to 3 reminders 
+            // after we retrieve the full set from the server
+            var overdue = Using<GetOverdueRemindersForVehicle>()
+                .Execute(id, DateTime.UtcNow, vehicle.Odometer ?? 0)
+                .Take(3);
 
-            JsonVehicleViewModel vm = ToJsonVehicleViewModel(vehicle, overdue);
+            var vm = ToJsonVehicleViewModel(vehicle, overdue);
 
             return Json(vm);
         }

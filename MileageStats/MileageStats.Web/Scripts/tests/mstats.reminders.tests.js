@@ -73,18 +73,6 @@
         }
     });
 
-    test('When created, then adds mstats-reminders class to attached element', function () {
-        expect(1);
-        $('#reminders-pane').reminders();
-        ok($('.mstats-reminders-pane').length > 0, 'correctly added class');
-    });
-
-    test('When created, then adds .mstats-reminders-pane-content class to attached element', function () {
-        expect(1);
-        $('#reminders-pane').reminders();
-        ok($('.mstats-reminders-pane-content').length > 0, 'correctly added class');
-    });
-
     /****************************************************************
     * Data Loading Tests
     ****************************************************************/
@@ -93,7 +81,7 @@
         var reminders = $('#reminders-pane').reminders();
 
         reminders.reminders( 'option', 'sendRequest', function (options) {
-            ok($('.mstats-reminders-pane-content:hidden').length > 0, 'contents are hidden');
+            ok($('.content:hidden').length > 0, 'contents are hidden');
             options.success({});
         });
 
@@ -111,7 +99,7 @@
         reminders.reminders('option', 'selectedVehicleId', 1);
 
         forceCompletionOfAllAnimations();
-        ok($('.mstats-reminders-pane-content:hidden').length === 0, 'contents are shown');
+        ok($('.content:hidden').length === 0, 'contents are shown');
     });
 
     test('when loading data errors out, then the widget ensures the contents are hidden', function () {
@@ -121,7 +109,7 @@
         });
 
         reminders.reminders('option', 'sendRequest', function (options) {
-            ok($('.mstats-reminders-pane-content:hidden').length > 0, 'contents are hidden');
+            ok($('.content:hidden').length > 0, 'contents are hidden');
             options.error({});
         });
         // force a data refresh

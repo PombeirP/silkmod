@@ -31,10 +31,10 @@
 
         _create: function () {
             var that = this,
-                name = that.name,
-                tag = that.element.text();
+                name = this.name,
+                tag = this.element.text();
 
-            that.element
+            this.element
             .addClass('qs-tagged')
             .bind('mouseenter.' + name, function (event) {
                 clearTimeout(timer);

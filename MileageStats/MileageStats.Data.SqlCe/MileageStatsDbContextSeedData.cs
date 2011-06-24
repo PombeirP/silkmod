@@ -356,7 +356,7 @@ namespace MileageStats.Data.SqlCe {
             CreateFillups(1000, DateTime.Now.AddDays(-365), vehicle, 1, 1);
             CreateReminders(vehicle);
 
-            vehicle = new Vehicle { UserId = userId, Name = "Soccer Mom's Ride", SortOrder = 2, Year = 1997, MakeName = "Honda", ModelName = "Accord" };
+            vehicle = new Vehicle { UserId = userId, Name = "Soccer Mom's Ride", SortOrder = 2, Year = 1997, MakeName = "Honda", ModelName = "Accord LX" };
             Vehicles.Add(vehicle);
             SaveChanges();
 

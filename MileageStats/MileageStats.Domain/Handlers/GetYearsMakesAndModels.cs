@@ -38,7 +38,7 @@ namespace MileageStats.Domain.Handlers
             {
                 // If the user specified a year, then look up the makes.
                 // Otherwise, use the makes from the first year in the list.
-                int selectedYear = years[0];
+                int selectedYear = -1;
 
                 if ((filteredToYear != null) &&
                     (_manufacturerRepository.IsValidYear(filteredToYear.Value)))
@@ -51,7 +51,7 @@ namespace MileageStats.Domain.Handlers
                 // if the user specified a year and a make, then look up the models.
                 if ((makes != null) && (makes.Length > 0))
                 {
-                    string selectedMake = makes[0];
+                    string selectedMake = string.Empty;
 
                     if ((!string.IsNullOrEmpty(filteredByMake)) &&
                         (_manufacturerRepository.IsValidMake(selectedYear, filteredByMake)))

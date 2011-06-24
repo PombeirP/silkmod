@@ -1,7 +1,10 @@
 ﻿@model MileageStats.Web.Models.VehicleListViewModel
 @using MileageStats.Web.Helpers
+@{
+    var compactClass = Model.IsCollapsed ? "compact" : String.Empty;
+}
            
-<div id="vehicles" class="article @(Model.IsCollapsed ? "compact" : String.Empty)" data-list-url="@Url.Action("JsonList","Vehicle")">
+<div id="vehicles" class="article @compactClass" data-list-url="@Url.Action("JsonList","Vehicle")" data-sort-url="@Url.Action("UpdateSortOrder", "Vehicle")">
     <div id="vehicle-list-content">
     @foreach (var vehicle in Model.Vehicles)
     {               

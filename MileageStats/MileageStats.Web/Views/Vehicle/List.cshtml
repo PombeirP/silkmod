@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div id="unavailable-message">
-                        No chart data available, or no vehicles are selected.</div>
+                        No chart data available.</div>
                     <div id="loading-message">
                         Loading chart data. Please wait...</div>
                 </div>
@@ -50,7 +50,7 @@
                 <div id="summary-content">
                     @if (!Model.User.HasRegistered)
                     { 
-                        <div id="registration">
+                        <div id="registration" data-url="@Url.Action("JsonCompleteRegistration","Profile")">
                             <div id="registration-content">
                                 <h1>
                                     Complete your Registration</h1>
@@ -64,7 +64,7 @@
                         </div>
                     }
                     <!-- Complete your registration form goes here -->
-                    <div id="statistics" class="statistics section">
+                    <div id="statistics" class="statistics section" data-url="@Url.Action("JsonFleetStatistics","Vehicle")">
                         <div id="statistics-content">
                             <h1>
                                 Summary Statistics</h1>
@@ -76,7 +76,7 @@
                                 class="units">per month</span></div>
                         </div>
                     </div>
-                    <div class="section" id="reminders">
+                    <div class="section" id="reminders" data-url="@Url.Action("JsonImminentReminders","Reminder")">
                         <div id="summary-reminders-content">
                             <h1>
                                 Reminders</h1>
@@ -92,7 +92,10 @@
                     </div>
                 </div>
             </div>
-            <div id="info" class="framed empty article">
+            <div id="info" class="framed empty article" 
+                 data-details-url="@Url.Action("JsonDetails","Vehicle")"
+                 data-fillups-url="@Url.Action("JsonList","Fillup")"
+                 data-reminders-url="@Url.Action("JsonList","Reminder")">
                 <div />
             </div>
         </div>

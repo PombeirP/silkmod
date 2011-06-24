@@ -13,8 +13,7 @@
     <RootNamespace>MileageStats.Web</RootNamespace>
     <AssemblyName>MileageStats.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <MvcBuildViews>false</MvcBuildViews><UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,7 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetOpenAuth">
-      <HintPath>..\packages\DotNetOpenAuth.3.4.7.11121\lib\DotNetOpenAuth.dll</HintPath>
+      <HintPath>..\packages\DotNetOpenAuth.3.4.6.10357\lib\DotNetOpenAuth.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.ServiceLocation.dll</HintPath>

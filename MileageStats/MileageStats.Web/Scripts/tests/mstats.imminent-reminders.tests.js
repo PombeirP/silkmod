@@ -41,15 +41,6 @@
         }
     });
 
-    test('when created, then registers mstats.imminentRemindersPane', function () {
-        expect(1);
-        $('#reminders').imminentRemindersPane({
-            sendRequest: function (options) { }
-        });
-
-        ok(mstats.imminentRemindersPane, 'imminent reminders pane added to mstats namespace');
-    });
-
     test('when created, then sendRequest is called', function () {
         expect(1);
         $('#reminders').imminentRemindersPane({
@@ -81,15 +72,6 @@
 
     });
 
-    test('when created, then adds class to content element', function () {
-        expect(1);
-        $('#reminders').imminentRemindersPane({
-            sendRequest: function (options) { }
-        });
-
-        equal($('.mstats-reminders-content').length, 1, 'imminent reminders content class added');
-    });
-
     test('when widget data is retrieved, then widget contents are replaced by the template', function () {
         expect(1);
         $('#reminders').imminentRemindersPane({
@@ -99,7 +81,7 @@
             templateId: '#testTemplate'
         });
 
-        equal($('.mstats-reminders-content').html(), $('#testTemplate').html(), 'Template applied');
+        equal($('#summary-reminders-content').html(), $('#testTemplate').html(), 'Template applied');
     });
 
     test('when widget data is retrieved and no template specified, then widget contents are not replaced by the template', function () {
@@ -110,7 +92,7 @@
             }
         });
 
-        notEqual($('.mstats-reminders-content').html(), $('#testTemplate').html(), 'Template not applied');
+        notEqual($('#summary-reminders-content').html(), $('#testTemplate').html(), 'Template not applied');
     });
 
     test('when loading data errors out, then the widget contents are hidden', function () {
@@ -121,7 +103,7 @@
 
         setTimeout(function () {
             forceCompletionOfAllAnimations();
-            ok($('.mstats-reminders-content').is(':hidden'), 'imminent reminders are hidden');
+            ok($('#summary-reminders-content').is(':hidden'), 'imminent reminders are hidden');
             start();
         }, 200);
         stop();
@@ -161,7 +143,7 @@
                                 ok(true, 'refreshData did not invoke sendRequest'); 
                             });
 
-        $('.mstats-reminders').imminentRemindersPane('refreshData');
+        $('#reminders').imminentRemindersPane('refreshData');
     });
 
     test('when requeryData is called, then cached data is invalidated', function () {
@@ -174,7 +156,7 @@
             }
         });
 
-        $('.mstats-reminders').imminentRemindersPane('requeryData');
+        $('#reminders').imminentRemindersPane('requeryData');
     });
 
     test('when refreshData is called, then template is re-applied', function () {
@@ -185,12 +167,12 @@
             templateId: '#testTemplate'
         });
 
-        equal($('.mstats-reminders-content').html(), $('#testTemplate').html(), 'Template applied');
+        equal($('#summary-reminders-content').html(), $('#testTemplate').html(), 'Template applied');
 
-        $('.mstats-reminders').imminentRemindersPane('option', 'templateId', '#testTemplate2');
-        $('.mstats-reminders').imminentRemindersPane('refreshData');
+        $('#reminders').imminentRemindersPane('option', 'templateId', '#testTemplate2');
+        $('#reminders').imminentRemindersPane('refreshData');
 
-        equal($('.mstats-reminders-content').html(), $('#testTemplate2').html(), 'Template applied');
+        equal($('#summary-reminders-content').html(), $('#testTemplate2').html(), 'Template applied');
     });
 
     test('when created, then adds class to element', function () {
@@ -199,6 +181,6 @@
             sendRequest: function (options) { }
         });
 
-        equal($('.mstats-reminders').length, 1, 'reminders class added');
+        equal($('#reminders').length, 1, 'reminders class added');
     });
 } (jQuery));

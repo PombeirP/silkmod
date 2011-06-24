@@ -52,18 +52,6 @@
         }
     });
 
-    test('When created, then adds mstats-fillups class to attached element', function () {
-        expect(1);
-        $('#fillups-pane').fillups();
-        ok($('.mstats-fillups').length > 0, 'correctly added class');
-    });
-
-    test('When created, then adds .mstats-fillups-content class to attached element', function () {
-        expect(1);
-        $('#fillups-pane').fillups();
-        ok($('.mstats-fillups-content').length > 0, 'correctly added class');
-    });
-
     /****************************************************************
     * Data Loading Tests
     ****************************************************************/
@@ -71,7 +59,7 @@
         expect(1);
         var fillups = $('#fillups-pane').fillups({
             sendRequest: function (options) {
-                ok($('.mstats-fillups-content:hidden').length > 0, 'contents are hidden');
+                ok($('.content:hidden').length > 0, 'contents are hidden');
                 options.success({});
             }
         });
@@ -90,7 +78,7 @@
         fillups.fillups('option', 'selectedVehicleId', 1);
 
         setTimeout(function () { // this allows the animation to finish
-            ok($('.mstats-fillups-content:hidden').length === 0, 'contents are shown');
+            ok($('.content:hidden').length === 0, 'contents are shown');
             start();
         }, 2500);
 
@@ -101,7 +89,7 @@
         expect(1);
         var fillups = $('#fillups-pane').fillups({
             sendRequest: function (options) {
-                ok($('.mstats-fillups-content:hidden').length > 0, 'contents are hidden');
+                ok($('.content:hidden').length > 0, 'contents are hidden');
                 options.error({});
             },
             templateId: 'testTemplate'

@@ -27,7 +27,7 @@
                 $('#qunit-fixture').append(
                     '<div class="editor article">' +
                         '<form action="/Vehicle/Add" enctype="multipart/form-data" method="post">' +
-                            '<div id="vehicleEditForm" class="editor-area">' +
+                            '<div id="vehicleEditForm" class="editor-area" data-makes-url="/Vehicle/MakesForYear" data-models-url="/Vehicle/ModelsForMake">' +
                                 '<div class="editor-row">' +
                                     '<label class="editor-label">' +
                                         '<label for="Year">Model Year</label>' +

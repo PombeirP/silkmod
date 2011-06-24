@@ -37,36 +37,9 @@
                             '</div>' +
                         '</form>' +
                     '</div>' +
-                    '</div>' + 
-                    '<script id="testTemplate" type="text/x-jquery-tmpl">' +
-                        '<p>contents go here</p>' +
-                    '</script>'
+                    '</div>'
             );
         }
-    });
-
-    test('when created, then adds class to element', function () {
-        expect(1);
-
-        $('#registration').registration({
-            sendRequest: function (options) {
-                ok(true, 'sendRequest called on submit');
-            }
-        });
-
-        equal($('.mstats-registration').length, 1, 'registration classes added');
-    });
-
-    test('when created, then adds class to content element', function () {
-        expect(1);
-
-        $('#registration').registration({
-            sendRequest: function (options) {
-                ok(true, 'sendRequest called on submit');
-            }
-        });
-
-        equal($('.mstats-registration-content').length, 1, 'registration classes added');
     });
 
     test('when widget is attached to the #registration element, then submit is intercepted and calls sendRequest', function () {
@@ -154,22 +127,6 @@
         });
         $('[data-action=profile-save]').first().click();
         forceCompletionOfAllAnimations();
-    });
-
-    test('when created and template is specified, then widget contents are replaced by the template', function () {
-        expect(1);
-        $('#registration').registration({
-            templateId: '#testTemplate'
-        });
-
-        equal($.trim($('#registration-content').html()).toLowerCase(), $.trim($('#testTemplate').html()).toLowerCase(), 'Template applied');
-    });
-
-    test('when created and template not is specified, then widget contents are not replaced by the template', function () {
-        expect(1);
-        $('#registration').registration();
-
-        notEqual($('#registration-content').html(), $('#testTemplate').html(), 'Template applied');
     });
 
 }(jQuery));

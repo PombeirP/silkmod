@@ -84,18 +84,6 @@
         }
     });
 
-    test('When created, then adds mstats-vehicle-details class to attached element', function () {
-        expect(1);
-        $('#details-pane').vehicleDetails();
-        ok($('.mstats-vehicle-details').length > 0, 'correctly added class');
-    });
-
-    test('When created, then adds mstats-vehicle-details-content class to attached element', function () {
-        expect(1);
-        $('#details-pane').vehicleDetails();
-        ok($('.mstats-vehicle-details-content').length > 0, 'correctly added class');
-    });
-
     /****************************************************************
     * Data Loading Tests
     ****************************************************************/
@@ -103,7 +91,7 @@
         expect(1);
         var details = $('#details-pane').vehicleDetails({
             sendRequest: function (options) {
-                ok($('.mstats-vehicle-details-content:hidden').length > 0, 'contents are hidden');
+                ok($('.content:hidden').length > 0, 'contents are hidden');
                 options.success({});
             }
         });
@@ -122,7 +110,7 @@
         details.vehicleDetails('option', 'selectedVehicleId', 1);
 
         setTimeout(function () { // this allows the animation to finish
-            ok($('.mstats-vehicle-details-content:hidden').length === 0, 'contents are shown');
+            ok($('.content:hidden').length === 0, 'contents are shown');
             start();
         }, 2500);
 
@@ -133,7 +121,7 @@
         expect(1);
         var details = $('#details-pane').vehicleDetails({
             sendRequest: function (options) {
-                ok($('.mstats-vehicle-details-content:hidden').length > 0, 'contents are hidden');
+                ok($('.content:hidden').length > 0, 'contents are hidden');
                 options.error({});
             },
             templateId: 'testTemplate'
@@ -360,13 +348,13 @@
     test('when widget data is retrieved, then widget contents are replaced by the template', function () {
         expect(1);
 
-        mstats.header = {
-            option: function () { return 'some-value' }
-        };
-
         var details = $('#details-pane').vehicleDetails({
             sendRequest: function (options) { options.success({}); },
-            templateId: '#testTemplate'
+            templateId: '#testTemplate',
+            header: { 
+                option: function () { return 'some-value' },
+                header: function () { /* this is here to simulate header being a widget */ } 
+                }
         });
 
         // force a data refresh
@@ -435,7 +423,8 @@
 
         var details = $('#details-pane').vehicleDetails({
             sendRequest: function (options) { options.success({}); },
-            templateId: '#testTemplate'
+            templateId: '#testTemplate',
+            header: { header: function () { /* simulate header being a widget */} }
         });
 
         // force a data refresh

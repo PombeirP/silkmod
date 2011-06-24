@@ -87,19 +87,23 @@
 
     test('when widget is attached to the .mstats-vehicle-list element, then the list is made sortable', function () {
         expect(3);
-        $('#vehicles').vehicleList();
+        
+        var widget = $('#vehicles').vehicleList();
 
-        ok($('.mstats-vehicle-list').sortable('option', 'items') === '.mstats-tile:has(.mstats-vehicle)', 'the items the list sorts was scoped properly');
-        ok($('.mstats-vehicle-list').sortable('option', 'containment') === '#vehicles', 'the sorting containment was set properly');
-        ok($('.mstats-vehicle-list').sortable('option', 'handle') === '.header', 'the handle was set properly');
+        ok(widget.sortable('option', 'items') === ':mstats-tile:has(:mstats-vehicle)', 'the items the list sorts was scoped properly');
+        ok(widget.sortable('option', 'containment') === '#vehicles', 'the sorting containment was set properly');
+        ok(widget.sortable('option', 'handle') === '.header', 'the handle was set properly');
     });
 
-    test('when moveOnScreen is called, then isOnScreen is set to true', function () {
+    test('when moveOnScreen is called, then visible is set to true', function () {
         expect(1);
-        var list = $('#vehicles').vehicleList();
-        list.vehicleList('moveOnScreen');
+        
+        var widget = $('#vehicles').vehicleList();
+        
+        widget.vehicleList('moveOnScreen');
+        
         setTimeout(function () {
-            equal(list.vehicleList('option', 'isOnScreen'), true, 'isOnScreen is true');
+            equal(widget.vehicleList('option', 'visible'), true, 'visible is true');
             start();
         }, 1200);
         stop(1500);
@@ -107,21 +111,27 @@
 
     test('when moveOffScreen is called, then is moved', function () {
         expect(1);
-        var list = $('#vehicles').vehicleList();
-        list.vehicleList('moveOffScreen');
+        
+        var widget = $('#vehicles').vehicleList();
+        
+        widget.vehicleList('moveOffScreen');
+        
         setTimeout(function () {
-            equal($('.mstats-vehicle-list').css('left'), '-600px', 'list is positioned correctly');
+            equal(widget.css('left'), '-600px', 'list is positioned correctly');
             start();
         }, 1200);
         stop(1500);
     });
 
-    test('when moveOffScreen is called, then isOnScreen is set to false', function () {
+    test('when moveOffScreen is called, then visible is set to false', function () {
         expect(1);
+        
         var list = $('#vehicles').vehicleList();
+        
         list.vehicleList('moveOffScreen');
+        
         setTimeout(function () {
-            equal(list.vehicleList('option', 'isOnScreen'), false, 'isOnScreen is false');
+            equal(list.vehicleList('option', 'visible'), false, 'visible is false');
             start();
         }, 1200);
         stop(1500);
@@ -132,18 +142,22 @@
     ****************************************************************/
     test('when layout is set to details, then compact class is added', function () {
         expect(2);
-        $('#vehicles').vehicleList();
-        ok(!$('.mstats-vehicle-list').hasClass('compact'), 'correctly defaults to expanded mode');
-        $('#vehicles').vehicleList('option', 'layout', 'details');
-        ok($('.mstats-vehicle-list').hasClass('compact'), 'correctly set class to compact');
+        
+        var widget = $('#vehicles').vehicleList();
+        ok(!widget.hasClass('compact'), 'correctly defaults to expanded mode');
+        
+        widget.vehicleList('option', 'layout', 'details');
+        ok(widget.hasClass('compact'), 'correctly set class to compact');
     });
 
     test('when layout is set to details, then sortable axis is set to vertical (y axis) only', function () {
         expect(2);
-        $('#vehicles').vehicleList();
-        equal($('.mstats-vehicle-list').sortable('option', 'axis'), false, 'axis properly defaults to false');
-        $('#vehicles').vehicleList('option', 'layout', 'details');
-        equal($('.mstats-vehicle-list').sortable('option', 'axis'), 'y', 'axis was changed to only y');
+        
+        var widget = $('#vehicles').vehicleList();
+        equal(widget.sortable('option', 'axis'), false, 'axis properly defaults to false');
+        
+        widget.vehicleList('option', 'layout', 'details');
+        equal(widget.sortable('option', 'axis'), 'y', 'axis was changed to only y');
     });
 
 
@@ -152,21 +166,24 @@
     ****************************************************************/
     test('when layout is set to dashboard, then compact class is removed', function () {
         expect(2);
-        $('#vehicles').vehicleList();
-        $('.mstats-vehicle-list').vehicleList('option', 'layout', 'details');
-        equal($('.mstats-vehicle-list').hasClass('compact'), true, 'actually in compact mode');
-        $('#vehicles').vehicleList('option', 'layout', 'dashboard');
-        equal($('.mstats-vehicle-list').hasClass('compact'), false, 'correctly removed compact class');
+        
+        var widget = $('#vehicles').vehicleList();
+        widget.vehicleList('option', 'layout', 'details');
+        
+        equal(widget.hasClass('compact'), true, 'actually in compact mode');
+        
+        widget.vehicleList('option', 'layout', 'dashboard');
+        equal(widget.hasClass('compact'), false, 'correctly removed compact class');
     });
 
     test('when layout is set to dashboard, then sortable axis has no constraints (axis === false)', function () {
         expect(2);
 
-        $('#vehicles').vehicleList({ layout: 'details' });
-        equal($('.mstats-vehicle-list').sortable('option', 'axis'), 'y', 'axis is only y in compact mode');
+        var widget = $('#vehicles').vehicleList({ layout: 'details' });
+        equal(widget.sortable('option', 'axis'), 'y', 'axis is only y in compact mode');
 
-        $('#vehicles').vehicleList('option', 'layout', 'dashboard');
-        equal($('.mstats-vehicle-list').sortable('option', 'axis'), false, 'axis was changed to false');
+        widget.vehicleList('option', 'layout', 'dashboard');
+        equal(widget.sortable('option', 'axis'), false, 'axis was changed to false');
     });
 
     /****************************************************************
@@ -181,10 +198,10 @@
 
     test('when a vehicle is selected in compact mode, then the selected vehicle is shown expanded', function () {
         expect(1);
-        $('#vehicles').vehicleList();
-        $('.mstats-vehicle-list').vehicleList('option', 'layout', 'details');
+        var widget= $('#vehicles').vehicleList();
+        widget.vehicleList('option', 'layout', 'details');
 
-        $('#vehicles').vehicleList('option', 'selectedVehicleId', 3);
+        widget.vehicleList('option', 'selectedVehicleId', 3);
 
         equal($('.vehicle[data-vehicle-id = 3 ]').first().hasClass('compact'), false, 'compact class not applied to selected vehicle');
     });
@@ -202,7 +219,7 @@
             templateId: '#testTemplate'
         });
 
-        ok($('.mstats-tile:hidden').length > 0, 'vehicles are hidden');
+        ok($(':mstats-tile:hidden').length > 0, 'vehicles are hidden');
     });
 
     test('when widget is attached to the .mstats-vehicle-list element, then widget calls sendRequest with dataUrl', function () {
@@ -385,7 +402,7 @@
         setup: function () {
             this.savedAjax = $.ajax;
             $('#qunit-fixture').append(
-                '<div id="vehicles" class="article">' +
+                '<div id="vehicles" class="article" data-sort-url="/Vehicle/UpdateSortOrder">' +
                     '<div id="vehicle-list-content">' +
                         '<div class="wrapper"><div data-vehicle-id="1" class="vehicle framed section" /></div>' +
                         '<div class="wrapper"><div data-vehicle-id="2" class="vehicle framed section" /></div>' +
@@ -409,27 +426,11 @@
     test('when vehicles sorted then UpdateSortOrder called', function () {
         expect(1);
 
-        $.ajax = function (options) {
-            if (options.url === '/Vehicle/UpdateSortOrder') {
-                ok(true, 'UpdateSortOrder was called.');
-            }
-        };
-
-        var v = $('#vehicles').vehicleList();
-
-        v.vehicleList('saveSortOrder');
-    });
-
-    test('when vehicles sorted then UpdateSortOrder called with json dataType', function () {
-        expect(1);
-
-        $.ajax = function (options) {
-            if (options.dataType === 'json') {
-                ok(true, 'UpdateSortOrder was called with json data type.');
-            }
-        };
-
-        var v = $('#vehicles').vehicleList();
+        var v = $('#vehicles').vehicleList({
+                sendRequest: function () {
+                    ok(true, 'UpdateSortOrder was called.');
+                }
+            });
 
         v.vehicleList('saveSortOrder');
     });
@@ -437,14 +438,10 @@
     test('when vehicles sorted then UpdateSortOrder called with sort order parameter', function () {
         expect(1);
 
-        $.ajax = function (options) {
-            if (options.url === '/Vehicle/UpdateSortOrder') {
+        var v = $('#vehicles').vehicleList({
+            sendRequest: function (options) {
                 equal(options.data.SortOrder, "1,2,3,4");
             }
-        };
-
-        var v = $('#vehicles').vehicleList({
-            sendRequest: function (options) { options.success({}); }
         });
 
         v.vehicleList('saveSortOrder');

@@ -40,27 +40,20 @@
         }
     });
 
-    test('when created, registers mstats.summaryPane', function () {
-        expect(1);
-        $('#summary').summaryPane();
-        ok(mstats.summaryPane, 'summary pane added to mstats namespace');
-    });
-
     test('when moveOffscreen is called, then moves off-screen and hides.', function () {
         expect(2);
-        var originalOpacity, newOpacity, newLeft;
+        var newOpacity, newLeft;
 
-        $('#summary').summaryPane();
-        originalOpacity = parseInt($('.mstats-summary').css('opacity'), 10);
+        var widget = $('#summary').summaryPane();
 
-        $('.mstats-summary').summaryPane('moveOffScreen');
+        widget.summaryPane('moveOffScreen');
 
         // wait for delay to complete
         setTimeout(function () {
             forceCompletionOfAllAnimations();
 
-            newOpacity = parseInt($('.mstats-summary').css('opacity'), 10);
-            newLeft = parseInt($('.mstats-summary').css('left'), 10);
+            newOpacity = parseInt(widget.css('opacity'), 10);
+            newLeft = parseInt(widget.css('left'), 10);
 
             equal(newOpacity, 0, 'opacity set');
             equal(newLeft, -350, 'moved to position');
@@ -69,7 +62,7 @@
         stop(1000);
     });
 
-    test('when moveOffscreen is called, then sets isOnScreen to false.', function () {
+    test('when moveOffscreen is called, then sets visible to false.', function () {
         expect(1);
         var summary = $('#summary').summaryPane();
 
@@ -79,7 +72,7 @@
         setTimeout(function () {
             forceCompletionOfAllAnimations();
 
-            equal(summary.summaryPane('option', 'isOnScreen'), false, 'set isOnScreen to false');
+            equal(summary.summaryPane('option', 'visible'), false, 'set visible to false');
             start();
         }, 500);
         stop(1000);
@@ -90,22 +83,23 @@
         expect(2);
         var newOpacity, newLeft;
 
-        $('#summary').summaryPane();
-        $('.mstats-summary').summaryPane('moveOffScreen');
+        var widget = $('#summary').summaryPane();
+        widget.summaryPane('moveOffScreen');
+        
         // wait for delay to complete
         setTimeout(function () {
             forceCompletionOfAllAnimations();
         }, 500);
 
         // move back on screen
-        $('.mstats-summary').summaryPane('moveOnScreen');
+       widget.summaryPane('moveOnScreen');
 
         // wait for delay to complete
         setTimeout(function () {
             forceCompletionOfAllAnimations();
 
-            newOpacity = parseInt($('.mstats-summary').css('opacity'), 10);
-            newLeft = $('.mstats-summary').css('left');
+            newOpacity = parseInt(widget.css('opacity'), 10);
+            newLeft = widget.css('left');
 
             equal(newOpacity, 1, 'opacity set');
             equal(newLeft, '0px', 'moved to position');
@@ -114,7 +108,7 @@
         stop(1000);
     });
 
-    test('when moveOnscreen is called, then sets isOnScreen to true.', function () {
+    test('when moveOnscreen is called, then sets visible to true.', function () {
         expect(1);
         var summary = $('#summary').summaryPane();
 
@@ -132,7 +126,7 @@
         setTimeout(function () {
             forceCompletionOfAllAnimations();
 
-            equal(summary.summaryPane('option', 'isOnScreen'), true, 'set isOnScreen to true');
+            equal(summary.summaryPane('option', 'visible'), true, 'set visible to true');
             start();
         }, 500);
         stop(1000);
@@ -141,26 +135,29 @@
 
     test('when created, then attached registration widget', function () {
         expect(1);
-        $('#summary').summaryPane();
-        equal($('.mstats-registration').length, 1, 'registration setup');
+        var widget = $('#summary').summaryPane();
+        equal(widget.length, 1, 'registration setup');
     });
 
     test('when created, then attached fleet statistics widget', function () {
         expect(1);
         $('#summary').summaryPane();
-
-        equal($('.mstats-statistics').length, 1, 'statistics setup');
+        var statisticsPane = $('#statistics');
+        var templateId = statisticsPane.statisticsPane('option','templateId');
+        equal(templateId, '#fleet-statistics-template', 'statistics setup');
     });
 
     test('when created, then attached reminders widget', function () {
         expect(1);
         $('#summary').summaryPane();
-        equal($('.mstats-reminders').length, 1, 'reminders setup');
+        var remindersPane = $('#reminders');
+        var templateId = remindersPane.imminentRemindersPane('option','templateId');
+        equal(templateId, '#summary-imminent-reminders-template', 'reminders setup');
     });
 
     test('when created, then defaults to on screen', function () {
         expect(1);
         var summary = $('#summary').summaryPane();
-        equal(summary.summaryPane('option', 'isOnScreen'), true, 'defaults to off screen');
+        equal(summary.summaryPane('option', 'visible'), true, 'defaults to off screen');
     });
 }(jQuery));

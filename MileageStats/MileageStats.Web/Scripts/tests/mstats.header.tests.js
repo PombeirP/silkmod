@@ -18,11 +18,11 @@
 
     module('Header Widget Tests', {
         setup: function () {
-            $('#qunit-fixture').append('<div class="header" id="header">' +
-                '<div><div><h1>Dashboard</h1>' +
+            $('#qunit-fixture').append('<div class="header" id="header" data-url="/Dashboard">' +
+                '<div><div><h1 data-title>Dashboard</h1>' +
                     '<div id="notification"></div>' +
                         '<div class="nav">' +
-                            '<span id="welcome">Welcome <b>Sample User</b></span>' +
+                            '<span id="welcome">Welcome <span data-display-name>Sample User</span></span>' +
                             '[ <a id="dashboard-link" href="/Dashboard">Dashboard</a>' +        
                             '| <a id="charts-link" href="/Chart/List">Charts</a>' +
                             '| <a id="profile-link" href="/Profile/Edit">Profile</a>' +
@@ -32,15 +32,6 @@
                 '</div>'
             );
         }
-    });
-
-
-    test('when widget is attached to the #header element, then mstats.header is initialized', function () {
-        expect(1);
-
-        $('#header').header();
-
-        ok(mstats.header, 'mstats.header set correctly');
     });
 
     test('when widget is attached to the #header element, then dashboard and chart links is changed to update the URL hash', function () {
@@ -59,19 +50,12 @@
         equal(layoutHash, 'dashboard', 'screen set properly');
     });
 
-    test('When attached, then adds data-header-text class to contained H1', function () {
-        expect(1);
-        $('#header').header();
-
-        equal($('.data-header-text').length, 1, 'attached class');
-    });
-
     test('when title option is changed, then it displays new title', function() {
         expect(1);
         var header = $('#header').header();
         header.header('option', 'title', 'test title');
         
-        equal($('.data-header-text').text(), 'test title', 'header text set properly');
+        equal($('[data-title]').text(), 'test title', 'header text set properly');
     });
 
 }(jQuery));

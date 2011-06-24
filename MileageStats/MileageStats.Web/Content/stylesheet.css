@@ -206,25 +206,6 @@ body, #header, #vehicles .nav a, #vehicles .units, #vehicles .cost-per-mile,
     vertical-align: middle;
 }
 
-/*
-#header #notification
-{
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 28px;
-    width: 600px;
-    display: none;
-    
-    padding: 0 10px;
-    font-size: 16px;
-    
-    background: #ffffc8;
-    background: rgba(255, 255, 200, 0.9);
-    border-left: 2px solid rgba( 233, 233, 233, 0.80 );
-    border-right: 2px solid rgba( 233, 233, 233, 0.80 );
-}*/
-
 /******************************************************************************
  Vehicle Tile Styles
 ******************************************************************************/
@@ -241,8 +222,8 @@ body, #header, #vehicles .nav a, #vehicles .units, #vehicles .cost-per-mile,
 
 #vehicles.compact
 {
-    left: 0;
     width: 250px;
+    left: 0px;
 }
 
 #vehicles .wrapper
@@ -809,7 +790,8 @@ html.js .vehicle .quick
 #summary
 {
     width: 350px;
-    height: 640px;    
+    height: 640px;   
+        position: absolute; left: 0px; opacity: 1; display: block; 
 }
 
 #summary.framed > div
@@ -1072,6 +1054,11 @@ html.js .vehicle .quick
     margin-bottom: 20px;
     padding-right: 10px;
     overflow:hidden;
+}
+
+.fuelEfficiencyChart, .distanceChart ,.costChart 
+{
+    height: 120px;
 }
 
 #account

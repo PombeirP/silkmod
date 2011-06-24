@@ -30,39 +30,41 @@
 
         _create: function () {
             var that = this,
-                name = that.name;
-            that.infoboxElement = $('<div class="qs-infobox" />');
-            that.infoboxElement.appendTo('body')
+                name = this.name;
+            this.infoboxElement = $('<div class="qs-infobox" />');
+            this.infoboxElement.appendTo('body')
             .bind('mouseenter.' + name, function () {
-                    mouseOverBox = true;
+                mouseOverBox = true;
             })
             .bind('mouseleave.' + name, function () {
-                    mouseOverBox = false;
-                    that.hideTagLinks();
+                mouseOverBox = false;
+                that.hideTagLinks();
             });
         },
 
         hideTagLinks: function () {
-            !mouseOverBox && this.infoboxElement.hide();
+            if (!mouseOverBox) {
+                this.infoboxElement.hide();
+            }
         },
-        
+
         displayTagLinks: function (event, tagName) {
             var i,
                 html,
                 that = this,
-                options = that.options,
-                elem = that.infoboxElement,
+                options = this.options,
+                elem = this.infoboxElement,
                 top = event.pageY + offsetY,
                 left = event.pageX + offsetX,
                 url = options.dataUrl + tagName + '?count=' + options.maxItems,
                 displayResult = function () {
                     elem.html(html);
-                    elem.css({top: top, left: left});
+                    elem.css({ top: top, left: left });
                     elem.show();
                 };
-            
+
             if (event.pageX > window.screenWidth / 2) {
-                left = event.pageX + leftSideAdjustment; 
+                left = event.pageX + leftSideAdjustment;
             }
 
             $.ajax({
@@ -74,7 +76,7 @@
                         for (i = 0; i < data.length - 1; i += 1) {
                             html += '<li><a href="' +
                                     data[i].u +
-                                    '" target="_blank">' + 
+                                    '" target="_blank">' +
                                     data[i].d + '</a></li>';
                         }
                         html += '</ul>';
@@ -85,7 +87,7 @@
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     html = '<h1>AJAX Error</h1>' +
-                           '<p>The AJAX call returned the following error: ' + 
+                           '<p>The AJAX call returned the following error: ' +
                            jqXHR.statusText + '.</p>';
                     displayResult();
                 }

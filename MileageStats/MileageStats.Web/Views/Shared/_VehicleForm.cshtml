@@ -1,7 +1,7 @@
 ﻿@model MileageStats.Web.Models.VehicleFormModel
 
 @Html.AntiForgeryToken()
-<div id="vehicleEditForm" class="editor-area">
+<div id="vehicleEditForm" class="editor-area" data-makes-url="@Url.Action("MakesForYear", "Vehicle")" data-models-url="@Url.Action("ModelsForMake", "Vehicle")">
     <div class="editor-row">
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)

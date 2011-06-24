@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using MileageStats.Web.Models
+<!DOCTYPE html>
 <html>
 <head>
     <!-- http://msdn.microsoft.com/en-us/library/ms533876(VS.85).aspx -->
@@ -34,14 +35,14 @@
     @RenderSection("Stylesheets", false)
 </head>
 <body>
-    <div class="header" id="header">
+    <div class="header" id="header" data-url="@Url.RouteUrl("Dashboard")">
         <div>
             <div>
-                <h1>@ViewBag.Title</h1>
+                <h1 data-title>@ViewBag.Title</h1>
                 <div id="notification"></div>
                 <div class="nav">
                     @if(Request.IsAuthenticated) {
-                        <span id="welcome">@Html.Raw(string.Format("Welcome <b>{0}</b>", (((MileageStats.Web.Models.MileageStatsIdentity)User.Identity).DisplayName)))</span>
+                        <span id="welcome">Welcome <span data-display-name>@Html.Raw(((MileageStatsIdentity)User.Identity).DisplayName)</span></span>
                         @:[ @Html.RouteLink("Dashboard", "Dashboard", null, new { id = "dashboard-link" })        
                         @:| @Html.ActionLink("Charts", "List", "Chart", null, new { id = "charts-link"})
                         @:| @Html.ActionLink("Profile", "Edit", "Profile", null, new { id = "profile-link" })

@@ -23,12 +23,6 @@
         }
     });
 
-    test('when initialized, then the mstats-tile class is added', function () {
-        expect(1);
-        $('#vehicle-list-contents > div').tile();
-        ok($('.wrapper').hasClass('mstats-tile'), 'tile has mstats-tile class added');
-    });
-
     test('when moveTo is called, then gets moved to specified position and callback is called', function () {
         expect(2);
         var v = $('#vehicle-list-contents > div').tile();

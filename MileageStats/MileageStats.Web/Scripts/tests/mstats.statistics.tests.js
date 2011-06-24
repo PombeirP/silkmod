@@ -46,33 +46,6 @@
         }
     });
 
-    test('when created, then registers mstats.statisticsPane', function () {
-        expect(1);
-        $('#statistics').statisticsPane({
-            sendRequest: function (options) {}
-        });
-
-        ok(mstats.statisticsPane, 'summary pane added to mstats namespace');
-    });
-
-    test('when created, then adds class to element', function () {
-        expect(1);
-        $('#statistics').statisticsPane({
-            sendRequest: function (options) {}
-        });
-
-        equal($('.mstats-statistics').length, 1, 'statistics class added');
-    });
-
-    test('when created, then adds class to content element', function () {
-        expect(1);
-        $('#statistics').statisticsPane({
-            sendRequest: function (options) {}
-        });
-
-        equal($('.mstats-statistics-content').length, 1, 'statistics content class added');
-    });
-
     test('when created, then sendRequest is called', function () {
         expect(1);
         $('#statistics').statisticsPane({
@@ -118,14 +91,14 @@
 
     test('when widget data is retrieved, then widget contents are replaced by the template', function () {
         expect(1);
-        $('#statistics').statisticsPane({
+        var widget = $('#statistics').statisticsPane({
             sendRequest: function (options) {
                 options.success({});
             },
             templateId: '#testTemplate'
         });
 
-        equal($.trim($('.mstats-statistics-content').html()).toLowerCase(), $.trim($('#testTemplate').html()).toLowerCase(), 'Template applied');
+        equal($.trim(widget.find('div').html()).toLowerCase(), $.trim($('#testTemplate').html()).toLowerCase(), 'Template applied');
     });
 
     test('when loading data errors out, then triggers error status', function () {
@@ -151,7 +124,7 @@
 
         setTimeout(function () {
             forceCompletionOfAllAnimations();
-            ok($('.mstats-statistics-content').is(':hidden'), 'statistics are hidden');
+            ok($('#statistics-content').is(':hidden'), 'statistics are hidden');
             start();
         }, 200);
         stop();
@@ -174,15 +147,15 @@
     test('when refreshData is called, then sendRequest is called', function () {
         expect(1);
 
-        $('#statistics').statisticsPane({
+        var widget = $('#statistics').statisticsPane({
             sendRequest: function (options) { options.success({}); }
         });
 
-        $('.mstats-statistics').statisticsPane('option', 'sendRequest', function () {
+        widget.statisticsPane('option', 'sendRequest', function () {
             ok(true, 'sendRequest was called properly');
         });
 
-        $('.mstats-statistics').statisticsPane('refreshData');
+        widget.statisticsPane('refreshData');
     });
 
     test('when refreshData is called, then cached data is not invalidated', function () {
@@ -229,16 +202,17 @@
     test('when refreshData is called, then template is re-applied', function () {
         expect(2);
 
-        $('#statistics').statisticsPane({
-            sendRequest: function (options) { options.success({}); },
-            templateId: '#testTemplate'
-        });
+        var widget = $('#statistics').statisticsPane({
+                sendRequest: function(options) { options.success({  }); },
+                templateId: '#testTemplate'
+            }),
+            content = widget.find('div');
 
-        equal($.trim($('.mstats-statistics-content').html()).toLowerCase(), $.trim($('#testTemplate').html()).toLowerCase(), 'Template applied');
+        equal($.trim(content.html()).toLowerCase(), $.trim($('#testTemplate').html()).toLowerCase(), 'Template applied');
 
-        $('.mstats-statistics').statisticsPane('option', 'templateId', '#testTemplate2');
-        $('.mstats-statistics').statisticsPane('refreshData');
+        widget.statisticsPane('option', 'templateId', '#testTemplate2');
+        widget.statisticsPane('refreshData');
 
-        equal($.trim($('.mstats-statistics-content').html()).toLowerCase(), $.trim($('#testTemplate2').html()).toLowerCase(), 'Template applied');
+        equal($.trim(content.html()).toLowerCase(), $.trim($('#testTemplate2').html()).toLowerCase(), 'Template applied');
     });
 }(jQuery));

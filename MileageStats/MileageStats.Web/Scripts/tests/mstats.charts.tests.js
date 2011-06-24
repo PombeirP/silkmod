@@ -75,12 +75,12 @@
         });
     });
 
-    test('when moveOnScreenFromRight is called, then isOnScreen is set to true', function () {
+    test('when moveOnScreenFromRight is called, then visible is set to true', function () {
         expect(1);
         var chart = $('#main-chart').charts();
         chart.charts('moveOnScreenFromRight');
         setTimeout(function () {
-            equal(chart.charts('option', 'isOnScreen'), true, 'isOnScreen is true');
+            equal(chart.charts('option', 'visible'), true, 'visible is true');
             start();
         }, 1200);
         stop(1500);
@@ -101,12 +101,12 @@
         stop(2500);
     });
 
-    test('when moveOffScreenToRight is called, then isOnScreen is set to false', function () {
+    test('when moveOffScreenToRight is called, then visible is set to false', function () {
         expect(1);
         var chart = $('#main-chart').charts();
         chart.charts('moveOffScreenToRight');
         setTimeout(function () {
-            equal(chart.charts('option', 'isOnScreen'), false, 'isOnScreen is false');
+            equal(chart.charts('option', 'visible'), false, 'visible is false');
             start();
         }, 1200);
         stop(1500);
@@ -154,7 +154,7 @@
             sendRequest: function (options) {
                 options.success(jsonData);
 
-                var chartData = $('#main-chart').charts('option', 'chartData');
+                var chartData = $('#main-chart').charts('getChartData');
 
                 equal(chartData.length, 3, 'Chart data is correct length');
 
@@ -190,7 +190,7 @@
             sendRequest: function (options) {
                 options.success(undefined);
 
-                var chartData = $('#main-chart').charts('option', 'chartData');
+                var chartData = $('#main-chart').charts('getChartData');
 
                 equal(chartData.length, 0, 'Chart data is correct length');               
             }
@@ -212,7 +212,7 @@
             '{"Id":3,"Name":"Mud Lover","Year":2010,"Month":5,"AverageFuelEfficiency":18.75,"TotalDistance":360,"TotalCost":72.5}]}');
 
         $.jqplot = function (elementId, seriesData, options) {
-            equal(elementId, 'main-chart-plot', 'jqplot called with correct element ID');
+            equal(elementId, 'mstats-main-chart-container', 'jqplot called with correct element ID');
             equal(seriesData.length, 3, 'jqplot called with correct series data length');
 
             equal(seriesData[0][2][0], '2010-05-01', 'jqplot called with correct series data');
@@ -224,6 +224,7 @@
         };
 
         $('#main-chart').charts({
+            visible: true,
             sendRequest: function (options) {
                 options.success(jsonData);
             }
@@ -247,7 +248,7 @@
             '{"Id":3,"Name":"Mud Lover","Year":2010,"Month":5,"AverageFuelEfficiency":18.75,"TotalDistance":360,"TotalCost":72.5}]}');
 
         $.jqplot = function (elementId, seriesData, options) {
-            equal(elementId, 'main-chart-plot', 'jqplot called with correct element ID');
+            equal(elementId, 'mstats-main-chart-container', 'jqplot called with correct element ID');
             equal(seriesData.length, 3, 'jqplot called with correct series data length');
 
             equal(seriesData[0][2][0], '2010-05-01', 'jqplot called with correct series data');
@@ -258,11 +259,14 @@
             equal(seriesData[2][2][1], 360, 'jqplot called with correct series data');            
         };
 
-        $('#main-chart').charts({
+        var widget = $('#main-chart').charts({
+            visible: false,
             sendRequest: function (options) {
                 options.success(jsonData);
             }
         });
+
+        widget.charts('option', 'visible', true);
 
         $('#main-chart #distance-link').simulate('click');        
     });
@@ -282,7 +286,7 @@
             '{"Id":3,"Name":"Mud Lover","Year":2010,"Month":5,"AverageFuelEfficiency":18.75,"TotalDistance":360,"TotalCost":72.5}]}');
 
         $.jqplot = function (elementId, seriesData, options) {
-            equal(elementId, 'main-chart-plot', 'jqplot called with correct element ID');
+            equal(elementId, 'mstats-main-chart-container', 'jqplot called with correct element ID');
             equal(seriesData.length, 3, 'jqplot called with correct series data length');
 
             equal(seriesData[0][2][0], '2010-05-01', 'jqplot called with correct series data');
@@ -293,11 +297,14 @@
             equal(seriesData[2][2][1], 72.5, 'jqplot called with correct series data');            
         };
 
-        $('#main-chart').charts({
+        var widget = $('#main-chart').charts({
+            visible: false,                
             sendRequest: function (options) {
                 options.success(jsonData);
             }
         });
+        
+        widget.charts('option', 'visible', true);
 
         $('#main-chart #cost-link').simulate('click');
     });
