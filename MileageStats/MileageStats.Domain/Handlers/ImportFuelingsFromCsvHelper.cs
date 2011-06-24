@@ -54,11 +54,18 @@ namespace MileageStats.Domain.Handlers
                     fillupEntry.Date = ParseDate(fieldValue);
                     break;
                 case "Odometer":
-                    fillupEntry.Odometer = (int) ParseDouble(fieldValue);
+                    var odometer = (int) ParseDouble(fieldValue);
+                    fillupEntry.Odometer = odometer;
                     break;
                 case "Trip":
-                    fillupEntry.Distance = (int) ParseDouble(fieldValue);
+                {
+                    var distance = (int) ParseDouble(fieldValue);
+                    if (distance != 0)
+                    {
+                        fillupEntry.Distance = distance;
+                    }
                     break;
+                }
                 case "Quantity":
                     fillupEntry.TotalUnits = ParseDouble(fieldValue);
                     break;

@@ -123,7 +123,10 @@ namespace MileageStats.Web.Controllers
 
                 try
                 {
-                    importedFuelings = ImportFuelingsFromCsvHelper.ReadFillupEntriesFromFile(fillupsFile.InputStream).ToArray();
+                    importedFuelings = ImportFuelingsFromCsvHelper.ReadFillupEntriesFromFile(fillupsFile.InputStream).ToList().OrderByDescending(x => x.Date);
+
+                    // Stop importing if we find entries without odometer readings
+                    importedFuelings = importedFuelings.TakeWhile(x => x.Odometer != 0).ToArray();
                 }
                 catch (Exception e)
                 {
