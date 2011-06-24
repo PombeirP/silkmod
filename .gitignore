@@ -18,6 +18,8 @@
 *.lib
 *.sbr
 *.scc
+*.vsmdi
+*.sdf
 [Bb]in
 [Dd]ebug*/
 obj/
