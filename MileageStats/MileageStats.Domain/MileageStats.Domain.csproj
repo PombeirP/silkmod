@@ -11,7 +11,8 @@
     <RootNamespace>MileageStats.Domain</RootNamespace>
     <AssemblyName>MileageStats.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment></PropertyGroup>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -58,6 +59,8 @@
     <Compile Include="Handlers\CanAddReminder.cs" />
     <Compile Include="Handlers\CanAddVehicle.cs" />
     <Compile Include="Handlers\CanValidateVehicleYearMakeAndModel.cs" />
+    <Compile Include="Handlers\CanImportFillups.cs" />
+    <Compile Include="Handlers\ImportFillupsToVehicle.cs" />
     <Compile Include="Handlers\CreateVehicle.cs" />
     <Compile Include="Handlers\DeleteReminder.cs" />
     <Compile Include="Handlers\DeleteVehicle.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="Handlers\GetYearsMakesAndModels.cs" />
     <Compile Include="Contracts\ICreateFillupEntryCommand.cs" />
     <Compile Include="Contracts\ICreateReminderCommand.cs" />
+    <Compile Include="Handlers\ImportFuelingsFromCsvHelper.cs" />
     <Compile Include="Handlers\UpdateVehicleSortOrder.cs" />
     <Compile Include="Handlers\ViewModelExtensions.cs" />
     <Compile Include="Models\FleetStatistics.cs" />

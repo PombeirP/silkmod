@@ -17,24 +17,26 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Web;
 using MileageStats.Data;
 using MileageStats.Domain.Contracts;
 using MileageStats.Domain.Properties;
+using MileageStats.Model;
 
 namespace MileageStats.Domain.Handlers
 {
-    public class CanAddFillup
+    public class CanImportFillups
     {
         private readonly IVehicleRepository _vehicleRepository;
         private readonly IFillupRepository _fillupRepository;
 
-        public CanAddFillup(IVehicleRepository vehicleRepository, IFillupRepository fillupRepository)
+        public CanImportFillups(IVehicleRepository vehicleRepository, IFillupRepository fillupRepository)
         {
             _vehicleRepository = vehicleRepository;
             _fillupRepository = fillupRepository;
         }
 
-        public virtual IEnumerable<ValidationResult> Execute(int userId, int vehicleId, ICreateFillupEntryCommand fillup)
+        public virtual IEnumerable<ValidationResult> Execute(int userId, int vehicleId, IEnumerable<FillupEntry> importedFillups)
         {
             var foundVehicle = _vehicleRepository.GetVehicle(userId, vehicleId);
 
@@ -48,15 +50,28 @@ namespace MileageStats.Domain.Handlers
 
                 if (!fillups.Any()) yield break;
 
-                var priorFillup = fillups.Where(f => f.Date < fillup.Date).FirstOrDefault();
-
-                if ((priorFillup != null) && (priorFillup.Odometer >= fillup.Odometer))
+                foreach (var importedFillup in importedFillups)
                 {
-                    yield return new ValidationResult(
-                        "Odometer",
-                        string.Format(CultureInfo.CurrentUICulture,
-                                      Resources.OdometerNotGreaterThanPrior,
-                                      priorFillup.Odometer));
+                    var priorFillup = fillups.FirstOrDefault(f => f.Date < importedFillup.Date);
+                    var posteriorFillup = fillups.FirstOrDefault(f => f.Date > importedFillup.Date);
+
+                    if ((priorFillup != null) && (priorFillup.Odometer >= importedFillup.Odometer))
+                    {
+                        yield return new ValidationResult(
+                            "Odometer",
+                            string.Format(CultureInfo.CurrentUICulture,
+                                          Resources.OdometerNotGreaterThanPrior,
+                                          priorFillup.Odometer));
+                    }
+
+                    if ((posteriorFillup != null) && (posteriorFillup.Odometer <= importedFillup.Odometer))
+                    {
+                        yield return new ValidationResult(
+                            "Odometer",
+                            string.Format(CultureInfo.CurrentUICulture,
+                                          Resources.OdometerGreaterThanPosterior,
+                                          posteriorFillup.Odometer));
+                    }
                 }
             }
         }

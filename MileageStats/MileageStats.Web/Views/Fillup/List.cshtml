@@ -12,7 +12,6 @@
         <div>
             <div id="info" class="framed article">
                 <div>
-
                     <div id="details-pane" class="tab opened section">
                         @Html.ActionLink(" ", "Details", "Vehicle", new { id = Model.VehicleList.Vehicles.SelectedItem.VehicleId }, new { @class = "trigger" })
                     </div>
@@ -24,6 +23,12 @@
                                 {
                                     <button data-action="fillup-add-selected" class="button generic small" type="submit">
                                         <img src="@Url.Content("~/Content/button-add.png")" title="Add Fill up" alt="Add" />
+                                    </button>
+                                }
+                                @using (Html.BeginForm("Import", "Fillup", new { vehicleId = Model.VehicleList.Vehicles.SelectedItem.VehicleId }, FormMethod.Get))
+                                {
+                                    <button data-action="fillup-import-selected" class="button generic small" type="submit">
+                                        <img src="@Url.Content("~/Content/button-import.png")" title="Import Fill ups" alt="Import" />
                                     </button>
                                 }
                             </div>

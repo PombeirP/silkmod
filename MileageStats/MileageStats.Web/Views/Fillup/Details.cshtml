@@ -25,6 +25,12 @@
                                         <img src="@Url.Content("~/Content/button-add.png")" title="Add Fill up" alt="Add" />
                                     </button>
                                 }
+                                @using (Html.BeginForm("Import", "Fillup", new { vehicleId = Model.VehicleList.Vehicles.SelectedItem.VehicleId }, FormMethod.Get))
+                                {
+                                    <button data-action="fillup-import-selected" class="button generic small" type="submit">
+                                        <img src="@Url.Content("~/Content/button-import.png")" title="Import Fill ups" alt="Import" />
+                                    </button>
+                                }
                             </div>
                             <div class="aside">
                                 @Html.Partial("_FillupList", Model.Fillups)

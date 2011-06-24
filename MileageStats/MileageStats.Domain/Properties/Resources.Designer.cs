@@ -394,6 +394,15 @@ namespace MileageStats.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An imported fill up has a greater odometer value ({0}) than the next existing fueling..
+        /// </summary>
+        public static string OdometerGreaterThanPosterior {
+            get {
+                return ResourceManager.GetString("OdometerGreaterThanPosterior", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The odometer must be greater than the prior value of {0}..
         /// </summary>
         public static string OdometerNotGreaterThanPrior {
@@ -804,6 +813,15 @@ namespace MileageStats.Domain.Properties {
         public static string VehicleController_AddFillupSuccessMessage {
             get {
                 return ResourceManager.GetString("VehicleController_AddFillupSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully imported fill ups.
+        /// </summary>
+        public static string VehicleController_ImportFillupsSuccessMessage {
+            get {
+                return ResourceManager.GetString("VehicleController_ImportFillupsSuccessMessage", resourceCulture);
             }
         }
         

@@ -94,6 +94,12 @@ namespace MileageStats.Web
                 );
 
             routes.MapRoute(
+                "ImportRoute", // Route name
+                "{controller}/Import/{vehicleId}",
+                new { action = "Import" }
+                );
+
+            routes.MapRoute(
                 "DetailsRoute",
                 "{controller}/Details/{id}",
                 new {action = "Details"}

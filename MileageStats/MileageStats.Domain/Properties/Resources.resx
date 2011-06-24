@@ -195,6 +195,9 @@
   <data name="OdometerNotGreaterThanPrior" xml:space="preserve">
     <value>The odometer must be greater than the prior value of {0}.</value>
   </data>
+  <data name="OdometerGreaterThanPosterior" xml:space="preserve">
+    <value>An imported fill up has a greater odometer value ({0}) than the next existing fueling.</value>
+  </data>
   <data name="VehicleMakeInvalid" xml:space="preserve">
     <value>Make is not valid.</value>
   </data>
@@ -245,6 +248,9 @@
   </data>
   <data name="VehicleController_AddFillupSuccessMessage" xml:space="preserve">
     <value>Successfully added fill up</value>
+  </data>
+  <data name="VehicleController_ImportFillupsSuccessMessage" xml:space="preserve">
+    <value>Successfully imported fill ups</value>
   </data>
   <data name="ChartController_AverageFuelEfficiencyChart_Title" xml:space="preserve">
     <value>Average Fuel Efficiency</value>

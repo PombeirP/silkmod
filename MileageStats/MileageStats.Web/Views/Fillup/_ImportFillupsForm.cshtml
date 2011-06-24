@@ -1,0 +1,16 @@
+﻿@model MileageStats.Web.Models.FillupImportViewModel
+    @Html.AntiForgeryToken()
+        <label class="editor-label-disabled">
+            CSV File
+        </label>
+    <div class="editor-field">
+        <input type="file" name="fillupsFile" class="editor-textbox" />
+        @Html.ValidationMessage("fillupsFile")
+    </div>   
+
+    <p>
+        <button data-action="fillup-import-submitted" class="button generic small" type="submit" class="editor-submit" >
+            <img src="@Url.Content("~/Content/button-import.png")" title="Import Fill ups" alt="Import" />
+        </button>
+    </p>
+    @Html.ValidationSummary(true)

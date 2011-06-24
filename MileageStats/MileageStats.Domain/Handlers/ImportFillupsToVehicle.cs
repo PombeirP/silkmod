@@ -14,7 +14,9 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using MileageStats.Data;
 using MileageStats.Domain.Contracts;
@@ -23,36 +25,35 @@ using MileageStats.Model;
 
 namespace MileageStats.Domain.Handlers
 {
-    public class AddFillupToVehicle
+    public class ImportFillupsToVehicle
     {
-        private readonly IVehicleRepository _vehicleRepository;
         private readonly IFillupRepository _fillupRepository;
+        private readonly IVehicleRepository _vehicleRepository;
 
-        public AddFillupToVehicle(IVehicleRepository vehicleRepository, IFillupRepository fillupRepository)
+        public ImportFillupsToVehicle(IVehicleRepository vehicleRepository, IFillupRepository fillupRepository)
         {
             _vehicleRepository = vehicleRepository;
             _fillupRepository = fillupRepository;
         }
 
-        public virtual void Execute(int userId, int vehicleId, ICreateFillupEntryCommand newFillup)
+        public virtual void Execute(int userId, int vehicleId, IEnumerable<FillupEntry> importedFillups)
         {
-            if (newFillup == null) throw new ArgumentNullException("newFillup");
+            if (importedFillups == null) throw new ArgumentNullException("importedFillups");
 
             try
             {
-                var vehicle = _vehicleRepository.GetVehicle(userId, vehicleId);
+                Vehicle vehicle = _vehicleRepository.GetVehicle(userId, vehicleId);
 
                 if (vehicle != null)
                 {
-                    newFillup.VehicleId = vehicleId;
-                    var fillup = newFillup;
+                    foreach (FillupEntry newFillup in importedFillups)
+                    {
+                        newFillup.VehicleId = vehicleId;
 
-                    var entity = ToEntry(fillup);
-                    AdjustSurroundingFillupEntries(entity);
+                        AdjustSurroundingFillupEntries(newFillup);
 
-                    _fillupRepository.Create(userId, vehicleId, entity);
-
-                    newFillup.Distance = entity.Distance;   // update calculated value
+                        _fillupRepository.Create(userId, vehicleId, newFillup);
+                    }
                 }
             }
             catch (InvalidOperationException ex)
@@ -65,17 +66,17 @@ namespace MileageStats.Domain.Handlers
         {
             if (newFillup == null) throw new ArgumentNullException("newFillup");
 
-            var fillups = _fillupRepository.GetFillups(newFillup.VehicleId);
+            IEnumerable<FillupEntry> fillups = _fillupRepository.GetFillups(newFillup.VehicleId);
 
             // Prior fillups are ordered descending so that FirstOrDefault() chooses the one closest to the new fillup.
             // Secondary ordering is by entry ID ensure a consistent ordering/
-            var priorFillup = fillups
+            FillupEntry priorFillup = fillups
                 .OrderByDescending(f => f.Date).ThenByDescending(f => f.FillupEntryId)
                 .Where(f => (f.Date <= newFillup.Date) && (f.FillupEntryId != newFillup.FillupEntryId)).FirstOrDefault();
 
             // Prior fillups are ordered ascending that FirstOrDefault() chooses the one closest to the new fillup.
             // Secondary ordering is by entry ID ensure a consistent ordering.
-            var nextFillup = fillups
+            FillupEntry nextFillup = fillups
                 .OrderBy(f => f.Date).ThenBy(f => f.FillupEntryId)
                 .Where(f => (f.Date >= newFillup.Date) && (f.FillupEntryId != newFillup.FillupEntryId)).FirstOrDefault();
 
@@ -89,30 +90,6 @@ namespace MileageStats.Domain.Handlers
             {
                 fillup.Distance = Math.Abs(fillup.Odometer - priorFillup.Odometer);
             }
-        }
-
-        private static FillupEntry ToEntry(ICreateFillupEntryCommand source)
-        {
-            if (source == null)
-            {
-                return null;
-            }
-
-            var fillup = new FillupEntry
-                             {
-                                 FillupEntryId = source.FillupEntryId,
-                                 Date = source.Date,
-                                 Distance = source.Distance,
-                                 Odometer = source.Odometer,
-                                 PricePerUnit = source.PricePerUnit,
-                                 Remarks = source.Remarks,
-                                 TotalUnits = source.TotalUnits,
-                                 TransactionFee = source.TransactionFee,
-                                 VehicleId = source.VehicleId,
-                                 Vendor = source.Vendor,
-                                 UnitOfMeasure = source.UnitOfMeasure
-                             };
-            return fillup;
         }
     }
 }

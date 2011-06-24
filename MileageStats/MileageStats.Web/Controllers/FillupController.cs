@@ -17,11 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Microsoft.Practices.ServiceLocation;
 using MileageStats.Domain.Contracts;
 using MileageStats.Domain.Handlers;
-using MileageStats.Domain.Models;
+using MileageStats.Model;
 using MileageStats.Web.Models;
 using MileageStats.Domain.Properties;
 
@@ -60,7 +61,7 @@ namespace MileageStats.Web.Controllers
         }
 
         //
-        // GET: /Fillups/List/1
+        // GET: /Fillup/List/1
         public ActionResult List(int vehicleId)
         {
             var vehicles = Using<GetVehicleListForUser>()
@@ -81,7 +82,74 @@ namespace MileageStats.Web.Controllers
         }
 
         //
-        // GET: /Fillups/Add/1
+        // GET: /Fillup/Import/1
+        public ActionResult Import(int vehicleId)
+        {
+            var vehicle = Using<GetVehicleById>()
+                .Execute(CurrentUserId, vehicleId);
+
+            var vehicles = Using<GetVehicleListForUser>()
+                .Execute(CurrentUserId);
+
+            var fillups = Using<GetFillupsForVehicle>()
+                .Execute(vehicleId)
+                .OrderByDescending(f => f.Date);
+
+            var viewModel = new FillupImportViewModel
+                                {
+                                    Vehicle = vehicle,
+                                    VehicleList = new VehicleListViewModel(vehicles, vehicleId) {IsCollapsed = true},
+                                    Fillups = new SelectedItemList<Model.FillupEntry>(fillups),
+                                };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        [Authorize]
+        //public ActionResult Import(FormCollection formValues, FillupImportViewModel fillupImportViewModel, HttpPostedFileBase fillupsFile)
+        public ActionResult Import(FormCollection formValues, int vehicleId, HttpPostedFileBase fillupsFile)
+        {
+            if (fillupsFile == null)
+            {
+                return RedirectToAction("Import");
+            }
+
+            if (ModelState.IsValid)
+            {
+                IEnumerable<FillupEntry> importedFuelings;
+
+                try
+                {
+                    importedFuelings = ImportFuelingsFromCsvHelper.ReadFillupEntriesFromFile(fillupsFile.InputStream).ToArray();
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelErrors(new[] {new ValidationResult(e.Message)}, "ImportFillups");
+                    return RedirectToAction("Import", "Fillup", new { vehicleId = vehicleId });
+                }
+
+                var errors = Using<CanImportFillups>()
+                    .Execute(CurrentUserId, vehicleId, importedFuelings);
+
+                ModelState.AddModelErrors(errors, "ImportFillups");
+
+                if (ModelState.IsValid)
+                {
+                    Using<ImportFillupsToVehicle>().Execute(CurrentUserId, vehicleId, importedFuelings);
+
+                    TempData["LastActionMessage"] = Resources.VehicleController_ImportFillupsSuccessMessage;
+                    return RedirectToAction("List", "Fillup", new { vehicleId = vehicleId });
+                }
+            }
+
+            return RedirectToAction("List", "Fillup", new { vehicleId = vehicleId });
+        }
+
+        //
+        // GET: /Fillup/Add/1
         public ActionResult Add(int vehicleId)
         {
             var vehicles = Using<GetVehicleListForUser>()
@@ -99,11 +167,11 @@ namespace MileageStats.Web.Controllers
                 .OrderByDescending(f => f.Date);
 
             var viewModel = new FillupAddViewModel
-            {
-                VehicleList = new VehicleListViewModel(vehicles, vehicleId) {IsCollapsed = true},
-                FillupEntry = newFillupEntry,
-                Fillups = new SelectedItemList<Model.FillupEntry>(fillups),
-            };
+                                {
+                                    VehicleList = new VehicleListViewModel(vehicles, vehicleId) {IsCollapsed = true},
+                                    FillupEntry = newFillupEntry,
+                                    Fillups = new SelectedItemList<Model.FillupEntry>(fillups),
+                                };
 
             ViewBag.IsFirstFillup = (!fillups.Any());
 
@@ -111,7 +179,7 @@ namespace MileageStats.Web.Controllers
         }
 
         //
-        // POST: /Fillups/Add/5
+        // POST: /Fillup/Add/5
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
@@ -161,26 +229,26 @@ namespace MileageStats.Web.Controllers
 
             var fillups = ToJsonFillupViewModel(fillupEntries);
             return Json(new
-            {
-                VehicleId = vehicleId,
-                Fillups = fillups
-            });
+                            {
+                                VehicleId = vehicleId,
+                                Fillups = fillups
+                            });
         }
 
         public static List<JsonFillupViewModel> ToJsonFillupViewModel(IEnumerable<Model.FillupEntry> fillupEntries)
         {
             return fillupEntries.Select(entry => new JsonFillupViewModel
-            {
-                FillupEntryId = entry.FillupEntryId,
-                Date = String.Format("{0:d MMM yyyy}", entry.Date),
-                TotalUnits = String.Format("{0:#00.000}", entry.TotalUnits),
-                Odometer = entry.Odometer,
-                TransactionFee = String.Format("{0:C}", entry.TransactionFee),
-                PricePerUnit = String.Format("{0:0.000}", entry.PricePerUnit),
-                Remarks = entry.Remarks,
-                Vendor = entry.Vendor,
-                TotalCost = String.Format("{0:C}", entry.TotalCost)
-            }).ToList();
+                                                     {
+                                                         FillupEntryId = entry.FillupEntryId,
+                                                         Date = String.Format("{0:d MMM yyyy}", entry.Date),
+                                                         TotalUnits = String.Format("{0:#00.000}", entry.TotalUnits),
+                                                         Odometer = entry.Odometer,
+                                                         TransactionFee = String.Format("{0:C}", entry.TransactionFee),
+                                                         PricePerUnit = String.Format("{0:0.000}", entry.PricePerUnit),
+                                                         Remarks = entry.Remarks,
+                                                         Vendor = entry.Vendor,
+                                                         TotalCost = String.Format("{0:C}", entry.TotalCost)
+                                                     }).ToList();
         }
     }
 }
