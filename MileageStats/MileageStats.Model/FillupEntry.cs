@@ -20,8 +20,9 @@ namespace MileageStats.Model
 {
     public enum FillupUnits
     {
-        Gallons,
-        Litres
+        ImperialGallons = 2,
+        UsGallons = 0,
+        Litres = 1
     }
 
     public class FillupEntry
@@ -30,7 +31,7 @@ namespace MileageStats.Model
 
         public FillupEntry()
         {
-            this.UnitOfMeasure = FillupUnits.Gallons;
+            this.UnitOfMeasure = FillupUnits.Litres;
             this.Date = DateTime.UtcNow;
             this.FillupEntryId = --tempKey;
         }
@@ -51,7 +52,7 @@ namespace MileageStats.Model
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// Odometer reading for the fillup.
+        /// Odometer reading for the fillup (in kms).
         /// </summary>
         public int Odometer { get; set; }
 
@@ -66,6 +67,12 @@ namespace MileageStats.Model
         public double TotalUnits { get; set; }
 
         public FillupUnits UnitOfMeasure { get; set; }
+
+        public int UnitOfMeasureInt
+        {
+            get { return (int) UnitOfMeasure; }
+            set { UnitOfMeasure = (FillupUnits) value; }
+        }
 
         public string Vendor { get; set; }
 

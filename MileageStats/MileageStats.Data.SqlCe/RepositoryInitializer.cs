@@ -14,16 +14,14 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 using MileageStats.Data.SqlCe.Initializers;
 using MileageStats.Model;
-using System.Data.SqlServerCe;
-using System.Collections;
 
 namespace MileageStats.Data.SqlCe
 {
@@ -32,7 +30,7 @@ namespace MileageStats.Data.SqlCe
     /// </summary>
     public class RepositoryInitializer : IRepositoryInitializer
     {
-        private IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
         public RepositoryInitializer(IUnitOfWork unitOfWork)
         {
@@ -51,29 +49,37 @@ namespace MileageStats.Data.SqlCe
 
         protected MileageStatsDbContext Context
         {
-            get { return (MileageStatsDbContext)this.unitOfWork; }
+            get { return (MileageStatsDbContext) unitOfWork; }
         }
+
+        #region IRepositoryInitializer Members
 
         public void Initialize()
         {
-            this.Context.Set<Country>().ToList().Count();
-            
-            var indexes = this.Context.Database.SqlQuery<string>("SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES;");
+            Context.Set<Country>().ToList().Count();
+
+            IEnumerable<string> indexes =
+                Context.Database.SqlQuery<string>("SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES;");
 
             if (!indexes.Contains("IDX_FillupEntries_FillupEntryId"))
             {
-                this.Context.Database.ExecuteSqlCommand("CREATE UNIQUE INDEX IDX_FillupEntries_FillupEntryId ON FillupEntries (FillupEntryId);");
+                Context.Database.ExecuteSqlCommand(
+                    "CREATE UNIQUE INDEX IDX_FillupEntries_FillupEntryId ON FillupEntries (FillupEntryId);");
             }
 
             if (!indexes.Contains("IDX_Reminders_ReminderId"))
             {
-                this.Context.Database.ExecuteSqlCommand("CREATE UNIQUE INDEX IDX_Reminders_ReminderId ON Reminders (ReminderId);");
+                Context.Database.ExecuteSqlCommand(
+                    "CREATE UNIQUE INDEX IDX_Reminders_ReminderId ON Reminders (ReminderId);");
             }
 
             if (!indexes.Contains("IDX_VehiclePhotos_VehiclePhotoId"))
             {
-                this.Context.Database.ExecuteSqlCommand("CREATE UNIQUE INDEX IDX_VehiclePhotos_VehiclePhotoId ON VehiclePhotos (VehiclePhotoId);");
+                Context.Database.ExecuteSqlCommand(
+                    "CREATE UNIQUE INDEX IDX_VehiclePhotos_VehiclePhotoId ON VehiclePhotos (VehiclePhotoId);");
             }
         }
+
+        #endregion
     }
 }

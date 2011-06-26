@@ -89,7 +89,8 @@ namespace MileageStats.Data.SqlCe
             modelBuilder.Entity<FillupEntry>().Property(fe => fe.Date).IsRequired();
             modelBuilder.Entity<FillupEntry>().Property(fe => fe.Odometer).IsRequired();            
             modelBuilder.Entity<FillupEntry>().Property(fe => fe.PricePerUnit).IsRequired();
-            modelBuilder.Entity<FillupEntry>().Property(fe => fe.TotalUnits).IsRequired();            
+            modelBuilder.Entity<FillupEntry>().Property(fe => fe.TotalUnits).IsRequired();
+            modelBuilder.Entity<FillupEntry>().Property(fe => fe.UnitOfMeasureInt).IsRequired().HasColumnName("UnitOfMeasure");            
             modelBuilder.Entity<FillupEntry>().Property(fe => fe.TransactionFee);            
             modelBuilder.Entity<FillupEntry>().Property(fe => fe.Vendor).HasMaxLength(50);
             modelBuilder.Entity<FillupEntry>().Property(fe => fe.Remarks).HasMaxLength(250);

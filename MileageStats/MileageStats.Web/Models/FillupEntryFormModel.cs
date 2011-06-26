@@ -29,7 +29,7 @@ namespace MileageStats.Web.Models
 
         public FillupEntryFormModel()
         {
-            this.UnitOfMeasure = FillupUnits.Gallons;
+            this.UnitOfMeasure = FillupUnits.UsGallons;
             this.Date = DateTime.UtcNow;
             this.FillupEntryId = --tempKey;
         }
