@@ -1,4 +1,5 @@
-﻿<script id="mstats-add-vehicle-button-template" type="text/x-jquery-tmpl">
+﻿@using MileageStats.Web.Helpers
+<script id="mstats-add-vehicle-button-template" type="text/x-jquery-tmpl">
     <div class="framed command section">
         <div>
             <a data-action="vehicle-add-selected" href="@Url.Action("add","vehicle")">+ Add Vehicle</a>
@@ -47,15 +48,15 @@
                 </div>
                 <div class="statistics footer">
                     <div class="statistic mile-per-gallon">
-                        <div class="quantity">${mstats.makeMPGDisplay(LastTwelveMonthsStatistics.AverageFuelEfficiency)}</div>
-                        <div class="unit">mpg</div>
+                        <div class="quantity">${LastTwelveMonthsStatistics.AverageFuelEfficiency}</div>
+                        <div class="unit">@Html.DisplayFuelConsumptionAverageAbbreviation()</div>
                     </div>
                     <div class="statistic cost-per-mile">
-                        <div class="quantity">${mstats.makeCostToDriveDisplay(LastTwelveMonthsStatistics.AverageCostToDrive)}&cent;</div>
-                        <div class="unit">per mile</div>
+                        <div class="quantity">${LastTwelveMonthsStatistics.AverageCostToDrive}</div>
+                        <div class="unit">per @Html.DisplayDistanceUnitAbbreviation(plural: false)</div>
                     </div>
                     <div class="statistic cost-per-month">
-                        <div class="quantity">$${mstats.makeCostPerMonthDisplay(LastTwelveMonthsStatistics.AverageCostPerMonth)}</div>
+                        <div class="quantity">${LastTwelveMonthsStatistics.AverageCostPerMonth}</div>
                         <div class="unit">per month</div>
                     </div>
                 </div>

@@ -17,6 +17,7 @@
 using System.Web.Mvc;
 using System.Web.UI;
 using MileageStats.Domain.Contracts;
+using MileageStats.Web.Helpers;
 
 namespace MileageStats.Web.Controllers
 {
@@ -48,7 +49,7 @@ namespace MileageStats.Web.Controllers
         [Authorize]
         public ActionResult JsonGetFleetStatisticSeries()
         {
-            var series = chartDataService.CalculateSeriesForUser(CurrentUserId, null, null);
+            var series = chartDataService.CalculateSeriesForUser(CurrentUserId, null, null, FuelConsumptionHelper.ConvertConsumptionToUserUnits, FuelConsumptionHelper.ConvertDistanceToUserUnit);
             return Json(series);
         }
     }

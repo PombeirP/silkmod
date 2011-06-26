@@ -1,4 +1,5 @@
-﻿@model MileageStats.Web.Models.VehicleDetailsViewModel
+﻿@using MileageStats.Web.Helpers
+@model MileageStats.Web.Models.VehicleDetailsViewModel
 @{
     ViewBag.Title = "Details for " + @Model.Vehicle.Name;    
 }
@@ -88,7 +89,7 @@
                                     @Html.LabelFor(model => Model.Vehicle.Odometer)
                                 </div>
                                 <div class="display-field odometer">
-                                    @String.Format("{0:g}", Model.Vehicle.Odometer ?? 0) miles
+                                    @Html.DistanceTextWithAbbreviationFor(Model.Vehicle.Odometer ?? 0)
                                 </div>
                             </div>
                             

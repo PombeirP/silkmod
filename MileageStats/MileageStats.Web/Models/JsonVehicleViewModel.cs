@@ -72,7 +72,7 @@ namespace MileageStats.Web.Models
         /// <summary>
         /// Gets the highest odometer value recorded for the vehicle.
         /// </summary>
-        public int? Odometer { get; set; }
+        public string Odometer { get; set; }
 
         /// <summary>
         /// The id of the vehicle's photo

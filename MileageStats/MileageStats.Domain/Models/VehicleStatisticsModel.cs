@@ -14,6 +14,7 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
 
 namespace MileageStats.Domain.Models
@@ -32,7 +33,7 @@ namespace MileageStats.Domain.Models
         }
 
         public VehicleStatisticsModel(double totalFuelCost, double totalUnits, double totalCost, int totalDistance,
-                                 int odometer, int totalMonths)
+                                      int odometer, int totalMonths)
         {
             this.totalFuelCost = totalFuelCost;
             this.totalUnits = totalUnits;
@@ -55,19 +56,19 @@ namespace MileageStats.Domain.Models
         /// </summary>
         public double AverageFillupPrice
         {
-            get { return TotalUnits == 0 ? 0 : RoundToTwoDecimals(TotalFuelCost/TotalUnits); }
+            get { return Math.Abs(TotalUnits - 0) < 0.001 ? 0 : RoundToTwoDecimals(TotalFuelCost/TotalUnits); }
         }
 
         /// <summary>
-        /// Gets the average fuel efficiency (e.g. Miles/Gallon or Kilomter / Litre)
+        /// Gets the average fuel efficiency (Kilometer / Litre)
         /// </summary>
         public double AverageFuelEfficiency
         {
-            get { return TotalUnits == 0 ? 0 : RoundToTwoDecimals(TotalDistance/TotalUnits); }
+            get { return Math.Abs(TotalUnits - 0) < 0.001 ? 0 : RoundToTwoDecimals(TotalDistance/TotalUnits); }
         }
 
         /// <summary>
-        /// Gets the average cost to drive per distance (e.g. $/Mile or €/Kilometer)
+        /// Gets the average cost to drive per distance (e.g. $/Kilometer or €/Kilometer)
         /// </summary>
         public double AverageCostToDrive
         {
@@ -79,7 +80,7 @@ namespace MileageStats.Domain.Models
         /// </summary>
         public double AverageCostPerMonth
         {
-            get { return totalMonths == 0 ? 0 : RoundToTwoDecimals(TotalCost/totalMonths); }
+            get { return this.totalMonths == 0 ? 0 : RoundToTwoDecimals(TotalCost/this.totalMonths); }
         }
 
         /// <summary>
@@ -90,18 +91,18 @@ namespace MileageStats.Domain.Models
         /// </remarks>
         public int? Odometer
         {
-            get { return odometer; }
+            get { return this.odometer; }
         }
 
         /// <summary>
-        /// Gets the total vehicle distance traveled for fillup entries.
+        /// Gets the total vehicle distance traveled for fillup entries (in kms).
         /// </summary>
         /// <remarks>
         /// This is a calculated value and should not be set directly.
         /// </remarks>
         public int TotalDistance
         {
-            get { return totalDistance; }
+            get { return this.totalDistance; }
         }
 
         /// <summary>
@@ -112,18 +113,18 @@ namespace MileageStats.Domain.Models
         /// </remarks>
         public double TotalFuelCost
         {
-            get { return RoundToTwoDecimals(totalFuelCost); }
+            get { return RoundToTwoDecimals(this.totalFuelCost); }
         }
 
         /// <summary>
-        /// Gets the total units consumed based on all fillup entries.
+        /// Gets the total units consumed based on all fillup entries (in liters).
         /// </summary>
         /// <remarks>
         /// This is a calculated value and should not be set directly.
         /// </remarks>
         public double TotalUnits
         {
-            get { return RoundToTwoDecimals(totalUnits); }
+            get { return RoundToTwoDecimals(this.totalUnits); }
         }
 
         /// <summary>
@@ -134,7 +135,7 @@ namespace MileageStats.Domain.Models
         /// </remarks>
         public double TotalCost
         {
-            get { return RoundToTwoDecimals(totalCost); }
+            get { return RoundToTwoDecimals(this.totalCost); }
         }
 
         private static double RoundToTwoDecimals(double number)

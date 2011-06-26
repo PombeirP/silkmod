@@ -63,7 +63,7 @@ namespace MileageStats.Domain.Models
         }
 
         /// <summary>
-        /// Gets the average fuel efficiency (e.g. Miles/Gallon or Kilomter / Litre)
+        /// Gets the average fuel efficiency (e.g. Miles/Gallon or Kilometers / Litre)
         /// </summary>
         public double AverageFuelEfficiency
         {

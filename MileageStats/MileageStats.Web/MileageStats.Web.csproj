@@ -106,6 +106,8 @@
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Authentication\LocalFakeRelyingParty.cs" />
+    <Compile Include="Helpers\UserDisplayPreferencesHelper.cs" />
+    <Compile Include="Helpers\FuelConsumptionHelper.cs" />
     <Compile Include="Helpers\VehicleHelper.cs" />
     <Compile Include="IdentityExtensions.cs" />
     <Compile Include="Global.asax.cs">
@@ -117,6 +119,7 @@
     <Compile Include="Models\FillupAddViewModel.cs" />
     <Compile Include="Models\FillupEntryFormModel.cs" />
     <Compile Include="Models\JsonFillupViewModel.cs" />
+    <Compile Include="Models\JsonFleetStatisticsViewModel.cs" />
     <Compile Include="Models\JsonRemindersViewModel.cs" />
     <Compile Include="Models\JsonReminderViewModel.cs" />
     <Compile Include="Models\JsonStatisticsViewModel.cs" />

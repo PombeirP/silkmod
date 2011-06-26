@@ -58,7 +58,7 @@ namespace Mileagestats.Services.Tests
                 .Returns(vehicles);
 
             var target = new ChartDataService(_vehicleRepo.Object);
-            var actual = target.CalculateSeriesForUser(userId, null, null);
+            var actual = target.CalculateSeriesForUser(userId, null, null, y => y, z => z);
 
             // 3 vehicles * 7 months
             Assert.Equal(3*7, actual.Entries.Count);
@@ -100,7 +100,7 @@ namespace Mileagestats.Services.Tests
 
             var target = new ChartDataService(_vehicleRepo.Object);
 
-            StatisticSeries actual = target.CalculateSeriesForUser(userId, null, null);
+            StatisticSeries actual = target.CalculateSeriesForUser(userId, null, null, y => y, z => z);
 
             Assert.NotNull(actual);
 

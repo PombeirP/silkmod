@@ -25,7 +25,7 @@ namespace MileageStats.Domain.Handlers
     {
         public static VehicleStatisticsModel Calculate(IEnumerable<Model.FillupEntry> fillUps, bool includeFirst = true)
         {
-            if (!fillUps.Any()) return new VehicleStatisticsModel();
+            if (!fillUps.Any()) return null;
 
             var firstFillUp = fillUps.OrderBy(x => x.Date).FirstOrDefault();
 
@@ -34,15 +34,18 @@ namespace MileageStats.Domain.Handlers
             double totalCost = 0.0;
             int totalDistance = 0;
 
-            foreach (var fillUp in fillUps)
+            var validFillups = fillUps.Where(fillUp => includeFirst || fillUp != firstFillUp);
+            if (!validFillups.Any())
             {
-                if (includeFirst || fillUp != firstFillUp)
-                {
-                    totalFuelCost += fillUp.PricePerUnit*fillUp.TotalUnits;
-                    totalUnits += fillUp.TotalUnits;
-                    totalCost += fillUp.TotalCost;
-                    totalDistance += fillUp.Distance ?? 0;
-                }
+                return null;
+            }
+
+            foreach (var fillUp in validFillups)
+            {
+                totalFuelCost += fillUp.PricePerUnit * fillUp.TotalUnits;
+                totalUnits += fillUp.TotalUnits;
+                totalCost += fillUp.TotalCost;
+                totalDistance += fillUp.Distance ?? 0;
             }
 
             var odometer = fillUps.Max(x => x.Odometer);

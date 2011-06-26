@@ -447,4 +447,40 @@
   <data name="FillUpEntryVendorLabelText" xml:space="preserve">
     <value>Fill up Station</value>
   </data>
+  <data name="FillupController_NothingToImportMessage">
+    <value xml:space="preserve">Nothing to import...</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_ImpGals">
+    <value xml:space="preserve">gals. (Imp.)</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_ImpGal">
+    <value xml:space="preserve">gal. (Imp.)</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_UsGallons">
+    <value xml:space="preserve">gals.</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_UsGallon">
+    <value xml:space="preserve">gal.</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_Litres">
+    <value xml:space="preserve">l</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayFuelConsumptionAverageAbbreviation_l_100km">
+    <value xml:space="preserve">l/100km</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayFuelConsumptionAverageAbbreviation_mpg">
+    <value xml:space="preserve">mpg</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_kms">
+    <value xml:space="preserve">kms</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_km">
+    <value xml:space="preserve">km</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_miles">
+    <value xml:space="preserve">miles</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_mile">
+    <value xml:space="preserve">mile</value>
+  </data>
 </root>

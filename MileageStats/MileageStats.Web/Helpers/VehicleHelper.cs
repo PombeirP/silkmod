@@ -14,6 +14,7 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
 using System.Web.Mvc;
 using MileageStats.Domain.Models;
@@ -25,28 +26,14 @@ namespace MileageStats.Web.Helpers
     {
         public static MvcHtmlString AverageFuelEfficiencyText(this HtmlHelper helper, VehicleModel vehicle)
         {
-            double raw = vehicle.Statistics.AverageFuelEfficiency;
-            double averageFuelEfficiency = Math.Round(raw);
-
-            string averageFuelEfficiencyText = string.Format("{0:N0}", averageFuelEfficiency);
-
-            if (averageFuelEfficiency >= 99000)
-            {
-                averageFuelEfficiencyText = "99k+";
-            }
-            else if (averageFuelEfficiency >= 10000)
-            {
-                averageFuelEfficiencyText = string.Format("{0:N1}k", averageFuelEfficiency/1000);
-            }
-
-            return MvcHtmlString.Create(averageFuelEfficiencyText);
+            return MvcHtmlString.Create(UserDisplayPreferencesHelper.DisplayFuelConsumptionAverageFor(vehicle.Statistics.AverageFuelEfficiency));
         }
 
         public static MvcHtmlString AverageFuelEfficiencyMagnitude(this HtmlHelper helper, VehicleModel vehicle)
         {
             double raw = vehicle.Statistics.AverageFuelEfficiency;
             double averageFuelEfficiency = Math.Round(raw);
-            string averageFuelEfficiencyMagnitude = "";
+            string averageFuelEfficiencyMagnitude = string.Empty;
 
             if (averageFuelEfficiency >= 1000)
             {
@@ -62,10 +49,10 @@ namespace MileageStats.Web.Helpers
 
         public static string CssClassForTile(this HtmlHelper helper, VehicleListViewModel list, VehicleModel vehicle)
         {
-            var selectedItem = list.Vehicles.SelectedItem;
+            VehicleModel selectedItem = list.Vehicles.SelectedItem;
 
-            var shouldCompact = (list.IsCollapsed && selectedItem == null)
-                ||( selectedItem != null && vehicle.VehicleId != selectedItem.VehicleId);
+            bool shouldCompact = (list.IsCollapsed && selectedItem == null)
+                                 || (selectedItem != null && vehicle.VehicleId != selectedItem.VehicleId);
 
             return shouldCompact ? "compact" : String.Empty;
         }

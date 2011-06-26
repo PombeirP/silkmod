@@ -32,19 +32,19 @@ namespace MileageStats.Web.Models
         public double AverageFillupPrice { get; set; }
 
         /// <summary>
-        /// Gets the average fuel efficiency (e.g. Miles/Gallon or Kilomter / Litre)
+        /// Gets the average fuel efficiency (e.g. Miles/Gallon or Litres/100km)
         /// </summary>
-        public double AverageFuelEfficiency { get; set; }
+        public string AverageFuelEfficiency { get; set; }
 
         /// <summary>
         /// Gets the average cost to drive per distance (e.g. $/Mile or €/Kilometer)
         /// </summary>
-        public double AverageCostToDrive { get; set; }
+        public string AverageCostToDrive { get; set; }
 
         /// <summary>
         /// Gets the average cost to drive per month (e.g. $/Month or €/Month) between the first entry and today.
         /// </summary>
-        public double AverageCostPerMonth { get; set; }
+        public string AverageCostPerMonth { get; set; }
 
         /// <summary>
         /// Gets the highest odometer value recorded.

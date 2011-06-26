@@ -1,7 +1,7 @@
 ﻿@model MileageStats.Web.Models.FillupEntryFormModel
     @Html.AntiForgeryToken()
     <div class="editor-label">
-        @Html.LabelFor(model => model.Date)<span> (mm/dd/yyyy)</span>
+        @Html.LabelFor(model => model.Date)<span> (e.g. @DateTime.Now.ToShortDateString())</span>
     </div>
     <div class="editor-field">
         @Html.TextBox("Date", Model == null || Model.Date == null ? string.Empty : Model.Date.ToShortDateString(), new { maxlength = "10" })

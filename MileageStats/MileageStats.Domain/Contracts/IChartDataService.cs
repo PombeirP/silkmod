@@ -28,15 +28,16 @@ namespace MileageStats.Domain.Contracts
         /// <param name="startDate">The start date for filtering.</param>
         /// <param name="endDate">The end date for filtering.</param>
         /// <returns>A statistical series.</returns>
-        StatisticSeries CalculateSeriesForUser(int userId, DateTime? startDate, DateTime? endDate);
+        StatisticSeries CalculateSeriesForUser(int userId, DateTime? startDate, DateTime? endDate, Func<double, double> fuelEfficiencyUserConversionFunc, Func<double, double> distanceUserConversionFunc);
 
         /// <summary>
         /// Calculates the series of statistics for the specified vehicle.
         /// </summary>
         /// <param name="userId">The user id.</param>
+        /// <param name="vehicleId"></param>
         /// <param name="startDate">The start date for filtering.</param>
         /// <param name="endDate">The end date for filtering.</param>
         /// <returns>A statistical series.</returns>
-        StatisticSeries CalculateSeriesForVehicle(int userId, int vehicleId, DateTime? startDate, DateTime? endDate);
+        StatisticSeries CalculateSeriesForVehicle(int userId, int vehicleId, DateTime? startDate, DateTime? endDate, Func<double, double> fuelEfficiencyUserConversionFunc, Func<double, double> distanceUserConversionFunc);
     }
 }

@@ -31,7 +31,7 @@ namespace MileageStats.Web.Models
         /// <summary>
         /// Odometer reading for the fillup.
         /// </summary>
-        public int Odometer { get; set; }
+        public string Odometer { get; set; }
 
         /// <summary>
         /// Price per unit.

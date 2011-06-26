@@ -142,6 +142,15 @@ namespace MileageStats.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nothing to import....
+        /// </summary>
+        public static string FillupController_NothingToImportMessage {
+            get {
+                return ResourceManager.GetString("FillupController_NothingToImportMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cost Per Unit.
         /// </summary>
         public static string FillupEntryCostPerUnitLabelText {
@@ -768,6 +777,105 @@ namespace MileageStats.Domain.Properties {
         public static string UserDisplayNameStringLengthValidationError {
             get {
                 return ResourceManager.GetString("UserDisplayNameStringLengthValidationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to km.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_km {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_km", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kms.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_kms {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_kms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mile.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_mile {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_mile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to miles.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_miles {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_miles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to l/100km.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayFuelConsumptionAverageAbbreviation_l_100km {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayFuelConsumptionAverageAbbreviation_l_100km", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mpg.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayFuelConsumptionAverageAbbreviation_mpg {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayFuelConsumptionAverageAbbreviation_mpg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gal. (Imp.).
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_ImpGal {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_ImpGal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gals. (Imp.).
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_ImpGals {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_ImpGals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to l.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_Litres {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_Litres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gal..
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_UsGallon {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_UsGallon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gals..
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_UsGallons {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayVolumeUnitAbbreviation_UsGallons", resourceCulture);
             }
         }
         

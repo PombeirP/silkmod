@@ -17,6 +17,7 @@
 using System.Web.Mvc;
 using MileageStats.Domain.Contracts;
 using MileageStats.Domain.Models;
+using MileageStats.Web.Helpers;
 using MileageStats.Web.Models;
 using System;
 using System.Diagnostics;
@@ -117,7 +118,7 @@ namespace MileageStats.Web.Controllers
         {
             Debug.Assert(yValueAccessor != null);
 
-            var seriesData = this.chartDataService.CalculateSeriesForUser(userId, DateTime.UtcNow.AddMonths(-12), null);
+            var seriesData = this.chartDataService.CalculateSeriesForUser(userId, DateTime.UtcNow.AddMonths(-12), null, FuelConsumptionHelper.ConvertConsumptionToUserUnits, FuelConsumptionHelper.ConvertDistanceToUserUnit);
 
             var myChart = new Chart(width: 800, height: 450)
                 .AddTitle(chartTitle)
@@ -148,7 +149,7 @@ namespace MileageStats.Web.Controllers
                 foreach (var entryGroup in entriesGroupedById)
                 {
                     isDataPlotted |= PlotSingleChartLine(chart, entryGroup, yValueAccessor);
-                };
+                }
             }
 
             return isDataPlotted;
@@ -162,7 +163,7 @@ namespace MileageStats.Web.Controllers
             }
 
             bool isDataPlotted = false;
-            if (seriesData != null && seriesData.Count() > 0)
+            if (seriesData != null && seriesData.Any())
             {
                 var xValues = new List<DateTime>();
                 var yValues = new List<double>();

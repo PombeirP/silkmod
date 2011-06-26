@@ -16,7 +16,7 @@
             @Html.ValidationMessageFor(model => model.Remarks)
         </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.DueDate)<span> (mm/dd/yyyy)</span>
+            @Html.LabelFor(model => model.DueDate)<span> (e.g. @DateTime.Now.AddMonths(1).ToShortDateString())</span>
         </div>
         <div class="editor-field">
             @Html.TextBoxFor(model => model.DueDate, new { maxlength = "10" })

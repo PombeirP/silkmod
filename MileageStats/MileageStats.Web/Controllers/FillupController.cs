@@ -23,6 +23,7 @@ using Microsoft.Practices.ServiceLocation;
 using MileageStats.Domain.Contracts;
 using MileageStats.Domain.Handlers;
 using MileageStats.Model;
+using MileageStats.Web.Helpers;
 using MileageStats.Web.Models;
 using MileageStats.Domain.Properties;
 
@@ -114,7 +115,8 @@ namespace MileageStats.Web.Controllers
         {
             if (fillupsFile == null)
             {
-                return RedirectToAction("Import");
+                TempData["LastActionMessage"] = Resources.FillupController_NothingToImportMessage;
+                return RedirectToAction("List", "Fillup", new { vehicleId = vehicleId });
             }
 
             if (ModelState.IsValid)
@@ -243,14 +245,14 @@ namespace MileageStats.Web.Controllers
             return fillupEntries.Select(entry => new JsonFillupViewModel
                                                      {
                                                          FillupEntryId = entry.FillupEntryId,
-                                                         Date = String.Format("{0:d MMM yyyy}", entry.Date),
-                                                         TotalUnits = String.Format("{0:#00.000}", entry.TotalUnits),
-                                                         Odometer = entry.Odometer,
-                                                         TransactionFee = String.Format("{0:C}", entry.TransactionFee),
-                                                         PricePerUnit = String.Format("{0:0.000}", entry.PricePerUnit),
+                                                         Date = String.Format("{0:d}", entry.Date),
+                                                         TotalUnits = UserDisplayPreferencesHelper.DisplayQuantityFor(entry.TotalUnits, entry.UnitOfMeasure),
+                                                         Odometer = UserDisplayPreferencesHelper.DistanceTextWithAbbreviationFor(entry.Odometer),
+                                                         TransactionFee = Math.Abs(entry.TransactionFee - 0.0) > 0.001 ? UserDisplayPreferencesHelper.DisplayPriceFor(entry.TransactionFee) : null,
+                                                         PricePerUnit = UserDisplayPreferencesHelper.DisplayPricePerUnitFor(entry.PricePerUnit, entry.UnitOfMeasure),
                                                          Remarks = entry.Remarks,
                                                          Vendor = entry.Vendor,
-                                                         TotalCost = String.Format("{0:C}", entry.TotalCost)
+                                                         TotalCost = UserDisplayPreferencesHelper.DisplayPriceFor(entry.TotalCost)
                                                      }).ToList();
         }
     }

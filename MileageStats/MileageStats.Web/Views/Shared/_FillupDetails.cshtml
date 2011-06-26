@@ -1,52 +1,60 @@
-﻿@model MileageStats.Model.FillupEntry
+﻿@using MileageStats.Model
+@using MileageStats.Web.Helpers
+@model FillupEntry
 <div class="display-label">
     @Html.LabelFor(model => model.Date)
 </div>
 <div class="display-field date">
-    @(Model == null || Model.Date == null ? string.Empty : String.Format("{0:d MMM yyyy}", Model.Date))
+    @(Model == null || Model.Date == null ? string.Empty : String.Format("{0:d}", Model.Date))
 </div>
 
 <div class="display-label">
     @Html.LabelFor(model => model.TotalCost)
 </div>
 <div class="display-field total-cost">
-    @String.Format("{0:F2}", Model.TotalCost)
+    @Html.DisplayPriceFor(Model.TotalCost)
 </div>
 
 <div class="display-label">
     @Html.LabelFor(model => model.TotalUnits)
 </div>
 <div class="display-field total-units">
-    @String.Format("{0:F2}", Model.TotalUnits)
+    @Html.DisplayQuantityFor(Model.TotalUnits, Model.UnitOfMeasure)
 </div>
 
 <div class="display-label">
     @Html.LabelFor(model => model.PricePerUnit)
 </div>
 <div class="display-field price-per-unit">
-    @String.Format("{0:F2}", Model.PricePerUnit)
+    @Html.DisplayPricePerUnitFor(Model.PricePerUnit, Model.UnitOfMeasure)
 </div>
 
-<div class="display-label">
-    @Html.LabelFor(model => model.Vendor)
-</div>
-<div class="display-field vendor wrap">
-    @Model.Vendor
-</div>
+@if (!string.IsNullOrEmpty(Model.Vendor))
+{
+    <div class="display-label">
+        @Html.LabelFor(model => model.Vendor)
+    </div>
+    <div class="display-field vendor wrap">
+        @Model.Vendor
+    </div>
+}
 
 <div class="display-label">
     @Html.LabelFor(model => model.Odometer)
 </div>
 <div class="display-field odometer">
-    @Model.Odometer
+    @Html.DistanceTextWithAbbreviationFor(Model.Odometer)
 </div>
 
-<div class="display-label">
-    @Html.LabelFor(model => model.TransactionFee)
-</div>
-<div class="display-field transaction-fee">
-    @Model.TransactionFee
-</div>
+@if (Math.Abs(Model.TransactionFee - 0.0) > 0.001)
+{
+    <div class="display-label">
+        @Html.LabelFor(model => model.TransactionFee)
+    </div>
+    <div class="display-field transaction-fee">
+        @Html.DisplayPriceFor(Model.TransactionFee)
+    </div>
+}
 
 <div class="display-label">
     @Html.LabelFor(model => model.Remarks)

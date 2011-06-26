@@ -1,4 +1,5 @@
-﻿<script id="mstats-fillups-template" type="text/x-jquery-tmpl">
+﻿@using MileageStats.Web.Helpers
+<script id="mstats-fillups-template" type="text/x-jquery-tmpl">
     <a class="trigger" href="@Url.Action("List", "Fillup")/${VehicleId}" data-info-nav="fillups"></a>
     <div class="content">
         <div class="header">
@@ -36,19 +37,21 @@
             <div class="display-label"><label for="TotalCost">Total Cost</label></div>
             <div class="display-field total-cost">${SelectedFillup.TotalCost}</div>
 
-            <div class="display-label"><label for="TotalUnits">Total Gallons</label></div>
+            <div class="display-label"><label for="TotalUnits">Total Quantity</label></div>
             <div class="display-field total-units">${SelectedFillup.TotalUnits}</div>
 
-            <div class="display-label"><label for="PricePerUnit">Price Per Gallon</label></div>
+            <div class="display-label"><label for="PricePerUnit">Price</label></div>
             <div class="display-field price-per-unit">${SelectedFillup.PricePerUnit}</div>
 
+            {{if SelectedFillup.Vendor }}
             <div class="display-label"><label for="Vendor">Fill up Station</label></div>
             <div class="display-field vendor wrap">${SelectedFillup.Vendor}</div>
+            {{/if}}
 
             <div class="display-label"><label for="Odometer">Odometer</label></div>
             <div class="display-field odometer">${SelectedFillup.Odometer}</div>
 
-            {{if SelectedFillup.TransactionFee == '$0.00'}}
+            {{if SelectedFillup.TransactionFee }}
             <div class="display-label"><label for="TransactionFee">Transaction Fee</label></div>
             <div class="display-field transaction-fee">${SelectedFillup.TransactionFee}</div>
             {{/if}}

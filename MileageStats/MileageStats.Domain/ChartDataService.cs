@@ -31,7 +31,7 @@ namespace MileageStats.Domain
 
         #region IChartDataService Members
 
-        public StatisticSeries CalculateSeriesForUser(int userId, DateTime? startDate, DateTime? endDate)
+        public StatisticSeries CalculateSeriesForUser(int userId, DateTime? startDate, DateTime? endDate, Func<double, double> fuelEfficiencyUserConversionFunc, Func<double, double> distanceUserConversionFunc)
         {
             var vehicles = _vehicleRepository.GetVehicles(userId);
 
@@ -39,17 +39,17 @@ namespace MileageStats.Domain
 
             foreach (var vehicle in vehicles)
             {
-                CalculateSeriesForVehicle(vehicle, series, startDate, endDate);
+                CalculateSeriesForVehicle(vehicle, series, startDate, endDate, fuelEfficiencyUserConversionFunc, distanceUserConversionFunc);
             }
 
             return series;
         }
 
         public StatisticSeries CalculateSeriesForVehicle(int userId, int vehicleId, DateTime? startDate,
-                                                         DateTime? endDate)
+                                                         DateTime? endDate, Func<double, double> fuelEfficiencyUserConversionFunc, Func<double, double> distanceUserConversionFunc)
         {
             var series = new StatisticSeries();
-            CalculateSeriesForVehicle(userId, vehicleId, series, startDate, endDate);
+            CalculateSeriesForVehicle(userId, vehicleId, series, startDate, endDate, fuelEfficiencyUserConversionFunc, distanceUserConversionFunc);
             return series;
         }
 
@@ -60,13 +60,13 @@ namespace MileageStats.Domain
             _vehicleRepository = vehicleRepository;
         }
 
-        private void CalculateSeriesForVehicle(int userId, int vehicleId, StatisticSeries series, DateTime? startDate, DateTime? endDate)
+        private void CalculateSeriesForVehicle(int userId, int vehicleId, StatisticSeries series, DateTime? startDate, DateTime? endDate, Func<double, double> fuelEfficiencyUserConversionFunc, Func<double, double> distanceUserConversionFunc)
         {
             var vehicle = _vehicleRepository.GetVehicle(userId, vehicleId);
-            CalculateSeriesForVehicle(vehicle, series, startDate, endDate);
+            CalculateSeriesForVehicle(vehicle, series, startDate, endDate, fuelEfficiencyUserConversionFunc, distanceUserConversionFunc);
         }
 
-        private static void CalculateSeriesForVehicle(Vehicle vehicle, StatisticSeries series, DateTime? startDate, DateTime? endDate)
+        private static void CalculateSeriesForVehicle(Vehicle vehicle, StatisticSeries series, DateTime? startDate, DateTime? endDate, Func<double, double> fuelEfficiencyUserConversionFunc, Func<double, double> distanceUserConversionFunc)
         {
             Debug.Assert(series != null);
 
@@ -88,23 +88,27 @@ namespace MileageStats.Domain
             foreach (var fillupGroup in fillupGroups)
             {
                 var includeFirstFillup = (fillupGroup.Key.Year != firstFillUp.Date.Year) ||
-                                                    (fillupGroup.Key.Month != firstFillUp.Date.Month);
+                                         (fillupGroup.Key.Month != firstFillUp.Date.Month);
 
                 statistics = CalculateStatistics.Calculate(fillupGroup, includeFirstFillup);
+                if (statistics == null)
+                {
+                    continue;
+                }
 
                 Debug.Assert(firstFillUp != null);
-                
+
 
                 var seriesEntry = new StatisticSeriesEntry
-                {
-                    Id = vehicle.VehicleId,
-                    Name = vehicle.Name,
-                    Year = fillupGroup.Key.Year,
-                    Month = fillupGroup.Key.Month,
-                    AverageFuelEfficiency = Math.Round(statistics.AverageFuelEfficiency, 2),
-                    TotalCost = Math.Round(statistics.TotalCost, 2),
-                    TotalDistance = statistics.TotalDistance,
-                };
+                                      {
+                                          Id = vehicle.VehicleId,
+                                          Name = vehicle.Name,
+                                          Year = fillupGroup.Key.Year,
+                                          Month = fillupGroup.Key.Month,
+                                          AverageFuelEfficiency = Math.Round(fuelEfficiencyUserConversionFunc(statistics.AverageFuelEfficiency), 2),
+                                          TotalCost = Math.Round(statistics.TotalCost, 2),
+                                          TotalDistance = distanceUserConversionFunc(statistics.TotalDistance),
+                                      };
                 series.Entries.Add(seriesEntry);
             }            
         }

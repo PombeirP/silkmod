@@ -1,4 +1,5 @@
-﻿@model MileageStats.Web.Models.DashboardViewModel       
+﻿@using MileageStats.Web.Helpers
+@model MileageStats.Web.Models.DashboardViewModel       
 @{
     ViewBag.Title = "Dashboard";
 }
@@ -68,20 +69,21 @@
                         <div id="statistics-content">
                             <h1>
                                 Summary Statistics</h1>
-                            <div class="statistic mile-per-gallon">@string.Format("{0:N0}", Model.FleetSummaryStatistics.AverageFuelEfficiency)<span
-                                class="units">mpg</span></div>
-                            <div class="statistic cost-per-month">@string.Format("{0:N0}", Model.FleetSummaryStatistics.AverageCostToDrive * 100)&cent;<span
-                                class="units">per mile</span></div>
-                            <div class="statistic cost-per-mile">@string.Format("${0:N0}", Model.FleetSummaryStatistics.AverageCostPerMonth)<span
+                            <div class="statistic mile-per-gallon">@Html.DisplayFuelConsumptionAverageFor(Model.FleetSummaryStatistics.AverageFuelEfficiency)<span
+                                class="units">@Html.DisplayFuelConsumptionAverageAbbreviation()</span></div>
+                            <div class="statistic cost-per-month">@Html.DisplayPriceInCentsFor(FuelConsumptionHelper.ConvertDistanceRatioToUserUnit(Model.FleetSummaryStatistics.AverageCostToDrive))<span
+                                class="units">per @Html.DisplayDistanceUnitAbbreviation(plural: false)</span></div>
+                            <div class="statistic cost-per-mile">@Html.DisplayPriceFor(Model.FleetSummaryStatistics.AverageCostPerMonth, 0)<span
                                 class="units">per month</span></div>
                         </div>
                     </div>
-                    <div class="section" id="reminders" data-url="@Url.Action("JsonImminentReminders","Reminder")">
+                    <div class="section" id="reminders" data-url="@Url.Action("JsonImminentReminders", "Reminder")">
                         <div id="summary-reminders-content">
                             <h1>
                                 Reminders</h1>
                             <div class="list nav">
-                                @foreach (var item in Model.ImminentReminders) {
+                                @foreach (var item in Model.ImminentReminders)
+                                {
                                  <a class="list-item @(item.Reminder.IsOverdue ? "overdue" : null)" href="@Url.Action("Details", "Reminder", new { id = item.Reminder.ReminderId })" data-vehicle-id="@item.VehicleId">
                                     <h1>@item.Reminder.Title</h1>
                                     <p>Due @item.Reminder.DueOnFormatted</p>
@@ -93,8 +95,8 @@
                 </div>
             </div>
             <div id="info" class="framed empty article" 
-                 data-details-url="@Url.Action("JsonDetails","Vehicle")"
-                 data-fillups-url="@Url.Action("JsonList","Fillup")"
+                 data-details-url="@Url.Action("JsonDetails", "Vehicle")"
+                 data-fillups-url="@Url.Action("JsonList", "Fillup")"
                  data-reminders-url="@Url.Action("JsonList","Reminder")">
                 <div />
             </div>
