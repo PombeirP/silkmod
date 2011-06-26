@@ -14,6 +14,9 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
+using System;
+using System.Globalization;
 using System.Web.Mvc;
 using MileageStats.Domain.Handlers;
 using MileageStats.Domain.Models;
@@ -25,14 +28,19 @@ using Xunit;
 
 namespace MileageStats.Web.Tests.Helpers
 {
-    public class VehicleHelperFixture
+    public class VehicleHelperFixture : IDisposable
     {
         private readonly HtmlHelper _helper;
         private readonly ViewContext _viewContext;
         private readonly IViewDataContainer _viewDataContainer;
 
+        private readonly CultureInfo previousCultureInfo;
+
         public VehicleHelperFixture()
         {
+            this.previousCultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
             _viewDataContainer = new Mock<IViewDataContainer>().Object;
             _viewContext = new Mock<ViewContext>().Object;
             _helper = new HtmlHelper(_viewContext, _viewDataContainer);
@@ -41,6 +49,9 @@ namespace MileageStats.Web.Tests.Helpers
         [Fact]
         public void WhenEfficiencyLessThanThousand_ThenNumberFormatsCorrectly()
         {
+            // HACK: Should not be changing external state
+            FuelConsumptionHelper.UserUnitOfMeasure = FillupUnits.UsGallons;
+
             var fillups = new[]
                               {
                                   new FillupEntry {Distance = 0, TotalUnits = 0},
@@ -49,7 +60,7 @@ namespace MileageStats.Web.Tests.Helpers
             var vehicle = new VehicleModel(new Vehicle(), CalculateStatistics.Calculate(fillups));
 
             var actual = _helper.AverageFuelEfficiencyText(vehicle);
-            var expected = MvcHtmlString.Create("150");
+            var expected = MvcHtmlString.Create("568");
 
             Assert.Equal(expected.ToHtmlString(), actual.ToHtmlString());
         }
@@ -57,6 +68,9 @@ namespace MileageStats.Web.Tests.Helpers
         [Fact]
         public void WhenEfficiencyGreaterThanThousand_ThenNumberFormatsCorrectly()
         {
+            // HACK: Should not be changing external state
+            FuelConsumptionHelper.UserUnitOfMeasure = FillupUnits.UsGallons;
+
             var fillups = new[]
                               {
                                   new FillupEntry {Distance = 0, TotalUnits = 0},
@@ -65,13 +79,16 @@ namespace MileageStats.Web.Tests.Helpers
             var vehicle = new VehicleModel(new Vehicle(), CalculateStatistics.Calculate(fillups));
 
             var actual = _helper.AverageFuelEfficiencyText(vehicle);
-            var expected = MvcHtmlString.Create("1,500");
+            var expected = MvcHtmlString.Create("5,678");
             Assert.Equal(expected.ToHtmlString(), actual.ToHtmlString());
         }
 
         [Fact]
         public void WhenEfficiencyGreaterThan99Thousand_ThenNumberFormatsCorrectly()
         {
+            // HACK: Should not be changing external state
+            FuelConsumptionHelper.UserUnitOfMeasure = FillupUnits.UsGallons;
+
             var fillups = new[]
                               {
                                   new FillupEntry {Distance = 0, TotalUnits = 0},
@@ -80,7 +97,7 @@ namespace MileageStats.Web.Tests.Helpers
             var vehicle = new VehicleModel(new Vehicle(), CalculateStatistics.Calculate(fillups));
 
             var actual = _helper.AverageFuelEfficiencyText(vehicle);
-            var expected = MvcHtmlString.Create("15.0k");
+            var expected = MvcHtmlString.Create("56.8k");
             Assert.Equal(expected.ToHtmlString(), actual.ToHtmlString());
         }
 
@@ -176,6 +193,11 @@ namespace MileageStats.Web.Tests.Helpers
             var actual = _helper.CssClassForTile(list, selected);
 
             Assert.Equal(string.Empty, actual);
+        }
+
+        void IDisposable.Dispose()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = this.previousCultureInfo;
         }
     }
 }

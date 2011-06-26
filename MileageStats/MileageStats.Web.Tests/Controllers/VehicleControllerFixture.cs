@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -35,14 +36,19 @@ using VehiclePhoto = MileageStats.Model.VehiclePhoto;
 
 namespace MileageStats.Web.Tests.Controllers
 {
-    public class VehicleControllerFixture
+    public class VehicleControllerFixture : IDisposable
     {
         private const int NoVehicleSelectedId = 0;
         private const int DefaultVehicleId = 99;
 
+        private readonly CultureInfo previousCultureInfo;
+
         public VehicleControllerFixture()
         {
             serviceLocator = new Mock<IServiceLocator>();
+
+            this.previousCultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             chartDataServiceMock = new Mock<IChartDataService>();
 
@@ -341,7 +347,14 @@ namespace MileageStats.Web.Tests.Controllers
 
             Assert.NotNull(result);
 
-            Assert.Same(fleetSummaryStatistics, result.Data);
+            var data = (JsonStatisticsViewModel)result.Data;
+            Assert.Equal(string.Format("{0}¢", fleetSummaryStatistics.AverageCostToDrive), data.AverageCostToDrive);
+            Assert.Equal(fleetSummaryStatistics.AverageFillupPrice, data.AverageFillupPrice);
+            Assert.Equal((1 / fleetSummaryStatistics.AverageFuelEfficiency).ToString(), data.AverageFuelEfficiency);
+            Assert.Equal(fleetSummaryStatistics.TotalCost, data.TotalCost);
+            Assert.Equal(fleetSummaryStatistics.TotalDistance, data.TotalDistance);
+            Assert.Equal(fleetSummaryStatistics.TotalFuelCost, data.TotalFuelCost);
+            Assert.Equal(fleetSummaryStatistics.TotalUnits, data.TotalUnits);
         }
 
         [Fact]
@@ -1102,6 +1115,11 @@ namespace MileageStats.Web.Tests.Controllers
             c.InvokeInitialize(c.ControllerContext.RequestContext);
 
             return c;
+        }
+
+        void IDisposable.Dispose()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = this.previousCultureInfo;
         }
     }
 

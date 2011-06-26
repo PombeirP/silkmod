@@ -16,6 +16,7 @@
 //===================================================================================
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Practices.ServiceLocation;
@@ -32,17 +33,21 @@ using User = MileageStats.Domain.Models.User;
 
 namespace MileageStats.Web.Tests.Controllers
 {
-    public class ReminderControllerFixture
+    public class ReminderControllerFixture : IDisposable
     {
         private const int defaultVehicleId = 99;
         private readonly User _defaultUser;
 
         private readonly Mock<IUserServices> _mockUserServices;
         private readonly Mock<IServiceLocator> _serviceLocator;
+        private readonly CultureInfo previousCultureInfo;
 
         public ReminderControllerFixture()
         {
             _serviceLocator = new Mock<IServiceLocator>();
+
+            this.previousCultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             _defaultUser = new User { AuthorizationId = "TestClaimsIdentifier", UserId = 5 };
 
@@ -298,9 +303,9 @@ namespace MileageStats.Web.Tests.Controllers
 
             Assert.Equal(reminders.Length, model.Reminders.Count());
 
-            Assert.Equal("Reminder1 | Vehicle @ 12/1/2010", list[0].FullTitle);
+            Assert.Equal("Reminder1 | Vehicle @ 12/01/2010", list[0].FullTitle);
             Assert.Equal("Reminder2 | Vehicle @ 1000", list[1].FullTitle);
-            Assert.Equal("Reminder3 | Vehicle @ 12/1/2010 or 1000", list[2].FullTitle);
+            Assert.Equal("Reminder3 | Vehicle @ 12/01/2010 or 1000", list[2].FullTitle);
         }
 
         [Fact]
@@ -592,6 +597,11 @@ namespace MileageStats.Web.Tests.Controllers
             MockHandlerFor(
                 () => new Mock<GetVehicleListForUser>(null),
                 x => x.StandardSetup(_defaultUser.UserId, defaultVehicleId, defaultVehicleId));
+        }
+
+        public void Dispose()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = this.previousCultureInfo;
         }
     }
 }
