@@ -91,7 +91,7 @@ namespace MileageStats.Domain
                                          (fillupGroup.Key.Month != firstFillUp.Date.Month);
 
                 statistics = CalculateStatistics.Calculate(fillupGroup, includeFirstFillup);
-                if (statistics == null)
+                if (statistics.TotalDistance == 0 && !statistics.Odometer.HasValue)
                 {
                     continue;
                 }

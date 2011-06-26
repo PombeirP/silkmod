@@ -26,7 +26,7 @@ namespace MileageStats.ServicesModel.Tests
     public class VehicleStatisticsFixture
     {
         [Fact]
-        public void WhenConstructed_ThenIntialized()
+        public void WhenConstructed_ThenInitialized()
         {
             var target = CalculateStatistics.Calculate(new FillupEntry[]{});
 

@@ -20,6 +20,7 @@ using System.Web.Mvc;
 using MileageStats.Domain.Contracts;
 using MileageStats.Domain.Models;
 using MileageStats.Web.Controllers;
+using MileageStats.Web.Helpers;
 using MileageStats.Web.Models;
 using MileageStats.Web.Tests.Mocks;
 using Moq;
@@ -69,7 +70,7 @@ namespace MileageStats.Web.Tests.Controllers
 
             var series = new StatisticSeries();
 
-            chartDataServiceMock.Setup(x => x.CalculateSeriesForUser(user.UserId, null, null, y => y, z => z)).Returns(
+            chartDataServiceMock.Setup(x => x.CalculateSeriesForUser(user.UserId, null, null, FuelConsumptionHelper.ConvertConsumptionToUserUnits, FuelConsumptionHelper.ConvertDistanceToUserUnit)).Returns(
                 series);
 
             ActionResult actual = target.JsonGetFleetStatisticSeries();

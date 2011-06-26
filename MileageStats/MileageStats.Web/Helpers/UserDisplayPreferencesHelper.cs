@@ -115,7 +115,7 @@ namespace MileageStats.Web.Helpers
                     }
                     else if (fuelConsumptionInUserUnits >= 10000)
                     {
-                        averageFuelEfficiencyText = string.Format("{0:C1}k", fuelConsumptionInUserUnits/1000);
+                        averageFuelEfficiencyText = string.Format("{0:N1}k", fuelConsumptionInUserUnits/1000);
                     }
                     break;
                 case FillupUnits.Litres:
