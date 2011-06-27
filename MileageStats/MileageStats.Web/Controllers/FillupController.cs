@@ -246,13 +246,13 @@ namespace MileageStats.Web.Controllers
                                                      {
                                                          FillupEntryId = entry.FillupEntryId,
                                                          Date = String.Format("{0:d}", entry.Date),
-                                                         TotalUnits = UserDisplayPreferencesHelper.DisplayQuantityFor(entry.TotalUnits, entry.UnitOfMeasure),
-                                                         Odometer = UserDisplayPreferencesHelper.DistanceTextWithAbbreviationFor(entry.Odometer),
-                                                         TransactionFee = Math.Abs(entry.TransactionFee - 0.0) > 0.001 ? UserDisplayPreferencesHelper.DisplayPriceFor(entry.TransactionFee) : null,
-                                                         PricePerUnit = UserDisplayPreferencesHelper.DisplayPricePerUnitFor(entry.PricePerUnit, entry.UnitOfMeasure),
+                                                         TotalUnits = UserDisplayPreferencesHelper.FormatQuantityFor(entry.TotalUnits, entry.UnitOfMeasure),
+                                                         Odometer = UserDisplayPreferencesHelper.FormatDistanceTextWithAbbreviationFor(entry.Odometer),
+                                                         TransactionFee = Math.Abs(entry.TransactionFee - 0.0) > 0.001 ? UserDisplayPreferencesHelper.FormatPriceFor(entry.TransactionFee) : null,
+                                                         PricePerUnit = UserDisplayPreferencesHelper.FormatPricePerUnitFor(entry.PricePerUnit, entry.UnitOfMeasure),
                                                          Remarks = entry.Remarks,
                                                          Vendor = entry.Vendor,
-                                                         TotalCost = UserDisplayPreferencesHelper.DisplayPriceFor(entry.TotalCost)
+                                                         TotalCost = UserDisplayPreferencesHelper.FormatPriceFor(entry.TotalCost)
                                                      }).ToList();
         }
     }

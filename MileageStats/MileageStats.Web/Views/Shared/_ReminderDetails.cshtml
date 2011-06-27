@@ -1,4 +1,5 @@
-﻿@model MileageStats.Web.Models.ReminderFormModel
+﻿@using MileageStats.Web.Helpers
+@model MileageStats.Web.Models.ReminderFormModel
 <div class="display-label">
     @Html.LabelFor(model => model.Title)
 </div>
@@ -9,13 +10,13 @@
     @Html.LabelFor(model => model.DueDate)
 </div>
 <div class="display-field due-date">
-    @(Model == null || Model.DueDate == null ? "(not entered)" : String.Format("{0:d MMM yyyy}", Model.DueDate))
+    @(Model == null || Model.DueDate == null ? "(not entered)" : String.Format("{0:d}", Model.DueDate))
 </div>
 <div class="display-label">
     @Html.LabelFor(model => model.DueDistance)
 </div>
 <div class="display-field due-distance">
-    @(Model == null || Model.DueDistance == null ? "(not entered)" : String.Format("{0}", Model.DueDistance))    
+    @(Model == null || Model.DueDistance == null ? "(not entered)" : @Html.DistanceTextWithAbbreviationFor(Model.DueDistance.Value).ToString())    
 </div>
 <div class="display-label">
     @Html.LabelFor(model => model.Remarks)

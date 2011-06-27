@@ -26,7 +26,7 @@ namespace MileageStats.Web.Helpers
     {
         public static MvcHtmlString AverageFuelEfficiencyText(this HtmlHelper helper, VehicleModel vehicle)
         {
-            return MvcHtmlString.Create(UserDisplayPreferencesHelper.DisplayFuelConsumptionAverageFor(vehicle.Statistics.AverageFuelEfficiency));
+            return MvcHtmlString.Create(UserDisplayPreferencesHelper.FormatFuelConsumptionAverageFor(vehicle.Statistics.AverageFuelEfficiency));
         }
 
         public static MvcHtmlString AverageFuelEfficiencyMagnitude(this HtmlHelper helper, VehicleModel vehicle)
