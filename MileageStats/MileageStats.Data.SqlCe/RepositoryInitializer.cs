@@ -64,8 +64,13 @@ namespace MileageStats.Data.SqlCe
 		{
 			Context.Set<Country>().ToList().Count();
 
+#if DEBUG
 			IEnumerable<string> indexes =
 				Context.Database.SqlQuery<string>("SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES;");
+#else
+			IEnumerable<string> indexes =
+				Context.Database.SqlQuery<string>("SELECT name FROM sys.indexes;");
+#endif
 
 			if (!indexes.Contains("IDX_FillupEntries_FillupEntryId"))
 			{
