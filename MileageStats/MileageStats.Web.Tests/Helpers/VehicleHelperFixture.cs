@@ -50,7 +50,7 @@ namespace MileageStats.Web.Tests.Helpers
         public void WhenEfficiencyLessThanThousand_ThenNumberFormatsCorrectly()
         {
             // HACK: Should not be changing external state
-            FuelConsumptionHelper.UserUnitOfMeasure = FillupUnits.UsGallons;
+            UnitConversionHelper.UserUnitOfMeasure = FillupUnits.UsGallons;
 
             var fillups = new[]
                               {
@@ -69,7 +69,7 @@ namespace MileageStats.Web.Tests.Helpers
         public void WhenEfficiencyGreaterThanThousand_ThenNumberFormatsCorrectly()
         {
             // HACK: Should not be changing external state
-            FuelConsumptionHelper.UserUnitOfMeasure = FillupUnits.UsGallons;
+            UnitConversionHelper.UserUnitOfMeasure = FillupUnits.UsGallons;
 
             var fillups = new[]
                               {
@@ -87,7 +87,7 @@ namespace MileageStats.Web.Tests.Helpers
         public void WhenEfficiencyGreaterThan99Thousand_ThenNumberFormatsCorrectly()
         {
             // HACK: Should not be changing external state
-            FuelConsumptionHelper.UserUnitOfMeasure = FillupUnits.UsGallons;
+            UnitConversionHelper.UserUnitOfMeasure = FillupUnits.UsGallons;
 
             var fillups = new[]
                               {

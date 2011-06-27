@@ -118,7 +118,7 @@ namespace MileageStats.Web.Controllers
         {
             Debug.Assert(yValueAccessor != null);
 
-            var seriesData = this.chartDataService.CalculateSeriesForUser(userId, DateTime.UtcNow.AddMonths(-12), null, FuelConsumptionHelper.ConvertConsumptionToUserUnits, FuelConsumptionHelper.ConvertDistanceToUserUnit);
+            var seriesData = this.chartDataService.CalculateSeriesForUser(userId, DateTime.UtcNow.AddMonths(-12), null, UnitConversionHelper.ConvertConsumptionToUserUnits, UnitConversionHelper.ConvertDistanceToUserUnit);
 
             var myChart = new Chart(width: 800, height: 450)
                 .AddTitle(chartTitle)

@@ -70,7 +70,7 @@ namespace MileageStats.Web.Tests.Controllers
 
             var series = new StatisticSeries();
 
-            chartDataServiceMock.Setup(x => x.CalculateSeriesForUser(user.UserId, null, null, FuelConsumptionHelper.ConvertConsumptionToUserUnits, FuelConsumptionHelper.ConvertDistanceToUserUnit)).Returns(
+            chartDataServiceMock.Setup(x => x.CalculateSeriesForUser(user.UserId, null, null, UnitConversionHelper.ConvertConsumptionToUserUnits, UnitConversionHelper.ConvertDistanceToUserUnit)).Returns(
                 series);
 
             ActionResult actual = target.JsonGetFleetStatisticSeries();

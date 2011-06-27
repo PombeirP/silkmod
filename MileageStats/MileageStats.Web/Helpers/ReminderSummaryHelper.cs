@@ -14,40 +14,38 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
+using System.Web.Mvc;
+using MileageStats.Domain.Models;
 using MileageStats.Model;
 
-namespace MileageStats.Domain.Models
+namespace MileageStats.Web.Helpers
 {
-    public class ReminderSummaryModel
+    public static class ReminderSummaryHelper
     {
-        private readonly Reminder _reminder;
-        private readonly bool _isOvedue;
-
-        public ReminderSummaryModel(Reminder reminder, bool isOvedue)
+        public static MvcHtmlString DisplayDueOnText(this HtmlHelper helper, ReminderSummaryModel reminderSummary)
         {
-            _reminder = reminder;
-            _isOvedue = isOvedue;
+            var msg = FormatDueOnText(reminderSummary.Reminder);
+
+            return MvcHtmlString.Create(msg);
         }
 
-        public int ReminderId
+        public static string FormatDueOnText(Reminder reminder)
         {
-            get { return _reminder.ReminderId; }
-        }
+            var msg = reminder.DueDate == null
+                          ? string.Empty
+                          : String.Format("on {0:d}", reminder.DueDate);
 
-        public string Title
-        {
-            get { return _reminder.Title; }
-        }
+            msg += reminder.DueDate == null || reminder.DueDistance == null
+                       ? string.Empty
+                       : " or ";
 
-        public bool IsOverdue
-        {
-            get { return _isOvedue; }
-        }
-
-        public Reminder Reminder
-        {
-            get { return _reminder; }
+            msg += reminder.DueDistance == null
+                       ? string.Empty
+                       : String.Format("at {0}", UserDisplayPreferencesHelper.FormatDistanceWithAbbreviation(reminder.DueDistance.Value));
+            msg += ".";
+            return msg;
         }
     }
 }

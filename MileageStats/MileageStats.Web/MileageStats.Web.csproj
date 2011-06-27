@@ -106,8 +106,9 @@
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Authentication\LocalFakeRelyingParty.cs" />
+    <Compile Include="Helpers\ReminderSummaryHelper.cs" />
     <Compile Include="Helpers\UserDisplayPreferencesHelper.cs" />
-    <Compile Include="Helpers\FuelConsumptionHelper.cs" />
+    <Compile Include="Helpers\UnitConversionHelper.cs" />
     <Compile Include="Helpers\VehicleHelper.cs" />
     <Compile Include="IdentityExtensions.cs" />
     <Compile Include="Global.asax.cs">

@@ -75,6 +75,14 @@ namespace MileageStats.Web.Models
         public int? DueDistance { get; set; }
 
         /// <summary>
+        /// Gets or sets the formatted explanation for when the reminder is due
+        /// </summary>
+        /// <value>
+        /// A string or null.
+        /// </value>
+        public string DueOnFormatted { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether the reminder has been fulfilled.
         /// </summary>
         /// <value>

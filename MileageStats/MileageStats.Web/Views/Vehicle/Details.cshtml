@@ -99,7 +99,7 @@
                                 {
                                     <a class="list-item @(item.IsOverdue ? "overdue" : null)" href="@Url.Action("Details", "Reminder", new { id = item.ReminderId })">    
                                         <h1>@item.Title</h1>
-                                        <p class="title">Due @item.DueOnFormatted </p>    
+                                        <p class="title">Due @Html.DisplayDueOnText(@item) </p>    
                                     </a>                   
                                 }
                             </div>

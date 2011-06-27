@@ -817,6 +817,42 @@ namespace MileageStats.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to kilometer.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_kilometer {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_kilometer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kilometers.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_kilometers {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_kilometers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mile.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_mile {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_mile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to miles.
+        /// </summary>
+        public static string UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_miles {
+            get {
+                return ResourceManager.GetString("UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_miles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to l/100km.
         /// </summary>
         public static string UserDisplayPreferencesHelper_DisplayFuelConsumptionAverageAbbreviation_l_100km {

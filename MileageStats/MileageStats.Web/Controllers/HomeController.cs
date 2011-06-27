@@ -49,7 +49,7 @@ namespace MileageStats.Web.Controllers
         [Authorize]
         public ActionResult JsonGetFleetStatisticSeries()
         {
-            var series = chartDataService.CalculateSeriesForUser(CurrentUserId, null, null, FuelConsumptionHelper.ConvertConsumptionToUserUnits, FuelConsumptionHelper.ConvertDistanceToUserUnit);
+            var series = chartDataService.CalculateSeriesForUser(CurrentUserId, null, null, UnitConversionHelper.ConvertConsumptionToUserUnits, UnitConversionHelper.ConvertDistanceToUserUnit);
             return Json(series);
         }
     }

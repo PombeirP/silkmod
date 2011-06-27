@@ -387,7 +387,7 @@ namespace MileageStats.Web.Controllers
             Debug.Assert(yValueAccessor != null);
 
             StatisticSeries seriesData = chartDataService.CalculateSeriesForVehicle(userId, vehicleId,
-                                                                                    DateTime.UtcNow.AddMonths(-12), null, FuelConsumptionHelper.ConvertConsumptionToUserUnits, FuelConsumptionHelper.ConvertDistanceToUserUnit);
+                                                                                    DateTime.UtcNow.AddMonths(-12), null, UnitConversionHelper.ConvertConsumptionToUserUnits, UnitConversionHelper.ConvertDistanceToUserUnit);
 
             var myChart = new Chart(width: 250, height: 120);
 
@@ -478,7 +478,7 @@ namespace MileageStats.Web.Controllers
         public JsonResult JsonGetVehicleStatisticSeries(int id)
         {
             StatisticSeries chartData = chartDataService.CalculateSeriesForVehicle(CurrentUserId, id,
-                                                                                   DateTime.UtcNow.AddMonths(-12), null, FuelConsumptionHelper.ConvertConsumptionToUserUnits, FuelConsumptionHelper.ConvertDistanceToUserUnit);
+                                                                                   DateTime.UtcNow.AddMonths(-12), null, UnitConversionHelper.ConvertConsumptionToUserUnits, UnitConversionHelper.ConvertDistanceToUserUnit);
             return Json(chartData);
         }
 
@@ -497,9 +497,9 @@ namespace MileageStats.Web.Controllers
             return new JsonStatisticsViewModel
                        {
                            AverageFillupPrice = statistics.AverageFillupPrice,
-                           AverageFuelEfficiency = UserDisplayPreferencesHelper.DisplayFuelConsumptionAverageFor(statistics.AverageFuelEfficiency),
-                           AverageCostPerMonth = UserDisplayPreferencesHelper.DisplayPriceFor(statistics.AverageCostPerMonth, 0),
-                           AverageCostToDrive = UserDisplayPreferencesHelper.DisplayPriceInCentsFor(FuelConsumptionHelper.ConvertDistanceRatioToUserUnit(statistics.AverageCostToDrive)),
+                           AverageFuelEfficiency = UserDisplayPreferencesHelper.FormatFuelConsumptionAverageFor(statistics.AverageFuelEfficiency),
+                           AverageCostPerMonth = UserDisplayPreferencesHelper.FormatPriceFor(statistics.AverageCostPerMonth, 0),
+                           AverageCostToDrive = UserDisplayPreferencesHelper.FormatPriceInCentsFor(UnitConversionHelper.ConvertDistanceRatioToUserUnit(statistics.AverageCostToDrive)),
                            Odometer = statistics.Odometer,
                            TotalDistance = statistics.TotalDistance,
                            TotalFuelCost = statistics.TotalFuelCost,
@@ -521,7 +521,7 @@ namespace MileageStats.Web.Controllers
                            Year = vehicle.Year,
                            MakeName = vehicle.MakeName,
                            ModelName = vehicle.ModelName,
-                           Odometer = vehicle.Odometer.HasValue ? UserDisplayPreferencesHelper.DistanceTextWithAbbreviationFor(vehicle.Odometer.Value) : null,
+                           Odometer = vehicle.Odometer.HasValue ? UserDisplayPreferencesHelper.FormatDistanceTextWithAbbreviationFor(vehicle.Odometer.Value) : null,
                            PhotoId = vehicle.PhotoId,
                            LifeTimeStatistics = new JsonStatisticsViewModel(),
                            //not used
@@ -536,9 +536,9 @@ namespace MileageStats.Web.Controllers
                        {
                            Name = statistics.Name,
                            AverageFillupPrice = statistics.AverageFillupPrice,
-                           AverageFuelEfficiency = UserDisplayPreferencesHelper.DisplayFuelConsumptionAverageFor(statistics.AverageFuelEfficiency),
-                           AverageCostPerMonth = UserDisplayPreferencesHelper.DisplayPriceFor(statistics.AverageCostPerMonth, 0),
-                           AverageCostToDrive = UserDisplayPreferencesHelper.DisplayPriceInCentsFor(FuelConsumptionHelper.ConvertDistanceRatioToUserUnit(statistics.AverageCostToDrive)),
+                           AverageFuelEfficiency = UserDisplayPreferencesHelper.FormatFuelConsumptionAverageFor(statistics.AverageFuelEfficiency),
+                           AverageCostPerMonth = UserDisplayPreferencesHelper.FormatPriceFor(statistics.AverageCostPerMonth, 0),
+                           AverageCostToDrive = UserDisplayPreferencesHelper.FormatPriceInCentsFor(UnitConversionHelper.ConvertDistanceRatioToUserUnit(statistics.AverageCostToDrive)),
                            Odometer = statistics.Odometer,
                            TotalDistance = statistics.TotalDistance,
                            TotalFuelCost = statistics.TotalFuelCost,

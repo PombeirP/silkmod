@@ -21,6 +21,7 @@ using Microsoft.Practices.ServiceLocation;
 using MileageStats.Domain.Contracts;
 using MileageStats.Domain.Handlers;
 using MileageStats.Domain.Models;
+using MileageStats.Web.Helpers;
 using MileageStats.Web.Models;
 using MileageStats.Model;
 
@@ -126,11 +127,11 @@ namespace MileageStats.Web.Controllers
                 .ToList();
 
             var viewModel = new ReminderDetailsViewModel
-            {
-                VehicleList = new VehicleListViewModel(vehicles, vehicle.VehicleId) { IsCollapsed = true },
-                Reminder = ToFormModel(reminders.FirstOrDefault()),
-                Reminders = new SelectedItemList<ReminderSummaryModel>(list, Enumerable.FirstOrDefault),
-            };
+                                {
+                                    VehicleList = new VehicleListViewModel(vehicles, vehicle.VehicleId) {IsCollapsed = true},
+                                    Reminder = ToFormModel(reminders.FirstOrDefault()),
+                                    Reminders = new SelectedItemList<ReminderSummaryModel>(list, Enumerable.FirstOrDefault),
+                                };
 
             return View(viewModel);
         }
@@ -254,9 +255,10 @@ namespace MileageStats.Web.Controllers
                            Title = reminder.Title,
                            Remarks = reminder.Remarks,
                            DueDate = reminder.DueDate.HasValue
-                                                    ? String.Format("{0:d MMM yyyy}", reminder.DueDate)
+                                                    ? String.Format("{0:d}", reminder.DueDate)
                                                     : null,
                            DueDistance = reminder.DueDistance,
+                           DueOnFormatted = reminder.DueDate.HasValue || reminder.DueDistance.HasValue ? ReminderSummaryHelper.FormatDueOnText(reminder) : null,
                            IsOverdue = reminder.IsOverdue ?? false,
                            IsFulfilled = reminder.IsFulfilled,
                        };

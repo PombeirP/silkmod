@@ -18,12 +18,8 @@
                         data-reminder-id="${$value.ReminderId}"
                         data-action="select-reminder">
                     <h1>${$value.Title}</h1>
-                        {{if $value.DueDate && $value.DueDistance}}
-                            <p>Due on ${$value.DueDate} or at ${$value.DueDistance} miles.</p>
-                        {{else $value.DueDate}}
-                            <p>Due on ${$value.DueDate}.</p>
-                        {{else $value.DueDistance}}
-                            <p>Due at ${$value.DueDistance} miles.</p>
+                        {{if $value.DueOnFormatted}}
+                            <p>Due on ${$value.DueOnFormatted}.</p>
                         {{/if}}
                 </a>
                 {{/each}}                

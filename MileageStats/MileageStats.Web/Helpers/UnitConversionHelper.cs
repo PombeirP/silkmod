@@ -3,7 +3,7 @@ using MileageStats.Model;
 
 namespace MileageStats.Web.Helpers
 {
-    public static class FuelConsumptionHelper
+    public static class UnitConversionHelper
     {
         private const double LitersPerUsGallon = 3.78541178;
         private const double LitersPerImperialGallon = 4.54609188;

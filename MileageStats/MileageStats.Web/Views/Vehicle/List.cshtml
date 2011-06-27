@@ -71,7 +71,7 @@
                                 Summary Statistics</h1>
                             <div class="statistic mile-per-gallon">@Html.DisplayFuelConsumptionAverageFor(Model.FleetSummaryStatistics.AverageFuelEfficiency)<span
                                 class="units">@Html.DisplayFuelConsumptionAverageAbbreviation()</span></div>
-                            <div class="statistic cost-per-month">@Html.DisplayPriceInCentsFor(FuelConsumptionHelper.ConvertDistanceRatioToUserUnit(Model.FleetSummaryStatistics.AverageCostToDrive))<span
+                            <div class="statistic cost-per-month">@Html.DisplayPriceInCentsFor(UnitConversionHelper.ConvertDistanceRatioToUserUnit(Model.FleetSummaryStatistics.AverageCostToDrive))<span
                                 class="units">per @Html.DisplayDistanceUnitAbbreviation(plural: false)</span></div>
                             <div class="statistic cost-per-mile">@Html.DisplayPriceFor(Model.FleetSummaryStatistics.AverageCostPerMonth, 0)<span
                                 class="units">per month</span></div>
@@ -86,7 +86,7 @@
                                 {
                                  <a class="list-item @(item.Reminder.IsOverdue ? "overdue" : null)" href="@Url.Action("Details", "Reminder", new { id = item.Reminder.ReminderId })" data-vehicle-id="@item.VehicleId">
                                     <h1>@item.Reminder.Title</h1>
-                                    <p>Due @item.Reminder.DueOnFormatted</p>
+                                    <p>Due @Html.DisplayDueOnText(@item.Reminder)</p>
                                     <p>@item.VehicleMakeName @item.VehicleModelName</p>
                                 </a>}
                             </div>

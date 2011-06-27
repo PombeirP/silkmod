@@ -483,4 +483,16 @@
   <data name="UserDisplayPreferencesHelper_DisplayDistanceUnitAbbreviation_mile">
     <value xml:space="preserve">mile</value>
   </data>
+  <data name="UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_kilometers">
+    <value xml:space="preserve">kilometers</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_kilometer">
+    <value xml:space="preserve">kilometer</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_miles">
+    <value xml:space="preserve">miles</value>
+  </data>
+  <data name="UserDisplayPreferencesHelper_DisplayDistanceWithAbbreviation_mile">
+    <value xml:space="preserve">mile</value>
+  </data>
 </root>
