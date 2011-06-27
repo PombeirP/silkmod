@@ -43,12 +43,14 @@ namespace MileageStats.Data.SqlCe
 
 #if DEBUG
 			Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
-#else
-			Database.DefaultConnectionFactory = new SqlConnectionFactory();
-#endif
 
 			// Sets the default database initialization code for working with Sql Server Compact databases
             Database.SetInitializer(new DropCreateIfModelChangesSqlCeInitializer<MileageStatsDbContext>());
+#else
+			Database.DefaultConnectionFactory = new SqlConnectionFactory();
+
+			Database.SetInitializer(new DontDropDbJustCreateTablesIfModelChanged<MileageStatsDbContext>());
+#endif
         }
 
         protected MileageStatsDbContext Context
