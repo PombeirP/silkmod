@@ -44,7 +44,7 @@ namespace MileageStats.Data.SqlCe
 #if DEBUG
 			Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
 #else
-			Database.DefaultConnectionFactory = System.Data.Common.DbProviderFactories.GetFactory("System.Data.SqlClient");
+			Database.DefaultConnectionFactory = new SqlConnectionFactory();
 #endif
 
 			// Sets the default database initialization code for working with Sql Server Compact databases
