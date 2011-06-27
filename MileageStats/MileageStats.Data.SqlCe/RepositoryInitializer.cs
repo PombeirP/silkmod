@@ -25,67 +25,67 @@ using MileageStats.Model;
 
 namespace MileageStats.Data.SqlCe
 {
-    /// <summary>
-    /// Initializes the repository for SQLCE
-    /// </summary>
-    public class RepositoryInitializer : IRepositoryInitializer
-    {
-        private readonly IUnitOfWork unitOfWork;
+	/// <summary>
+	/// Initializes the repository for SQLCE
+	/// </summary>
+	public class RepositoryInitializer : IRepositoryInitializer
+	{
+		private readonly IUnitOfWork unitOfWork;
 
-        public RepositoryInitializer(IUnitOfWork unitOfWork)
-        {
-            if (unitOfWork == null)
-            {
-                throw new ArgumentNullException("unitOfWork");
-            }
+		public RepositoryInitializer(IUnitOfWork unitOfWork)
+		{
+			if (unitOfWork == null)
+			{
+				throw new ArgumentNullException("unitOfWork");
+			}
 
-            this.unitOfWork = unitOfWork;
+			this.unitOfWork = unitOfWork;
 
 #if DEBUG
 			Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
 
 			// Sets the default database initialization code for working with Sql Server Compact databases
-            Database.SetInitializer(new DropCreateIfModelChangesSqlCeInitializer<MileageStatsDbContext>());
+			Database.SetInitializer(new DropCreateIfModelChangesSqlCeInitializer<MileageStatsDbContext>());
 #else
 			Database.DefaultConnectionFactory = new SqlConnectionFactory();
 
-			Database.SetInitializer(new DontDropDbJustCreateTablesIfModelChanged<MileageStatsDbContext>());
+			Database.SetInitializer(new Devtalk.EF.CodeFirst.DontDropDbJustCreateTablesIfModelChanged<MileageStatsDbContext>());
 #endif
-        }
+		}
 
-        protected MileageStatsDbContext Context
-        {
-            get { return (MileageStatsDbContext) unitOfWork; }
-        }
+		protected MileageStatsDbContext Context
+		{
+			get { return (MileageStatsDbContext) unitOfWork; }
+		}
 
-        #region IRepositoryInitializer Members
+		#region IRepositoryInitializer Members
 
-        public void Initialize()
-        {
-            Context.Set<Country>().ToList().Count();
+		public void Initialize()
+		{
+			Context.Set<Country>().ToList().Count();
 
-            IEnumerable<string> indexes =
-                Context.Database.SqlQuery<string>("SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES;");
+			IEnumerable<string> indexes =
+				Context.Database.SqlQuery<string>("SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES;");
 
-            if (!indexes.Contains("IDX_FillupEntries_FillupEntryId"))
-            {
-                Context.Database.ExecuteSqlCommand(
-                    "CREATE UNIQUE INDEX IDX_FillupEntries_FillupEntryId ON FillupEntries (FillupEntryId);");
-            }
+			if (!indexes.Contains("IDX_FillupEntries_FillupEntryId"))
+			{
+				Context.Database.ExecuteSqlCommand(
+					"CREATE UNIQUE INDEX IDX_FillupEntries_FillupEntryId ON FillupEntries (FillupEntryId);");
+			}
 
-            if (!indexes.Contains("IDX_Reminders_ReminderId"))
-            {
-                Context.Database.ExecuteSqlCommand(
-                    "CREATE UNIQUE INDEX IDX_Reminders_ReminderId ON Reminders (ReminderId);");
-            }
+			if (!indexes.Contains("IDX_Reminders_ReminderId"))
+			{
+				Context.Database.ExecuteSqlCommand(
+					"CREATE UNIQUE INDEX IDX_Reminders_ReminderId ON Reminders (ReminderId);");
+			}
 
-            if (!indexes.Contains("IDX_VehiclePhotos_VehiclePhotoId"))
-            {
-                Context.Database.ExecuteSqlCommand(
-                    "CREATE UNIQUE INDEX IDX_VehiclePhotos_VehiclePhotoId ON VehiclePhotos (VehiclePhotoId);");
-            }
-        }
+			if (!indexes.Contains("IDX_VehiclePhotos_VehiclePhotoId"))
+			{
+				Context.Database.ExecuteSqlCommand(
+					"CREATE UNIQUE INDEX IDX_VehiclePhotos_VehiclePhotoId ON VehiclePhotos (VehiclePhotoId);");
+			}
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }
