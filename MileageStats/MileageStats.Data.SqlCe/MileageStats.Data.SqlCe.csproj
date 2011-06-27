@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SqlRepositoryInitializer.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -82,7 +83,7 @@
     <Compile Include="Repositories\VehicleManufacturerRepository.cs" />
     <Compile Include="Repositories\VehiclePhotoRepository.cs" />
     <Compile Include="Repositories\VehicleRepository.cs" />
-    <Compile Include="RepositoryInitializer.cs" />
+    <Compile Include="SqlCeRepositoryInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MileageStats.Data\MileageStats.Data.csproj">

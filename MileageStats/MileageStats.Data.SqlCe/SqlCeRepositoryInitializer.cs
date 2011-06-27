@@ -28,11 +28,11 @@ namespace MileageStats.Data.SqlCe
 	/// <summary>
 	/// Initializes the repository for SQLCE
 	/// </summary>
-	public class RepositoryInitializer : IRepositoryInitializer
+	public class SqlCeRepositoryInitializer : IRepositoryInitializer
 	{
 		private readonly IUnitOfWork unitOfWork;
 
-		public RepositoryInitializer(IUnitOfWork unitOfWork)
+		public SqlCeRepositoryInitializer(IUnitOfWork unitOfWork)
 		{
 			if (unitOfWork == null)
 			{
@@ -41,16 +41,10 @@ namespace MileageStats.Data.SqlCe
 
 			this.unitOfWork = unitOfWork;
 
-#if DEBUG
 			Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
 
 			// Sets the default database initialization code for working with Sql Server Compact databases
 			Database.SetInitializer(new DropCreateIfModelChangesSqlCeInitializer<MileageStatsDbContext>());
-#else
-			Database.DefaultConnectionFactory = new SqlConnectionFactory();
-
-			Database.SetInitializer(new Devtalk.EF.CodeFirst.DontDropDbJustCreateTablesIfModelChanged<MileageStatsDbContext>());
-#endif
 		}
 
 		protected MileageStatsDbContext Context
@@ -64,13 +58,8 @@ namespace MileageStats.Data.SqlCe
 		{
 			Context.Set<Country>().ToList().Count();
 
-#if DEBUG
 			IEnumerable<string> indexes =
 				Context.Database.SqlQuery<string>("SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES;");
-#else
-			IEnumerable<string> indexes =
-				Context.Database.SqlQuery<string>("SELECT name FROM sys.indexes;");
-#endif
 
 			if (!indexes.Contains("IDX_FillupEntries_FillupEntryId"))
 			{
