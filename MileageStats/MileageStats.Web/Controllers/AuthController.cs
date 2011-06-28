@@ -64,7 +64,7 @@ namespace MileageStats.Web.Controllers
             }
             catch (Exception e)
             {
-                this.TempData["Message"] = e.Message;//Resources.AuthController_SignIn_UnableToAuthenticateWithProvider;
+                this.TempData["Message"] = Resources.AuthController_SignIn_UnableToAuthenticateWithProvider;
                 return this.RedirectToAction("SignIn");
             }
         }
