@@ -7,12 +7,13 @@ namespace MileageStats.Domain
     {
         public static void Log(Exception exception)
         {
-            var errorLogger = ServiceLocator.Current.GetInstance<IErrorLogger>();
-
-            if (errorLogger != null)    // It could be null in a test environment
+            if (ServiceLocator.Current == null)
             {
-                errorLogger.Log(exception);
+                return; // It could be null in a test environment
             }
+
+            var errorLogger = ServiceLocator.Current.GetInstance<IErrorLogger>();
+            errorLogger.Log(exception);
         }
     }
 }
