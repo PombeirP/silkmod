@@ -1,19 +1,24 @@
 using System;
-using Microsoft.Practices.ServiceLocation;
 
 namespace MileageStats.Domain
 {
     public static class ErrorLog
     {
+        private static IErrorLogger logger;
+
+        public static void Setup(IErrorLogger errorLogger)
+        {
+            logger = errorLogger;
+        }
+
         public static void Log(Exception exception)
         {
-            if (ServiceLocator.Current == null)
+            if (logger == null)
             {
                 return; // It could be null in a test environment
             }
 
-            var errorLogger = ServiceLocator.Current.GetInstance<IErrorLogger>();
-            errorLogger.Log(exception);
+            logger.Log(exception);
         }
     }
 }

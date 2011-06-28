@@ -128,6 +128,7 @@ namespace MileageStats.Web
             RegisterRoutes(RouteTable.Routes);
 
             InitializeDependencyInjectionContainer();
+            InitializeErrorLogger();
             InitializeDatabase();
         }
 
@@ -168,6 +169,12 @@ namespace MileageStats.Web
             var serviceLocator = new UnityServiceLocator(container);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
+        }
+
+        private static void InitializeErrorLogger()
+        {
+            var errorLogger = ServiceLocator.Current.GetInstance<IErrorLogger>();
+            ErrorLog.Setup(errorLogger);
         }
 
         private static void InitializeDatabase()
