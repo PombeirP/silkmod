@@ -56,10 +56,19 @@ namespace MileageStats.Web.Controllers
 
             var fetch = new FetchRequest();
             var returnUrl = this.Url.Action("SignInResponse", "Auth", null, this.Request.Url.Scheme);
+			var returnUri = new Uri(returnUrl);
+			if (HttpContext.Request.IsLocal)
+			{
+				returnUri.Port = HttpContext.Request.Url.Port;
+			}
+			else
+			{
+				returnUri.Port = 80;
+			}
 
             try
             {
-                return this.relyingParty.RedirectToProvider(providerUrl, UrlHelper.GenerateContentUrl(returnUrl, this.HttpContext), fetch);
+				return this.relyingParty.RedirectToProvider(providerUrl, returnUri.AbsoluteUri, fetch);
             }
             catch (Exception e)
             {
