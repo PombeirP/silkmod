@@ -56,15 +56,7 @@ namespace MileageStats.Web.Controllers
 
             var fetch = new FetchRequest();
             var returnUrl = this.Url.Action("SignInResponse", "Auth", null, this.Request.Url.Scheme);
-			var returnUri = new UriBuilder(returnUrl);
-			if (HttpContext.Request.IsLocal)
-			{
-				returnUri.Port = HttpContext.Request.Url.Port;
-			}
-			else
-			{
-				returnUri.Port = 80;
-			}
+            var returnUri = new UriBuilder(returnUrl) {Port = HttpContext.Request.IsLocal ? HttpContext.Request.Url.Port : 80};
 
             try
             {
