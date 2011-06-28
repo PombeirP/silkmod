@@ -22,7 +22,7 @@ namespace MileageStats.Web
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="db887")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="db3070")]
 	public partial class LogDBDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -36,7 +36,7 @@ namespace MileageStats.Web
     #endregion
 		
 		public LogDBDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["database"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["MileageStatsDbContext"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
