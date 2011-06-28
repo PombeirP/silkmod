@@ -151,6 +151,7 @@
     <Compile Include="UnityExtensions\IPerRequestStore.cs" />
     <Compile Include="UnityExtensions\UnityHttpContextPerRequestLifetimeManager.cs" />
     <Compile Include="UnityExtensions\UnityPerRequestLifetimeManager.cs" />
+    <Compile Include="UrlHelperExtensions.cs" />
     <Compile Include="UserServicesExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

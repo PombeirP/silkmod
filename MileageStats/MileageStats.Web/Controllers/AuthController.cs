@@ -59,7 +59,7 @@ namespace MileageStats.Web.Controllers
 
             try
             {
-                return this.relyingParty.RedirectToProvider(providerUrl, returnUrl, fetch);
+                return this.relyingParty.RedirectToProvider(providerUrl, UrlHelper.GenerateContentUrl(returnUrl, this.HttpContext), fetch);
             }
             catch (Exception e)
             {
