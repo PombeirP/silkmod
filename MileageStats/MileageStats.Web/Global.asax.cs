@@ -14,7 +14,9 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
@@ -22,16 +24,16 @@ using System.Web.Routing;
 using System.Web.Security;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
-using MileageStats.Web.Models;
-using MileageStats.Web.Authentication;
 using MileageStats.Data;
+using MileageStats.Web.Authentication;
+using MileageStats.Web.Models;
 
 namespace MileageStats.Web
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
 
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
@@ -40,8 +42,7 @@ namespace MileageStats.Web
 
         public static void RegisterRoutes(RouteCollection routes)
         {
-
-            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.([iI][cC][oO]|[gG][iI][fF])(/.*)?" });
+            routes.IgnoreRoute("{*favicon}", new {favicon = @"(.*/)?favicon.([iI][cC][oO]|[gG][iI][fF])(/.*)?"});
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
@@ -54,37 +55,37 @@ namespace MileageStats.Web
             routes.MapRoute(
                 "VehiclePhotoRoute", // Route name
                 "Vehicle/Photo/{vehiclePhotoId}", // URL with parameters
-                new { controller = "Vehicle", action = "Photo" } // Parameter defaults
+                new {controller = "Vehicle", action = "Photo"} // Parameter defaults
                 );
 
             routes.MapRoute(
                 "VehicleFuelEfficiencyChartRoute",
                 "Vehicle/FuelEfficiencyChart/{userId}/{vehicleId}",
-                new { controller = "Vehicle", action = "FuelEfficiencyChart" }
+                new {controller = "Vehicle", action = "FuelEfficiencyChart"}
                 );
 
             routes.MapRoute(
                 "VehicleTotalDistanceChartRoute",
                 "Vehicle/TotalDistanceChart/{userId}/{vehicleId}",
-                new { controller = "Vehicle", action = "TotalDistanceChart" }
+                new {controller = "Vehicle", action = "TotalDistanceChart"}
                 );
 
             routes.MapRoute(
                 "VehicleTotalCostChartRoute",
                 "Vehicle/TotalCostChart/{userId}/{vehicleId}",
-                new { controller = "Vehicle", action = "TotalCostChart" }
+                new {controller = "Vehicle", action = "TotalCostChart"}
                 );
 
             routes.MapRoute(
                 "ListRoute", // Route name
                 "{controller}/List/{vehicleId}", // URL with parameters
-                new { action = "List", vehicleId = UrlParameter.Optional } // Parameter defaults
+                new {action = "List", vehicleId = UrlParameter.Optional} // Parameter defaults
                 );
 
             routes.MapRoute(
                 "JsonListRoute", // Route name
                 "{controller}/JsonList/{vehicleId}", // URL with parameters
-                new { action = "JsonList" } // Parameter defaults
+                new {action = "JsonList"} // Parameter defaults
                 );
 
             routes.MapRoute(
@@ -96,7 +97,7 @@ namespace MileageStats.Web
             routes.MapRoute(
                 "ImportRoute", // Route name
                 "{controller}/Import/{vehicleId}",
-                new { action = "Import" }
+                new {action = "Import"}
                 );
 
             routes.MapRoute(
@@ -104,7 +105,7 @@ namespace MileageStats.Web
                 "{controller}/Details/{id}",
                 new {action = "Details"}
                 );
-           
+
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
@@ -114,7 +115,7 @@ namespace MileageStats.Web
 
         public override void Init()
         {
-            this.PostAuthenticateRequest += this.PostAuthenticateRequestHandler;
+            PostAuthenticateRequest += PostAuthenticateRequestHandler;
             base.Init();
         }
 
@@ -129,19 +130,43 @@ namespace MileageStats.Web
             InitializeDatabase();
         }
 
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            try
+            {
+                Exception exception = Server.GetLastError();
+                var logEntry = new LogEntry
+                                   {
+                                       Date = DateTime.Now,
+                                       Message = exception.Message,
+                                       StackTrace = exception.StackTrace,
+                                   };
+
+                using (var datacontext = new LogDBDataContext())
+                {
+                    datacontext.LogEntries.InsertOnSubmit(logEntry);
+                    datacontext.SubmitChanges();
+                }
+            }
+            catch (Exception)
+            {
+                // failed to record exception
+            }
+        }
+
         private void PostAuthenticateRequestHandler(object sender, EventArgs e)
         {
-            HttpCookie authCookie = this.Context.Request.Cookies[FormsAuthentication.FormsCookieName];
+            HttpCookie authCookie = Context.Request.Cookies[FormsAuthentication.FormsCookieName];
             if (IsValidAuthCookie(authCookie))
             {
                 var formsAuthentication = ServiceLocator.Current.GetInstance<IFormsAuthentication>();
 
                 var ticket = formsAuthentication.Decrypt(authCookie.Value);
                 var mileageStatsIdentity = new MileageStatsIdentity(ticket);
-                this.Context.User = new GenericPrincipal(mileageStatsIdentity, null);
-                
+                Context.User = new GenericPrincipal(mileageStatsIdentity, null);
+
                 // Reset cookie for a sliding expiration.
-                formsAuthentication.SetAuthCookie(this.Context, ticket);
+                formsAuthentication.SetAuthCookie(Context, ticket);
             }
         }
 
@@ -150,7 +175,7 @@ namespace MileageStats.Web
             return authCookie != null && !String.IsNullOrEmpty(authCookie.Value);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability",
+        [SuppressMessage("Microsoft.Reliability",
             "CA2000:Dispose objects before losing scope",
             Justification = "This should survive the lifetime of the application.")]
         private static void InitializeDependencyInjectionContainer()
@@ -164,7 +189,7 @@ namespace MileageStats.Web
         private static void InitializeDatabase()
         {
             var repositoryInitializer = ServiceLocator.Current.GetInstance<IRepositoryInitializer>();
-            repositoryInitializer.Initialize();           
+            repositoryInitializer.Initialize();
         }
     }
 }
