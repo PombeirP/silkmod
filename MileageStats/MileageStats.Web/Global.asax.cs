@@ -25,6 +25,7 @@ using System.Web.Security;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using MileageStats.Data;
+using MileageStats.Domain;
 using MileageStats.Web.Authentication;
 using MileageStats.Web.Models;
 
@@ -132,26 +133,9 @@ namespace MileageStats.Web
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            try
-            {
-                Exception exception = Server.GetLastError();
-                var logEntry = new LogEntry
-                                   {
-                                       Date = DateTime.Now,
-                                       Message = exception.Message,
-                                       StackTrace = exception.StackTrace,
-                                   };
+            var exception = Server.GetLastError();
 
-                using (var datacontext = new LogDBDataContext())
-                {
-                    datacontext.LogEntries.InsertOnSubmit(logEntry);
-                    datacontext.SubmitChanges();
-                }
-            }
-            catch (Exception)
-            {
-                // failed to record exception
-            }
+            ErrorLog.Log(exception);
         }
 
         private void PostAuthenticateRequestHandler(object sender, EventArgs e)

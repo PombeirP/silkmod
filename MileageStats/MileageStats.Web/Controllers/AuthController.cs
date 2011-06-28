@@ -19,6 +19,7 @@ using System.Web.Mvc;
 using DotNetOpenAuth.OpenId.Extensions.AttributeExchange;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.Practices.Unity;
+using MileageStats.Domain;
 using MileageStats.Domain.Contracts;
 using MileageStats.Web.Authentication;
 using MileageStats.Domain.Properties;
@@ -62,8 +63,10 @@ namespace MileageStats.Web.Controllers
             {
                 return this.relyingParty.RedirectToProvider(providerUrl, returnUri.Uri.AbsoluteUri, fetch);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                ErrorLog.Log(exception);
+
                 this.TempData["Message"] = Resources.AuthController_SignIn_UnableToAuthenticateWithProvider;
                 return this.RedirectToAction("SignIn");
             }

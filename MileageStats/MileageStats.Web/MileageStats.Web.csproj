@@ -114,6 +114,7 @@
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Authentication\LocalFakeRelyingParty.cs" />
+    <Compile Include="ErrorLogger.cs" />
     <Compile Include="Helpers\ReminderSummaryHelper.cs" />
     <Compile Include="Helpers\UserDisplayPreferencesHelper.cs" />
     <Compile Include="Helpers\UnitConversionHelper.cs" />
