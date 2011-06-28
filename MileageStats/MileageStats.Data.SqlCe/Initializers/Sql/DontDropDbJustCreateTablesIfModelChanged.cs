@@ -14,42 +14,48 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System;
-using System.Data.Entity;
 
-namespace MileageStats.Data.SqlCe.Initializers
+using System.Data.Entity;
+using System.Linq;
+using MileageStats.Model;
+
+namespace MileageStats.Data.SqlCe.Initializers.Sql
 {
     /// <summary>
-    /// An implementation of IDatabaseInitializer that will always recreate and optionally re-seed the
-    /// database the first time that a context is used in the app domain.
-    /// To seed the database, create a derived class and override the Seed method.
+    /// A base class for initializing SQL databases in AppHarbor.
     /// </summary>
-    /// <typeparam name="TContext">The type of the context.</typeparam>
-    internal class DropCreateAlwaysSqlCeInitializer<TContext> : SqlCeInitializer<TContext> where TContext : DbContext
+    /// <typeparam name="T">The concrete DbContext to use.</typeparam>
+    internal class DontDropDbJustCreateTablesIfModelChanged<T> : IDatabaseInitializer<T> where T : DbContext
     {
-        #region Strategy implementation
+        private readonly Devtalk.EF.CodeFirst.DontDropDbJustCreateTablesIfModelChanged<T> baseInitializer = new Devtalk.EF.CodeFirst.DontDropDbJustCreateTablesIfModelChanged<T>();
+
+        #region Seeding methods
 
         /// <summary>
-        /// Executes the strategy to initialize the database for the given context.
+        /// A method that should be overridden to actually add data to the context for seeding. 
+        /// The default implementation does nothing.
         /// </summary>
-        /// <param name="context">The context.</param>
-        public override void InitializeDatabase(TContext context)
+        /// <param name="context">The context to seed.</param>
+        protected virtual void Seed(T context)
         {
-            if (context == null)
+            var seeder = context as ISeedDatabase;
+            if (seeder != null)
             {
-                throw new ArgumentNullException("context");
+                seeder.Seed();
             }
-            var replacedContext = ReplaceSqlCeConnection(context);
-
-            if (replacedContext.Database.Exists())
-            {
-                replacedContext.Database.Delete();
-            }
-            context.Database.Create();
-            this.Seed(context);
-            context.SaveChanges();
         }
 
         #endregion
+
+        public virtual void InitializeDatabase(T context)
+        {
+            baseInitializer.InitializeDatabase(context);
+
+            if (!context.Set<Country>().Any())
+            {
+                this.Seed(context);
+                context.SaveChanges();
+            }
+        }
     }
 }

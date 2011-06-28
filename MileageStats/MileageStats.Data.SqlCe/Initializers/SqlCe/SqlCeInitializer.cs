@@ -14,12 +14,13 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
 using System.Data.Entity;
 using System.Data.SqlServerCe;
 using System.IO;
 
-namespace MileageStats.Data.SqlCe.Initializers
+namespace MileageStats.Data.SqlCe.Initializers.SqlCe
 {
     /// <summary>
     /// A base class for initializing SQL CE databases.

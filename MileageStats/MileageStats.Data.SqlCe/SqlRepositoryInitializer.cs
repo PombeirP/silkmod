@@ -20,13 +20,13 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using MileageStats.Data.SqlCe.Initializers;
+using MileageStats.Data.SqlCe.Initializers.Sql;
 using MileageStats.Model;
 
 namespace MileageStats.Data.SqlCe
 {
 	/// <summary>
-	/// Initializes the repository for SQLCE
+	/// Initializes the repository for SQL
 	/// </summary>
 	public class SqlRepositoryInitializer : IRepositoryInitializer
 	{
@@ -43,7 +43,7 @@ namespace MileageStats.Data.SqlCe
 
 			Database.DefaultConnectionFactory = new SqlConnectionFactory();
 
-			Database.SetInitializer(new Devtalk.EF.CodeFirst.DontDropDbJustCreateTablesIfModelChanged<MileageStatsDbContext>());
+			Database.SetInitializer(new DontDropDbJustCreateTablesIfModelChanged<MileageStatsDbContext>());
 		}
 
 		protected MileageStatsDbContext Context

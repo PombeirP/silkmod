@@ -14,21 +14,19 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
 using System.Data.Entity;
-using System.Transactions;
 
-namespace MileageStats.Data.SqlCe.Initializers
+namespace MileageStats.Data.SqlCe.Initializers.SqlCe
 {
     /// <summary>
-    /// An implementation of IDatabaseInitializer that will <b>DELETE</b>, recreate, and optionally re-seed the
-    /// database only if the model has changed since the database was created.  This is achieved by writing a
-    /// hash of the store model to the database when it is created and then comparing that hash with one
-    /// generated from the current model.
+    /// An implementation of IDatabaseInitializer that will always recreate and optionally re-seed the
+    /// database the first time that a context is used in the app domain.
     /// To seed the database, create a derived class and override the Seed method.
     /// </summary>
-    internal class DropCreateIfModelChangesSqlCeInitializer<TContext> : SqlCeInitializer<TContext>
-        where TContext : DbContext
+    /// <typeparam name="TContext">The type of the context.</typeparam>
+    internal class DropCreateAlwaysSqlCeInitializer<TContext> : SqlCeInitializer<TContext> where TContext : DbContext
     {
         #region Strategy implementation
 
@@ -42,28 +40,13 @@ namespace MileageStats.Data.SqlCe.Initializers
             {
                 throw new ArgumentNullException("context");
             }
-
             var replacedContext = ReplaceSqlCeConnection(context);
 
-            bool databaseExists;
-            using (new TransactionScope(TransactionScopeOption.Suppress))
+            if (replacedContext.Database.Exists())
             {
-                databaseExists = replacedContext.Database.Exists();
-            }
-
-            if (databaseExists)
-            {
-                if (context.Database.CompatibleWithModel(throwIfNoMetadata: true))
-                {
-                    return;
-                }
-
                 replacedContext.Database.Delete();
             }
-
-            // Database didn't exist or we deleted it, so we now create it again.
             context.Database.Create();
-
             this.Seed(context);
             context.SaveChanges();
         }

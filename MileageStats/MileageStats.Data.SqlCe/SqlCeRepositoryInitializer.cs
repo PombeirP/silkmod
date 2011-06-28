@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using MileageStats.Data.SqlCe.Initializers;
+using MileageStats.Data.SqlCe.Initializers.SqlCe;
 using MileageStats.Model;
 
 namespace MileageStats.Data.SqlCe
