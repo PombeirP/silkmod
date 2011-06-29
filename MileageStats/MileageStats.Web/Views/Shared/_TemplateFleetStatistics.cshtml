@@ -1,8 +1,10 @@
 ﻿@using MileageStats.Web.Helpers
 <script id="fleet-statistics-template" type="text/x-jquery-tmpl">
     <h1>Summary Statistics</h1>
+    {{if TotalDistance }}
     <div class="statistic mile-per-gallon">${AverageFuelEfficiency}<span
         class="units">@Html.DisplayFuelConsumptionAverageAbbreviation()</span></div>
+    {{/if}}
     <div class="statistic cost-per-mile">${AverageCostToDrive}<span
         class="units">per @Html.DisplayDistanceUnitAbbreviation(false)</span></div>
     <div class="statistic cost-per-month">${AverageCostPerMonth}<span

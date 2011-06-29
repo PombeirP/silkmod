@@ -16,7 +16,6 @@
 //===================================================================================
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -500,7 +499,7 @@ namespace MileageStats.Web.Controllers
             return new JsonStatisticsViewModel
                        {
                            AverageFillupPrice = statistics.AverageFillupPrice,
-                           AverageFuelEfficiency = UserDisplayPreferencesHelper.FormatFuelConsumptionAverageFor(statistics.AverageFuelEfficiency),
+                           AverageFuelEfficiency = statistics.TotalDistance > 0 ? UserDisplayPreferencesHelper.FormatFuelConsumptionAverageFor(statistics.AverageFuelEfficiency) : null,
                            AverageCostPerMonth = UserDisplayPreferencesHelper.FormatPriceFor(statistics.AverageCostPerMonth, 0),
                            AverageCostToDrive = UserDisplayPreferencesHelper.FormatPriceInCentsFor(UnitConversionHelper.ConvertDistanceRatioToUserUnit(statistics.AverageCostToDrive)),
                            Odometer = statistics.Odometer,
@@ -539,7 +538,7 @@ namespace MileageStats.Web.Controllers
                        {
                            Name = statistics.Name,
                            AverageFillupPrice = statistics.AverageFillupPrice,
-                           AverageFuelEfficiency = UserDisplayPreferencesHelper.FormatFuelConsumptionAverageFor(statistics.AverageFuelEfficiency),
+                           AverageFuelEfficiency = statistics.TotalDistance > 0 ? UserDisplayPreferencesHelper.FormatFuelConsumptionAverageFor(statistics.AverageFuelEfficiency) : null,
                            AverageCostPerMonth = UserDisplayPreferencesHelper.FormatPriceFor(statistics.AverageCostPerMonth, 0),
                            AverageCostToDrive = UserDisplayPreferencesHelper.FormatPriceInCentsFor(UnitConversionHelper.ConvertDistanceRatioToUserUnit(statistics.AverageCostToDrive)),
                            Odometer = statistics.Odometer,

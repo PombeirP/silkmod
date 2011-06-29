@@ -47,10 +47,12 @@
                     </div>
                 </div>
                 <div class="statistics footer">
+                    {{if LastTwelveMonthsStatistics.TotalDistance }}
                     <div class="statistic mile-per-gallon">
                         <div class="quantity">${LastTwelveMonthsStatistics.AverageFuelEfficiency}</div>
                         <div class="unit">@Html.DisplayFuelConsumptionAverageAbbreviation()</div>
                     </div>
+                    {{/if}}
                     <div class="statistic cost-per-mile">
                         <div class="quantity">${LastTwelveMonthsStatistics.AverageCostToDrive}</div>
                         <div class="unit">per @Html.DisplayDistanceUnitAbbreviation(plural: false)</div>

@@ -54,12 +54,15 @@
                         </div>
                     </div>
                     <div class="statistics footer">
-                        <div class="statistic mile-per-gallon @Html.AverageFuelEfficiencyMagnitude(vehicle)">
-                            <div class="quantity">@Html.AverageFuelEfficiencyText(vehicle)</div>
-                            <div class="unit">@Html.DisplayFuelConsumptionAverageAbbreviation()</div>
-                        </div>
+                        @if (vehicle.Statistics.TotalDistance > 0)
+                        {
+                            <div class="statistic mile-per-gallon @Html.AverageFuelEfficiencyMagnitude(vehicle)">
+                                <div class="quantity">@Html.AverageFuelEfficiencyText(vehicle)</div>
+                                <div class="unit">@Html.DisplayFuelConsumptionAverageAbbreviation()</div>
+                            </div>
+                        }
                         <div class="statistic cost-per-mile">
-                            <div class="quantity">@vehicle.Statistics.AverageCostToDrive</div>
+                            <div class="quantity">@Html.DisplayPriceInCentsFor(UnitConversionHelper.ConvertDistanceRatioToUserUnit(vehicle.Statistics.AverageCostToDrive))</div>
                             <div class="unit">per @Html.DisplayDistanceUnitAbbreviation(plural: false)</div>
                         </div>
                         <div class="statistic cost-per-month">
