@@ -280,11 +280,6 @@ namespace MileageStats.Data.SqlCe
 
         public void Seed()
         {
-            SeedVehicleManufacturers();
-
-            SaveChanges();
-
-            SeedVehicles(SeedUser());
         }
 
         #endregion
