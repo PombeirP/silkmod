@@ -32,13 +32,13 @@ namespace MileageStats.Data.SqlCe.Tests.Repositories
         public void WhenConstructingRepositoryWithNullContext_ThenThrows()
         {
             Assert.Throws<ArgumentNullException>(
-                () => { var repository = new CountryRepository(null); });
+                () => { var repository = new CountryRepository(); });
         }
 
         [Fact]
         public void WhenGettingAllRecords_ThenAllRecordsAreReturned()
         {
-            var repository = new CountryRepository(new MileageStatsDbContext());
+            var repository = new CountryRepository();
 
             var countries = repository.GetAll();
 
@@ -49,7 +49,7 @@ namespace MileageStats.Data.SqlCe.Tests.Repositories
         [Fact]
         public void WhenGettingAllRecords_ThenRecordsIncludeName()
         {
-            var repository = new CountryRepository(new MileageStatsDbContext());
+            var repository = new CountryRepository();
 
             var countries = repository.GetAll().ToList();
 
@@ -60,7 +60,7 @@ namespace MileageStats.Data.SqlCe.Tests.Repositories
         [Fact]
         public void WhenGettingAllRecords_ThenRecordsIncludeRegionCode()
         {
-            var repository = new CountryRepository(new MileageStatsDbContext());
+            var repository = new CountryRepository();
 
             var countries = repository.GetAll().ToList();
 

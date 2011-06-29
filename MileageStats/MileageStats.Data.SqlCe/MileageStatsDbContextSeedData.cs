@@ -16,10 +16,8 @@
 //===================================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using MileageStats.Data.SqlCe.Properties;
@@ -29,6 +27,7 @@ namespace MileageStats.Data.SqlCe
 {
     public partial class MileageStatsDbContext : ISeedDatabase
     {
+#if DEBUG
         #region Seed Data Arrays
 
         private readonly Int32[] _distance = new[] {350, 310, 360, 220, 310, 360, 350, 340, 375, 410, 270, 330};
@@ -48,43 +47,14 @@ namespace MileageStats.Data.SqlCe
 
         public void Seed()
         {
-#if DEBUG
             SeedVehicleManufacturers();
-#endif
 
-            SeedCountries();
             SaveChanges();
 
-#if DEBUG
             SeedVehicles(SeedUser());
-#endif
         }
 
         #endregion
-
-        private void SeedCountries()
-        {
-            // Add all countries present in the .NET Framework
-            var regionInfos = CultureInfo.GetCultures(CultureTypes.SpecificCultures).Select(x => new RegionInfo(x.LCID)).ToList();
-
-            foreach (var regionInfo in regionInfos.OrderBy(x => x.EnglishName).Distinct(RegionInfoEqualityComparer.Default))
-            {
-                Countries.Add(new Country {Name = regionInfo.EnglishName, TwoLetterRegionCode = regionInfo.Name});
-            }
-        }
-
-        private class RegionInfoEqualityComparer : EqualityComparer<RegionInfo>
-        {
-            public override bool Equals(RegionInfo x, RegionInfo y)
-            {
-                return x.GeoId == y.GeoId;
-            }
-
-            public override int GetHashCode(RegionInfo obj)
-            {
-                return obj.GetHashCode();
-            }
-        }
 
         private void SeedVehicleManufacturers()
         {
@@ -305,5 +275,19 @@ namespace MileageStats.Data.SqlCe
             }
             SaveChanges();
         }
+#else
+        #region ISeedDatabase Members
+
+        public void Seed()
+        {
+            SeedVehicleManufacturers();
+
+            SaveChanges();
+
+            SeedVehicles(SeedUser());
+        }
+
+        #endregion
+#endif
     }
 }

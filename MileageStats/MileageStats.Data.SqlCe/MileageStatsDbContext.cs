@@ -45,8 +45,6 @@ namespace MileageStats.Data.SqlCe
 
             SetupVehicleManufacturerEntity(modelBuilder);
 
-            SetupCountryEntity(modelBuilder);
-
             SetupReminderEntity(modelBuilder);
         }
 
@@ -58,15 +56,6 @@ namespace MileageStats.Data.SqlCe
             modelBuilder.Entity<Reminder>().Property(r => r.Title).IsRequired();
             modelBuilder.Entity<Reminder>().Property(r => r.Title).HasMaxLength(50);
             modelBuilder.Entity<Reminder>().Property(r => r.Remarks).HasMaxLength(250);
-        }
-
-        private static void SetupCountryEntity(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Country>().HasKey(c => c.CountryId);
-            modelBuilder.Entity<Country>().Property(c => c.CountryId).HasDatabaseGeneratedOption(
-                DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<Country>().Property(c => c.Name).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<Country>().Property(c => c.TwoLetterRegionCode).IsRequired().HasMaxLength(3);
         }
 
         private static void SetupVehicleManufacturerEntity(DbModelBuilder modelBuilder) {
@@ -165,12 +154,6 @@ namespace MileageStats.Data.SqlCe
         /// An entity set of vehicle manufacturer information.
         /// </value>
         public DbSet<VehicleManufacturerInfo> VehicleManufacturerInfos { get; set; }
-
-        /// <summary>
-        /// Gets or sets the database set of allowed countries.
-        /// </summary>
-        /// <value>An entity set of strings</value>
-        public DbSet<Country> Countries { get; set; }
 
         /// <summary>
         /// Allows saving changes via the IUnitOfWork interface.

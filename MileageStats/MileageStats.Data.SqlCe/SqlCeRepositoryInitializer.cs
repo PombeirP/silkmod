@@ -56,7 +56,7 @@ namespace MileageStats.Data.SqlCe
 
 		public void Initialize()
 		{
-			Context.Set<Country>().ToList().Count();
+			Context.Set<User>().ToList().Count();
 
 			IEnumerable<string> indexes =
 				Context.Database.SqlQuery<string>("SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES;");

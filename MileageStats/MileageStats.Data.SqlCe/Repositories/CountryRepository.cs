@@ -14,23 +14,58 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using MileageStats.Model;
 
 namespace MileageStats.Data.SqlCe.Repositories
 {
-    public class CountryRepository : BaseRepository, ICountryRepository
+    public class CountryRepository : ICountryRepository
     {
-        public CountryRepository(IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+        private readonly List<Country> countriesList = new List<Country>(128);
+
+        public CountryRepository()
         {
+            SeedCountries();
         }
+
+        #region ICountryRepository Members
 
         public IEnumerable<Country> GetAll()
         {
-            return this.GetDbSet<Country>()
-                .ToList();
+            return this.countriesList.ToList();
         }
+
+        #endregion
+
+        private void SeedCountries()
+        {
+            // Add all countries present in the .NET Framework
+            List<RegionInfo> regionInfos = CultureInfo.GetCultures(CultureTypes.SpecificCultures).Select(x => new RegionInfo(x.LCID)).ToList();
+
+            foreach (RegionInfo regionInfo in regionInfos.OrderBy(x => x.EnglishName).Distinct(RegionInfoEqualityComparer.Default))
+            {
+                this.countriesList.Add(new Country {Name = regionInfo.EnglishName, TwoLetterRegionCode = regionInfo.Name});
+            }
+        }
+
+        #region Nested type: RegionInfoEqualityComparer
+
+        private class RegionInfoEqualityComparer : EqualityComparer<RegionInfo>
+        {
+            public override bool Equals(RegionInfo x, RegionInfo y)
+            {
+                return x.GeoId == y.GeoId;
+            }
+
+            public override int GetHashCode(RegionInfo obj)
+            {
+                return obj.GetHashCode();
+            }
+        }
+
+        #endregion
     }
 }
