@@ -276,9 +276,6 @@
   <data name="InvalidMultilineInput" xml:space="preserve">
     <value>Only alpha-numeric characters, new lines, and [.,_-'] are allowed.</value>
   </data>
-  <data name="UnitedStatesDisplayString" xml:space="preserve">
-    <value>United States</value>
-  </data>
   <data name="UserAuthorizationIdLabelText" xml:space="preserve">
     <value>OpenID Url</value>
   </data>
@@ -427,7 +424,7 @@
     <value>Title must be fewer than 50 characters.</value>
   </data>
   <data name="UserCountryStringLengthValidationError" xml:space="preserve">
-    <value>Country must be less than 50 characters.</value>
+    <value>Country code must be 3 or less characters.</value>
   </data>
   <data name="UserDisplayNameStringLengthValidationError" xml:space="preserve">
     <value>Display name must be less than 15 characters.</value>

@@ -16,12 +16,10 @@
 //===================================================================================
 using System;
 using System.Linq;
-using System.Collections.ObjectModel;
 using System.Security;
 using System.Web.Mvc;
 using MileageStats.Domain.Contracts;
 using MileageStats.Domain.Models;
-using MileageStats.Web.Models;
 using MileageStats.Web.Authentication;
 
 namespace MileageStats.Web.Controllers
@@ -65,7 +63,7 @@ namespace MileageStats.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     updatedUser.HasRegistered = true;
-                    UserServices.UpdateUser(updatedUser);
+                    UpdateUser(updatedUser);
                     formsAuthentication.SetAuthCookie(HttpContext,
                                                       UserAuthenticationTicketBuilder.CreateAuthenticationTicket(
                                                           updatedUser));
@@ -89,7 +87,7 @@ namespace MileageStats.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     updatedUser.HasRegistered = true;
-                    UserServices.UpdateUser(updatedUser);
+                    UpdateUser(updatedUser);
                     formsAuthentication.SetAuthCookie(HttpContext,
                                                       UserAuthenticationTicketBuilder.CreateAuthenticationTicket(
                                                           updatedUser));
@@ -113,7 +111,7 @@ namespace MileageStats.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     updatedUser.HasRegistered = true;
-                    userServices.UpdateUser(updatedUser);
+                    UpdateUser(updatedUser);
                     formsAuthentication.SetAuthCookie(HttpContext,
                                                       UserAuthenticationTicketBuilder.CreateAuthenticationTicket(
                                                           updatedUser));
@@ -136,7 +134,6 @@ namespace MileageStats.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     updatedUser.HasRegistered = true;
-                    userServices.UpdateUser(updatedUser);
                     formsAuthentication.SetAuthCookie(HttpContext,
                                                       UserAuthenticationTicketBuilder.CreateAuthenticationTicket(
                                                           updatedUser));
@@ -147,11 +144,17 @@ namespace MileageStats.Web.Controllers
             throw new SecurityException("Not authorized");
         }
 
+        private void UpdateUser(User updatedUser)
+        {
+            this.userServices.UpdateUser(updatedUser);
+            ClearCachedCultureInfo();
+        }
+
         private void AddCountryListToViewBag()
         {
             var countryNames = countryServices
                 .GetCountriesAndRegionsList()
-                .Select(country => new { text = country, value = country });
+                .Select(kvp => new { text = kvp.Value, value = kvp.Key });
 
             ViewBag.CountryList = new SelectList(countryNames, "value", "text");
         }

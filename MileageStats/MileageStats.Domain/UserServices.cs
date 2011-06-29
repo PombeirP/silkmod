@@ -14,6 +14,7 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
 using MileageStats.Data;
 using MileageStats.Domain.Contracts;
@@ -28,16 +29,21 @@ namespace MileageStats.Domain
 
         public UserServices(IUserRepository userRepository)
         {
-            if (userRepository == null) throw new ArgumentNullException("userRepository");
+            if (userRepository == null)
+            {
+                throw new ArgumentNullException("userRepository");
+            }
             this.userRepository = userRepository;
         }
+
+        #region IUserServices Members
 
         public User GetOrCreateUser(string claimedId)
         {
             User user = null;
             try
             {
-                user = this.GetUserByClaimedIdentifier(claimedId);
+                user = GetUserByClaimedIdentifier(claimedId);
             }
             catch (BusinessServicesException)
             {
@@ -46,31 +52,16 @@ namespace MileageStats.Domain
 
             if (user == null)
             {
-                user = new User()
+                user = new User
                            {
                                AuthorizationId = claimedId,
                                DisplayName = Resources.NewUserDefaultDisplayName,
                            };
 
-                user = this.CreateUser(user);
+                user = CreateUser(user);
             }
 
             return user;
-        }
-
-        public User CreateUser(User newUser)
-        {
-            if (newUser == null) throw new ArgumentNullException("newUser");
-            try
-            {
-                Model.User userToAdd = ToDataModelUser(newUser);
-                this.userRepository.Create(userToAdd);
-                return ToServiceUser(userToAdd);
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new BusinessServicesException(Resources.UnableToCreateUserExceptionMessage, ex);
-            }
         }
 
         public User GetUserByClaimedIdentifier(string claimedIdentifier)
@@ -103,7 +94,10 @@ namespace MileageStats.Domain
 
         public void UpdateUser(User updatedUser)
         {
-            if (updatedUser == null) throw new ArgumentNullException("updatedUser");
+            if (updatedUser == null)
+            {
+                throw new ArgumentNullException("updatedUser");
+            }
             try
             {
                 Model.User userToUpdate = ToDataModelUser(updatedUser);
@@ -115,6 +109,26 @@ namespace MileageStats.Domain
             }
         }
 
+        #endregion
+
+        public User CreateUser(User newUser)
+        {
+            if (newUser == null)
+            {
+                throw new ArgumentNullException("newUser");
+            }
+            try
+            {
+                Model.User userToAdd = ToDataModelUser(newUser);
+                this.userRepository.Create(userToAdd);
+                return ToServiceUser(userToAdd);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new BusinessServicesException(Resources.UnableToCreateUserExceptionMessage, ex);
+            }
+        }
+
         internal static Model.User ToDataModelUser(User userToConvert)
         {
             if (userToConvert == null)
@@ -122,15 +136,15 @@ namespace MileageStats.Domain
                 return null;
             }
 
-            Model.User modelUser = new Model.User()
-            {
-                UserId = userToConvert.UserId,
-                AuthorizationId = userToConvert.AuthorizationId,
-                DisplayName = userToConvert.DisplayName,
-                Country = userToConvert.Country,
-                PostalCode = userToConvert.PostalCode,
-                HasRegistered = userToConvert.HasRegistered,
-            };
+            var modelUser = new Model.User
+                                {
+                                    UserId = userToConvert.UserId,
+                                    AuthorizationId = userToConvert.AuthorizationId,
+                                    DisplayName = userToConvert.DisplayName,
+                                    CountryTwoLetterCode = userToConvert.TwoLetterCountryCode,
+                                    PostalCode = userToConvert.PostalCode,
+                                    HasRegistered = userToConvert.HasRegistered,
+                                };
             return modelUser;
         }
 
@@ -141,15 +155,15 @@ namespace MileageStats.Domain
                 return null;
             }
 
-            User user = new User()
-            {
-                UserId = dataUser.UserId,
-                AuthorizationId = dataUser.AuthorizationId,
-                DisplayName = dataUser.DisplayName,
-                Country = dataUser.Country,
-                PostalCode = dataUser.PostalCode,
-                HasRegistered = dataUser.HasRegistered,
-            };
+            var user = new User
+                           {
+                               UserId = dataUser.UserId,
+                               AuthorizationId = dataUser.AuthorizationId,
+                               DisplayName = dataUser.DisplayName,
+                               TwoLetterCountryCode = dataUser.CountryTwoLetterCode,
+                               PostalCode = dataUser.PostalCode,
+                               HasRegistered = dataUser.HasRegistered,
+                           };
             return user;
         }
     }

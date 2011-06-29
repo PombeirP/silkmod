@@ -56,7 +56,7 @@ namespace MileageStats.Web.Tests.Controllers
             countryServicesMock = new Mock<ICountryServices>();
             countryServicesMock
                 .Setup(r => r.GetCountriesAndRegionsList())
-                .Returns(() => new ReadOnlyCollection<string>(new List<string> {"a", "b"}));
+                .Returns(() => new ReadOnlyCollection<KeyValuePair<string, string>>(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("a", "a"), new KeyValuePair<string, string>("b", "b") }));
 
             profileController = new ProfileController(
                 userServicesMock.Object,
@@ -213,7 +213,7 @@ namespace MileageStats.Web.Tests.Controllers
                                    UserId = 1,
                                    DisplayName = "DisplayName",
                                    PostalCode = "12345",
-                                   Country = "United States"
+                                   TwoLetterCountryCode = "US"
                                };
 
             userServicesMock

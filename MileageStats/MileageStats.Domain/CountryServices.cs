@@ -15,6 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using MileageStats.Data;
@@ -33,12 +34,12 @@ namespace MileageStats.Domain
             this.countryRepository = countryRepository;
         }
 
-        public ReadOnlyCollection<string> GetCountriesAndRegionsList()
+        public ReadOnlyCollection<KeyValuePair<string, string>> GetCountriesAndRegionsList()
         {
             try
             {
-                var countriesList = this.countryRepository.GetAll().Select(c => c.Name).ToList();
-                return new ReadOnlyCollection<string>(countriesList);
+                var countriesList = this.countryRepository.GetAll().Select(c => new KeyValuePair<string, string>(c.TwoLetterRegionCode, c.Name)).ToList();
+                return new ReadOnlyCollection<KeyValuePair<string, string>>(countriesList);
             }
             catch (InvalidOperationException ex)
             {

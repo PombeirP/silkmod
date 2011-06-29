@@ -13,11 +13,11 @@
 </div>
 
 <div class="editor-label">
-    @Html.LabelFor(model => model.Country)
+    @Html.LabelFor(model => model.TwoLetterCountryCode)
 </div>
 <div class="editor-field">
-    @Html.DropDownListFor(model => model.Country, ViewBag.CountryList as SelectList, "-- Select country --", new { @class = "editor-textbox" })
-    @Html.ValidationMessageFor(model => model.Country)
+    @Html.DropDownListFor(model => model.TwoLetterCountryCode, ViewBag.CountryList as SelectList, "-- Select country --", new { @class = "editor-textbox" })
+    @Html.ValidationMessageFor(model => model.TwoLetterCountryCode)
 </div>
 
 <div class="editor-label">

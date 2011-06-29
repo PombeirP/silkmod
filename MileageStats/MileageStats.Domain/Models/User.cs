@@ -46,10 +46,10 @@ namespace MileageStats.Domain.Models
         /// <summary>
         /// Gets or sets the country for the user.
         /// </summary>
-        [StringLength(50, ErrorMessageResourceName = "UserCountryStringLengthValidationError", ErrorMessageResourceType = typeof(Resources))]
+        [StringLength(3, ErrorMessageResourceName = "UserCountryStringLengthValidationError", ErrorMessageResourceType = typeof(Resources))]
         [TextLineInputValidator]
         [Display(Name = "UserCountryLabelText", ResourceType = typeof(Resources))]
-        public string Country { get; set; }
+        public string TwoLetterCountryCode { get; set; }
 
         /// <summary>
         /// Gets or sets the country for the user.

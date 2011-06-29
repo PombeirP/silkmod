@@ -65,7 +65,7 @@ namespace MileageStats.Data.SqlCe.Repositories
             var oldUser = this.GetDbSet<User>().Where(u => u.UserId == updatedUser.UserId).First();
 
             oldUser.AuthorizationId = updatedUser.AuthorizationId;
-            oldUser.Country = updatedUser.Country;
+            oldUser.CountryTwoLetterCode = updatedUser.CountryTwoLetterCode;
             oldUser.DisplayName = updatedUser.DisplayName;
             oldUser.PostalCode = updatedUser.PostalCode;
             oldUser.HasRegistered = updatedUser.HasRegistered;

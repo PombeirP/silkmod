@@ -709,15 +709,6 @@ namespace MileageStats.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to United States.
-        /// </summary>
-        public static string UnitedStatesDisplayString {
-            get {
-                return ResourceManager.GetString("UnitedStatesDisplayString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to OpenID Url.
         /// </summary>
         public static string UserAuthorizationIdLabelText {
@@ -745,7 +736,7 @@ namespace MileageStats.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Country must be less than 50 characters..
+        ///   Looks up a localized string similar to Country code must be 3 or less characters..
         /// </summary>
         public static string UserCountryStringLengthValidationError {
             get {

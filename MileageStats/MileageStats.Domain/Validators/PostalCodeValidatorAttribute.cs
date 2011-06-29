@@ -39,7 +39,7 @@ namespace MileageStats.Domain.Validators
 
             if (userToValidate != null)
             {
-                if (string.IsNullOrEmpty(userToValidate.Country) && string.IsNullOrEmpty(userToValidate.PostalCode))
+                if (string.IsNullOrEmpty(userToValidate.TwoLetterCountryCode) && string.IsNullOrEmpty(userToValidate.PostalCode))
                 {
                     return ValidationResult.Success;
                 }
@@ -47,7 +47,7 @@ namespace MileageStats.Domain.Validators
                 {
                     return ValidationResult.Success;
                 }
-                if (userToValidate.Country == Resources.UnitedStatesDisplayString)
+                if (userToValidate.TwoLetterCountryCode == "US")
                 {
                     if (USPostalCodeRegex.IsMatch(userToValidate.PostalCode))
                     {

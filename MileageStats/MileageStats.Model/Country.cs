@@ -15,8 +15,11 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 
+using System.Diagnostics;
+
 namespace MileageStats.Model
 {
+    [DebuggerDisplay("{Name}, {TwoLetterRegionCode}")]
     public class Country
     {
         /// <summary>
@@ -28,5 +31,10 @@ namespace MileageStats.Model
         /// Gets or sets the user's display name.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets the name or ISO 3166 two-letter country/region code for the current Country object.
+        /// </summary>
+        public string TwoLetterRegionCode { get; set; }
     }
 }

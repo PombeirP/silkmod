@@ -42,7 +42,7 @@ namespace MileageStats.ServicesModel.Tests.Validators
         public void WhenCountryIsNotUnitedStates_ThenAlphaNumericPostalCodeAllowed()
         {
             User user = new User()
-                            {DisplayName = "Name", AuthorizationId = "AuthId", Country = "none", PostalCode = "a1b2c3"};
+                            {DisplayName = "Name", AuthorizationId = "AuthId", TwoLetterCountryCode = "none", PostalCode = "a1b2c3"};
 
             List<ValidationResult> results = new List<ValidationResult>();
             bool isValid = ValidateUserPostalCode(user, ref results);
@@ -69,7 +69,7 @@ namespace MileageStats.ServicesModel.Tests.Validators
                             {
                                 DisplayName = "Name",
                                 AuthorizationId = "AuthId",
-                                Country = "United States",
+                                TwoLetterCountryCode = "US",
                                 PostalCode = "a1b2c3"
                             };
             List<ValidationResult> results = new List<ValidationResult>();
@@ -86,7 +86,7 @@ namespace MileageStats.ServicesModel.Tests.Validators
                             {
                                 DisplayName = "Name",
                                 AuthorizationId = "AuthId",
-                                Country = "United States",
+                                TwoLetterCountryCode = "US",
                                 PostalCode = "125"
                             };
             List<ValidationResult> results = new List<ValidationResult>();
@@ -103,7 +103,7 @@ namespace MileageStats.ServicesModel.Tests.Validators
                             {
                                 DisplayName = "Name",
                                 AuthorizationId = "AuthId",
-                                Country = "United States",
+                                TwoLetterCountryCode = "US",
                                 PostalCode = "1234567"
                             };
             List<ValidationResult> results = new List<ValidationResult>();
@@ -119,7 +119,7 @@ namespace MileageStats.ServicesModel.Tests.Validators
                             {
                                 DisplayName = "Name",
                                 AuthorizationId = "AuthId",
-                                Country = "United States",
+                                TwoLetterCountryCode = "US",
                                 PostalCode = "12345"
                             };
 

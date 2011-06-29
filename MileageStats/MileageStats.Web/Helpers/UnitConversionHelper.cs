@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using MileageStats.Model;
 
 namespace MileageStats.Web.Helpers
@@ -11,6 +12,14 @@ namespace MileageStats.Web.Helpers
 
         public static FillupUnits UserUnitOfMeasure = FillupUnits.Litres;
         public static DistanceUnits UserDistanceUnit = DistanceUnits.Kilometer;
+
+        public static void SetUnitsForRegion(RegionInfo regionInfo)
+        {
+            var isMetric = regionInfo == null || regionInfo.IsMetric;
+
+            UserDistanceUnit = isMetric ? DistanceUnits.Kilometer : DistanceUnits.Mile;
+            UserUnitOfMeasure = isMetric ? FillupUnits.Litres : FillupUnits.UsGallons;
+        }
 
         public static double ConvertDistanceToUserUnit(double distanceInKm)
         {

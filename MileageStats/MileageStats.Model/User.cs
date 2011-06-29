@@ -34,9 +34,9 @@ namespace MileageStats.Model
         public string AuthorizationId { get; set; }
 
         /// <summary>
-        /// Gets or sets the country for the user.
+        /// Gets or sets the country identifier for the user.
         /// </summary>
-        public string Country { get; set; }
+        public string CountryTwoLetterCode { get; set; }
 
         /// <summary>
         /// Gets or sets the country for the user.

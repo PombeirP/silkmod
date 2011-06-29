@@ -282,8 +282,11 @@ namespace MileageStats.Web.Controllers
 
         private void AddCountryListToViewBag()
         {
-            ReadOnlyCollection<string> countryNames = countryServices.GetCountriesAndRegionsList();
-            ViewBag.CountryList = new SelectList(countryNames);
+            var countryNames = countryServices
+                .GetCountriesAndRegionsList()
+                .Select(kvp => new { text = kvp.Value, value = kvp.Key });
+
+            ViewBag.CountryList = new SelectList(countryNames, "value", "text");
         }
 
         private static SelectList EnumerableToSelectList<T>(IEnumerable<T> source, object selectValue)

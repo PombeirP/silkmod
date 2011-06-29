@@ -65,8 +65,8 @@ namespace MileageStats.Data.SqlCe
             modelBuilder.Entity<Country>().HasKey(c => c.CountryId);
             modelBuilder.Entity<Country>().Property(c => c.CountryId).HasDatabaseGeneratedOption(
                 DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<Country>().Property(c => c.Name).IsRequired();
-            modelBuilder.Entity<Country>().Property(c => c.Name).HasMaxLength(50);
+            modelBuilder.Entity<Country>().Property(c => c.Name).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Country>().Property(c => c.TwoLetterRegionCode).IsRequired().HasMaxLength(3);
         }
 
         private static void SetupVehicleManufacturerEntity(DbModelBuilder modelBuilder) {
@@ -132,7 +132,7 @@ namespace MileageStats.Data.SqlCe
             modelBuilder.Entity<User>().Property(u => u.DisplayName).HasMaxLength(15);
             modelBuilder.Entity<User>().Property(u => u.AuthorizationId).IsRequired();
             modelBuilder.Entity<User>().Property(u => u.AuthorizationId).HasMaxLength(255);
-            modelBuilder.Entity<User>().Property(u => u.Country).HasMaxLength(50);
+            modelBuilder.Entity<User>().Property(u => u.CountryTwoLetterCode).HasMaxLength(3);
             modelBuilder.Entity<User>().Property(u => u.PostalCode).HasMaxLength(10);
         }
 

@@ -31,7 +31,7 @@ namespace MileageStats.ServicesModel.Tests
                            {
                                AuthorizationId = "authId",
                                DisplayName = "name",
-                               Country = "United States",
+                               TwoLetterCountryCode = "US",
                                PostalCode = "123"
                            };
             var exception = Assert.Throws<ValidationException>(() => ValidateUser(user));
@@ -45,7 +45,7 @@ namespace MileageStats.ServicesModel.Tests
                            {
                                AuthorizationId = "authId",
                                DisplayName = "name",
-                               Country = "United States",
+                               TwoLetterCountryCode = "US",
                                PostalCode = "123456"
                            };
             var exception = Assert.Throws<ValidationException>(() => ValidateUser(user));

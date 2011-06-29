@@ -14,12 +14,14 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace MileageStats.Domain.Contracts
 {
     public interface ICountryServices
     {
-        ReadOnlyCollection<string> GetCountriesAndRegionsList();
+        ReadOnlyCollection<KeyValuePair<string, string>> GetCountriesAndRegionsList();
     }
 }

@@ -14,11 +14,16 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using Microsoft.Practices.ServiceLocation;
 using MileageStats.Domain.Contracts;
 using MileageStats.Domain.Models;
+using MileageStats.Web.Helpers;
 using MileageStats.Web.Models;
 
 namespace MileageStats.Web.Controllers
@@ -33,13 +38,19 @@ namespace MileageStats.Web.Controllers
     {
         protected readonly IUserServices UserServices;
         private readonly IServiceLocator serviceLocator;
+        private User currentUser;
 
         public AuthorizedController(IUserServices userServices, IServiceLocator serviceLocator)
         {
-            if (userServices == null) throw new ArgumentNullException("userServices");
+            if (userServices == null)
+            {
+                throw new ArgumentNullException("userServices");
+            }
             this.UserServices = userServices;
             this.serviceLocator = serviceLocator;
         }
+
+        #region Properties
 
         /// <summary>
         /// Retrieves the CurrentUserId as stored in the <see cref="MileageStatsIdentity"/>
@@ -49,11 +60,10 @@ namespace MileageStats.Web.Controllers
         /// </remarks>
         protected int CurrentUserId
         {
-            get { return this.User.MileageStatsIdentity().UserId; }
+            get { return User.MileageStatsIdentity().UserId; }
         }
 
-        private User currentUser;
-
+        /// <summary>
         /// Returns the current user or recovers the user from the <see cref="MileageStatsIdentity"/>.
         /// </summary>
         /// <remarks>
@@ -64,18 +74,83 @@ namespace MileageStats.Web.Controllers
             get
             {
                 return this.currentUser ??
-                       (this.currentUser = this.UserServices.GetUserFromIdentity(this.User.MileageStatsIdentity()));
+                       (this.currentUser = this.UserServices.GetUserFromIdentity(User.MileageStatsIdentity()));
             }
         }
 
-        protected T Using<T>() where T: class
+        #endregion
+
+        #region Overrides
+
+        protected override void ExecuteCore()
         {
-            var handler = serviceLocator.GetInstance<T>();
+            if (User.Identity.IsAuthenticated)
+            {
+                SetCulturePreferences();
+            }
+
+            base.ExecuteCore();
+        }
+
+        #endregion
+
+        #region Implementation
+
+        private void SetCulturePreferences()
+        {
+            if (CurrentUser == null)
+            {
+                return;
+            }
+
+            // Try to use cached culture info objects
+            var cultureInfo = (CultureInfo) Session["CultureInfo"];
+            var regionInfo = (RegionInfo) Session["RegionInfo"];
+
+            if (cultureInfo == null)
+            {
+                if (string.IsNullOrEmpty(CurrentUser.TwoLetterCountryCode))
+                {
+                    cultureInfo = Thread.CurrentThread.CurrentCulture;
+                    regionInfo = new RegionInfo(cultureInfo.TwoLetterISOLanguageName);
+                }
+                else
+                {
+                    regionInfo = new RegionInfo(CurrentUser.TwoLetterCountryCode);
+
+                    cultureInfo = CultureInfo.GetCultures(CultureTypes.SpecificCultures).FirstOrDefault(x => x.Name.EndsWith(regionInfo.Name));
+                }
+
+                Session["CultureInfo"] = cultureInfo;
+                Session["RegionInfo"] = regionInfo;
+            }
+
+            // Assign the correct culture for this account
+            UnitConversionHelper.SetUnitsForRegion(regionInfo);
+
+            if (cultureInfo != null)
+            {
+                Thread.CurrentThread.CurrentCulture = cultureInfo;
+                Thread.CurrentThread.CurrentUICulture = cultureInfo;
+            }
+        }
+
+        protected void ClearCachedCultureInfo()
+        {
+            Session["CultureInfo"] = null;
+            Session["RegionInfo"] = null;
+        }
+
+        protected T Using<T>() where T : class
+        {
+            var handler = this.serviceLocator.GetInstance<T>();
             if (handler == null)
             {
                 throw new NullReferenceException("Unable to resolve type with service locator; type " + typeof (T).Name);
             }
             return handler;
         }
+
+        #endregion
     }
 }
