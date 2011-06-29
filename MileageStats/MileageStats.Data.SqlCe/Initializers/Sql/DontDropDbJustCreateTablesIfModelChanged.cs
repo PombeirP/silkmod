@@ -16,8 +16,6 @@
 //===================================================================================
 
 using System.Data.Entity;
-using System.Linq;
-using MileageStats.Model;
 
 namespace MileageStats.Data.SqlCe.Initializers.Sql
 {
@@ -47,15 +45,13 @@ namespace MileageStats.Data.SqlCe.Initializers.Sql
 
         #endregion
 
+        #region IDatabaseInitializer<T> Members
+
         public virtual void InitializeDatabase(T context)
         {
-            baseInitializer.InitializeDatabase(context);
-
-            if (!context.Set<Country>().Any())
-            {
-                this.Seed(context);
-                context.SaveChanges();
-            }
+            this.baseInitializer.InitializeDatabase(context);
         }
+
+        #endregion
     }
 }
