@@ -42,7 +42,7 @@ namespace MileageStats.ServicesModel.Tests.Validators
         public void WhenCountryIsNotUnitedStates_ThenAlphaNumericPostalCodeAllowed()
         {
             User user = new User()
-                            {DisplayName = "Name", AuthorizationId = "AuthId", TwoLetterCountryCode = "none", PostalCode = "a1b2c3"};
+                            {DisplayName = "Name", AuthorizationId = "AuthId", TwoLetterCountryCode = "PT", PostalCode = "a1b2c3"};
 
             List<ValidationResult> results = new List<ValidationResult>();
             bool isValid = ValidateUserPostalCode(user, ref results);

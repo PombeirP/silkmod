@@ -350,7 +350,7 @@ namespace MileageStats.Web.Tests.Controllers
             var data = (JsonStatisticsViewModel)result.Data;
             Assert.Equal(string.Format("{0}¢", fleetSummaryStatistics.AverageCostToDrive), data.AverageCostToDrive);
             Assert.Equal(fleetSummaryStatistics.AverageFillupPrice, data.AverageFillupPrice);
-            Assert.Equal((1 / fleetSummaryStatistics.AverageFuelEfficiency).ToString(), data.AverageFuelEfficiency);
+            Assert.Equal(null, data.AverageFuelEfficiency);
             Assert.Equal(fleetSummaryStatistics.TotalCost, data.TotalCost);
             Assert.Equal(fleetSummaryStatistics.TotalDistance, data.TotalDistance);
             Assert.Equal(fleetSummaryStatistics.TotalFuelCost, data.TotalFuelCost);

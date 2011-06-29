@@ -43,7 +43,7 @@ namespace MileageStats.Data.SqlCe.Tests.Repositories
             var countries = repository.GetAll();
 
             Assert.NotNull(countries);
-            Assert.Equal(238, countries.Count());
+            Assert.Equal(127, countries.Count());
         }
 
         [Fact]
@@ -55,6 +55,17 @@ namespace MileageStats.Data.SqlCe.Tests.Repositories
 
             Assert.NotNull(countries);
             Assert.Equal("Afghanistan", countries[0].Name);
+        }
+
+        [Fact]
+        public void WhenGettingAllRecords_ThenRecordsIncludeRegionCode()
+        {
+            var repository = new CountryRepository(new MileageStatsDbContext());
+
+            var countries = repository.GetAll().ToList();
+
+            Assert.NotNull(countries);
+            Assert.Equal("AF", countries[0].TwoLetterRegionCode);
         }
     }
 }

@@ -130,7 +130,7 @@ namespace MileageStats.Data.SqlCe
 
         private Int32 SeedUser()
         {
-            var user = new User {AuthorizationId = "http://oturner.myidprovider.org/", DisplayName = "Sample User", CountryTwoLetterCode = "United States"};
+            var user = new User {AuthorizationId = "http://oturner.myidprovider.org/", DisplayName = "Sample User", CountryTwoLetterCode = "US"};
             Users.Add(user);
             SaveChanges();
             return user.UserId;
