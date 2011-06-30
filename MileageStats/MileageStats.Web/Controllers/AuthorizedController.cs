@@ -114,7 +114,7 @@ namespace MileageStats.Web.Controllers
                     if (!Thread.CurrentThread.CurrentCulture.IsNeutralCulture)
                     {
                         cultureInfo = Thread.CurrentThread.CurrentCulture;
-                        regionInfo = new RegionInfo(cultureInfo.TwoLetterISOLanguageName);
+                        regionInfo = new RegionInfo(cultureInfo.LCID);
                     }
                 }
                 else
