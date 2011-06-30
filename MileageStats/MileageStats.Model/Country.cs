@@ -23,11 +23,6 @@ namespace MileageStats.Model
     public class Country
     {
         /// <summary>
-        /// Gets or sets the identifier for the user.
-        /// </summary>
-        public int CountryId { get; set; }
-
-        /// <summary>
         /// Gets or sets the user's display name.
         /// </summary>
         public string Name { get; set; }
