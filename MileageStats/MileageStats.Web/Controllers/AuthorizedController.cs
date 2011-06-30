@@ -111,8 +111,11 @@ namespace MileageStats.Web.Controllers
             {
                 if (string.IsNullOrEmpty(CurrentUser.TwoLetterCountryCode))
                 {
-                    cultureInfo = Thread.CurrentThread.CurrentCulture;
-                    regionInfo = new RegionInfo(cultureInfo.TwoLetterISOLanguageName);
+                    if (!Thread.CurrentThread.CurrentCulture.IsNeutralCulture)
+                    {
+                        cultureInfo = Thread.CurrentThread.CurrentCulture;
+                        regionInfo = new RegionInfo(cultureInfo.TwoLetterISOLanguageName);
+                    }
                 }
                 else
                 {
