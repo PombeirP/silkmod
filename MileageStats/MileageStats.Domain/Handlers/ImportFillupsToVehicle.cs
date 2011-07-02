@@ -25,71 +25,75 @@ using MileageStats.Model;
 
 namespace MileageStats.Domain.Handlers
 {
-    public class ImportFillupsToVehicle
-    {
-        private readonly IFillupRepository _fillupRepository;
-        private readonly IVehicleRepository _vehicleRepository;
+	public class ImportFillupsToVehicle
+	{
+		private readonly IFillupRepository _fillupRepository;
+		private readonly IVehicleRepository _vehicleRepository;
 
-        public ImportFillupsToVehicle(IVehicleRepository vehicleRepository, IFillupRepository fillupRepository)
-        {
-            _vehicleRepository = vehicleRepository;
-            _fillupRepository = fillupRepository;
-        }
+		public ImportFillupsToVehicle(IVehicleRepository vehicleRepository, IFillupRepository fillupRepository)
+		{
+			_vehicleRepository = vehicleRepository;
+			_fillupRepository = fillupRepository;
+		}
 
-        public virtual void Execute(int userId, int vehicleId, IEnumerable<FillupEntry> importedFillups)
-        {
-            if (importedFillups == null) throw new ArgumentNullException("importedFillups");
+		public virtual void Execute(int userId, int vehicleId, IEnumerable<FillupEntry> importedFillups)
+		{
+			if (importedFillups == null) throw new ArgumentNullException("importedFillups");
 
-            try
-            {
-                Vehicle vehicle = _vehicleRepository.GetVehicle(userId, vehicleId);
+			try
+			{
+				Vehicle vehicle = _vehicleRepository.GetVehicle(userId, vehicleId);
 
-                if (vehicle != null)
-                {
-                    foreach (FillupEntry newFillup in importedFillups)
-                    {
-                        newFillup.VehicleId = vehicleId;
+				if (vehicle != null)
+				{
+					foreach (FillupEntry newFillup in importedFillups)
+					{
+						newFillup.VehicleId = vehicleId;
+					}
 
-                        AdjustSurroundingFillupEntries(newFillup);
+					// Import all fillups, ignoring duplicates
+					foreach (FillupEntry newFillup in importedFillups.Except(vehicle.Fillups))
+					{
+						AdjustSurroundingFillupEntries(newFillup);
 
-                        _fillupRepository.Create(userId, vehicleId, newFillup);
-                    }
-                }
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new BusinessServicesException(Resources.UnableToAddFillupToVehicleExceptionMessage, ex);
-            }
-        }
+						_fillupRepository.Create(userId, vehicleId, newFillup);
+					}
+				}
+			}
+			catch (InvalidOperationException ex)
+			{
+				throw new BusinessServicesException(Resources.UnableToAddFillupToVehicleExceptionMessage, ex);
+			}
+		}
 
-        private void AdjustSurroundingFillupEntries(FillupEntry newFillup)
-        {
-            if (newFillup == null) throw new ArgumentNullException("newFillup");
+		private void AdjustSurroundingFillupEntries(FillupEntry newFillup)
+		{
+			if (newFillup == null) throw new ArgumentNullException("newFillup");
 
-            IEnumerable<FillupEntry> fillups = _fillupRepository.GetFillups(newFillup.VehicleId);
+			IEnumerable<FillupEntry> fillups = _fillupRepository.GetFillups(newFillup.VehicleId);
 
-            // Prior fillups are ordered descending so that FirstOrDefault() chooses the one closest to the new fillup.
-            // Secondary ordering is by entry ID ensure a consistent ordering/
-            FillupEntry priorFillup = fillups
-                .OrderByDescending(f => f.Date).ThenByDescending(f => f.FillupEntryId)
-                .Where(f => (f.Date <= newFillup.Date) && (f.FillupEntryId != newFillup.FillupEntryId)).FirstOrDefault();
+			// Prior fillups are ordered descending so that FirstOrDefault() chooses the one closest to the new fillup.
+			// Secondary ordering is by entry ID ensure a consistent ordering/
+			FillupEntry priorFillup = fillups
+				.OrderByDescending(f => f.Date).ThenByDescending(f => f.FillupEntryId)
+				.Where(f => (f.Date <= newFillup.Date) && (f.FillupEntryId != newFillup.FillupEntryId)).FirstOrDefault();
 
-            // Prior fillups are ordered ascending that FirstOrDefault() chooses the one closest to the new fillup.
-            // Secondary ordering is by entry ID ensure a consistent ordering.
-            FillupEntry nextFillup = fillups
-                .OrderBy(f => f.Date).ThenBy(f => f.FillupEntryId)
-                .Where(f => (f.Date >= newFillup.Date) && (f.FillupEntryId != newFillup.FillupEntryId)).FirstOrDefault();
+			// Prior fillups are ordered ascending that FirstOrDefault() chooses the one closest to the new fillup.
+			// Secondary ordering is by entry ID ensure a consistent ordering.
+			FillupEntry nextFillup = fillups
+				.OrderBy(f => f.Date).ThenBy(f => f.FillupEntryId)
+				.Where(f => (f.Date >= newFillup.Date) && (f.FillupEntryId != newFillup.FillupEntryId)).FirstOrDefault();
 
-            CalculateInterFillupStatistics(newFillup, priorFillup);
-            CalculateInterFillupStatistics(nextFillup, newFillup);
-        }
+			CalculateInterFillupStatistics(newFillup, priorFillup);
+			CalculateInterFillupStatistics(nextFillup, newFillup);
+		}
 
-        private static void CalculateInterFillupStatistics(FillupEntry fillup, FillupEntry priorFillup)
-        {
-            if (priorFillup != null && fillup != null)
-            {
-                fillup.Distance = Math.Abs(fillup.Odometer - priorFillup.Odometer);
-            }
-        }
-    }
+		private static void CalculateInterFillupStatistics(FillupEntry fillup, FillupEntry priorFillup)
+		{
+			if (priorFillup != null && fillup != null)
+			{
+				fillup.Distance = Math.Abs(fillup.Odometer - priorFillup.Odometer);
+			}
+		}
+	}
 }
